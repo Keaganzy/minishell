@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/08 17:51:59 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/08 21:27:37 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ t_token_type	get_op_type(const char *s, size_t *i)
 	}
 	else if (s[*i] == ')')
 	{
-		printf("detected close bracket \n");
 		(*i)++;
 		return (T_CLOSE_BRACKET);
 	}
@@ -107,15 +106,11 @@ static void	print_tokens(t_token *token)
 {
 	while (token)
 	{
+		printf("token type: %d, ", token->type);
 		if (token->value)
 			printf("token value = %s (len = %zu)\n", token->value, ft_strlen(token->value));
 		else
 			printf("token has no value\n");
-		printf("token type: %d\n", token->type);
-		if (token->next)
-			printf("address of next token: %p\n", token->next);
-		else
-			printf("no next token\n");
 		token = token->next;
 	}
 	printf("done parsing and printing tokens\n");
@@ -144,14 +139,9 @@ t_token *lex_input(const char *s)
 		}
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '(' || s[i] == ')')
 		{
-			printf("Before: i = %zu\n", i);
-			t = get_op_type(&s[i], &i);
-			printf("After: i = %zu\n", i);
+			t = get_op_type(s, &i);
 			printf("t = %d\n", t);
 			add_token_back(&tokens, token_new(t, NULL));
-			// i++;
-			// if (s[i] == ')')
-			// 	i++;
 		}
 		else
 		{
