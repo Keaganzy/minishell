@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:22 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/08 16:56:52 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/09 19:00:24 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ast	*parse_token(t_token *tokens)
 	curr = hd;
 	argc = 0;
 
+	printf("address of tokens : %p\n", tokens);
 	while (tokens)
 	{
 		if (tokens->type == T_WORD)
@@ -30,8 +31,9 @@ t_ast	*parse_token(t_token *tokens)
 			printf("token type = T_WORD\n");
 			curr = new_ast(N_CMD);
 			curr->argv = realloc(curr->argv, sizeof(char *) * (argc + 2));
-			curr->argv[argc++] = ft_strdup(tokens->value);
+			curr->argv[argc++] = ft_strdup(tokens->value); // todo: i think this part is wrong, if the word is a function then argv needs to pull from next tokens.
 			curr->argv[argc] = NULL;
+			printf("curr->argv = %s\n", curr->argv[0]);
 		}
 		else if (tokens->type == T_REDIR_OUT)
 		{
@@ -48,7 +50,8 @@ t_ast	*parse_token(t_token *tokens)
 			curr = curr->right;
 			argc = 0;
 		}
-		printf("going to next token\n");
+		if (hd == NULL)
+			hd = curr;
 		tokens = tokens->next;
 	}
 	return (hd);
