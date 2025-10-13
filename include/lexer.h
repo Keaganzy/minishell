@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:32:58 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/03 00:47:04 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/13 23:56:26 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ t_token			*token_new(t_token_type type, const char *value);
 void			add_token_back(t_token **lst, t_token *new);
 void			token_free(t_token *tok);
 void			token_free_all(t_token **lst);
+void			print_tokens(t_token *token);
 
 #endif
