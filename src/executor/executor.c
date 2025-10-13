@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/09 19:05:02 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/13 22:55:10 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,32 +28,32 @@ int is_builtin(t_ast *ast)
 	int	av_len;
 	
 	printf("is_builtin called \n");
-	printf("address of ast : %p\n", ast);
+	printf("ast->argv[0] : %s\n", ast->argv[0]);
 	if (!(ast || ast->argv || ast->argv[0]))
 		return (0);
 	av_len = ft_strlen(ast->argv[0]);
-	printf("past check 1\n");
+	// printf("past check 1\n");
 	if (ft_strncmp(ast->argv[0], "cd", av_len) == 0)
 		return (1);
-	printf("past check 2\n");
+	// printf("past check 2\n");
 	if (ft_strncmp(ast->argv[0], "echo", av_len) == 0)
 		return (1);
-	printf("past check 3\n");
+	// printf("past check 3\n");
 	if (ft_strncmp(ast->argv[0], "env", av_len) == 0)
 		return (1);
-	printf("past check 4\n");
+	// printf("past check 4\n");
 	if (ft_strncmp(ast->argv[0], "exit", av_len) == 0)
 		return (1);
-	printf("past check 5\n");	
+	// printf("past check 5\n");	
 	if (ft_strncmp(ast->argv[0], "export", av_len) == 0)
 		return (1);
-	printf("past check 6\n");
+	// printf("past check 6\n");
 	if (ft_strncmp(ast->argv[0], "unset", av_len) == 0)
 		return (1);
-	printf("past check 7\n");
+	// printf("past check 7\n");
 	if (ft_strncmp(ast->argv[0], "pwd", av_len) == 0)
 		return (1);
-	printf("past check 8\n");
+	// printf("past check 8\n");
 	return (0);
 }
 

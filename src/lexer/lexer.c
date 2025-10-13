@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/08 21:27:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/13 23:56:02 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,23 @@ t_token_type	get_op_type(const char *s, size_t *i)
 		(*i)++;
 		return (T_CLOSE_BRACKET);
 	}
+	else if (s[*i] == '&' && s[*i + 1] == '&')
+	{
+		(*i) += 2;
+		return (T_AND);
+	}
+	else if (s[*i] == '|' && s[*i + 1] == '|')
+	{
+		(*i) += 2;
+		return (T_OR);
+	}
+	else if (is_space((unsigned char)s[*i]))
+	{
+		(*i)++;
+		while (is_space((unsigned char)s[*i]))
+			(*i)++;
+		return (T_SPACE);
+	}
 	return (T_WORD);
 }
 
@@ -102,7 +119,7 @@ char	*extract_till_next_inv_comma(const char *s, size_t *i)
 	return (ft_strndup(s + start, *i - start));
 }
 
-static void	print_tokens(t_token *token)
+void	print_tokens(t_token *token)
 {
 	while (token)
 	{
@@ -128,12 +145,15 @@ t_token *lex_input(const char *s)
 	while (s[i])
 	{
 		if (is_space((unsigned char)s[i]))
-			i++;
+		{
+			t = get_op_type(s, &i);
+			add_token_back(&tokens, token_new(t, NULL));
+		}
 		else if (s[i] == '"' || s[i] == '\'')
 		{
 			word = extract_till_next_inv_comma(s, &i);
 			add_token_back(&tokens, token_new(T_WORD, word));
-			free(word);
+			// free(word);	// TODO: need to free during cleanup
 			if (s[i] == '"' || s[i] == '\'')
 				i++;
 		}
@@ -147,9 +167,9 @@ t_token *lex_input(const char *s)
 		{
 			word = extract_word(s, &i);
 			add_token_back(&tokens, token_new(T_WORD, word));
-			free(word);
+			// free(word);
 		}
 	}
-	print_tokens(tokens);	// TODO: remove this later
+	// print_tokens(tokens);	// TODO: remove this later
 	return (tokens);
 }
