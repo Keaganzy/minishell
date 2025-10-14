@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:22 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 00:00:09 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 00:01:23 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ t_ast	*parse_token(t_token *tokens)
 			{
 				size++;
 				curr->argv = realloc(curr->argv, sizeof(char *) * size);
-				printf("i = %d\n", i);
 				if (tmp->next->type == T_SPACE)
 				{
 					if (i > 1)

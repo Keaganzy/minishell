@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/14 23:57:15 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 00:01:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,6 @@ int is_builtin(t_ast *ast)
 {
 	int	av_len;
 	
-	printf("is_builtin called \n");
-	printf("ast->argv[0] : %s\n", ast->argv[0]);
-	printf("ast->argv[1] : %s\n", ast->argv[1]);
-	printf("ast->argv[2] : %s\n", ast->argv[2]);
 	if (!(ast || ast->argv || ast->argv[0]))
 		return (0);
 	av_len = ft_strlen(ast->argv[0]);
