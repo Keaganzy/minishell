@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:22 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/14 23:30:01 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 00:00:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,22 @@ t_ast	*parse_token(t_token *tokens)
 			{
 				size++;
 				curr->argv = realloc(curr->argv, sizeof(char *) * size);
-				if (tmp->next->type == T_SPACE)	// TODO: need to figure out how to exclude the space after the first command.
+				printf("i = %d\n", i);
+				if (tmp->next->type == T_SPACE)
 				{
-					curr->argv[i] = malloc(sizeof(2));
-					curr->argv[i][0] = ' ';
-					curr->argv[i][1] = '\0';
+					if (i > 1)
+					{
+						curr->argv[i] = malloc(sizeof(2));
+						curr->argv[i][0] = ' ';
+						curr->argv[i][1] = '\0';
+						i++;
+					}
 				}
 				else
+				{
 					curr->argv[i] = ft_strdup(tmp->next->value);
-				i++;
+					i++;
+				}
 				tmp = tmp->next;
 			}
 			tokens = tmp;
