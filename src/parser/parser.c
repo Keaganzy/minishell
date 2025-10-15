@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:22 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/09 19:00:24 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 00:01:23 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,47 @@ t_ast	*parse_token(t_token *tokens)
 {
 	t_ast	*hd;
 	t_ast	*curr;
-	size_t	argc;
+	size_t	size; // number of spaces malloced in the argv
+	int		i;		// curr position in the argv
+	t_token	*tmp;
 
 	hd = NULL;
 	curr = hd;
-	argc = 0;
-
-	printf("address of tokens : %p\n", tokens);
+	i = 0;
 	while (tokens)
 	{
 		if (tokens->type == T_WORD)
 		{
-			printf("token type = T_WORD\n");
+			size = 2;
+			i = 0;
 			curr = new_ast(N_CMD);
-			curr->argv = realloc(curr->argv, sizeof(char *) * (argc + 2));
-			curr->argv[argc++] = ft_strdup(tokens->value); // todo: i think this part is wrong, if the word is a function then argv needs to pull from next tokens.
-			curr->argv[argc] = NULL;
-			printf("curr->argv = %s\n", curr->argv[0]);
+			curr->argv = malloc(sizeof(char *) * (size));
+			curr->argv[i] = ft_strdup(tokens->value); // todo: i think this part is wrong, if the word is a function then argv needs to pull from next tokens.
+			i++;
+			hd = curr;
+			tmp = tokens;
+			while (tmp->next && (tmp->next->type == T_WORD || tmp->next->type == T_SPACE)) // this section is needed to populate the argv array with all props
+			{
+				size++;
+				curr->argv = realloc(curr->argv, sizeof(char *) * size);
+				if (tmp->next->type == T_SPACE)
+				{
+					if (i > 1)
+					{
+						curr->argv[i] = malloc(sizeof(2));
+						curr->argv[i][0] = ' ';
+						curr->argv[i][1] = '\0';
+						i++;
+					}
+				}
+				else
+				{
+					curr->argv[i] = ft_strdup(tmp->next->value);
+					i++;
+				}
+				tmp = tmp->next;
+			}
+			tokens = tmp;
 		}
 		else if (tokens->type == T_REDIR_OUT)
 		{
@@ -48,7 +72,26 @@ t_ast	*parse_token(t_token *tokens)
 			printf("token type = T_PIPE\n");
 			curr->right = new_ast(N_PIPE);
 			curr = curr->right;
-			argc = 0;
+			size = 0;
+		}
+		else if (tokens->type == T_SPACE && i > 0) // TODO: i dont think this logic (in this function is correct, need to account for space in other scenarios)
+		{
+			printf("token type = T_SPACE\n");
+			curr->argv[i] = realloc(curr->argv[i], sizeof(char *) * (size + 1));
+			curr->argv[i][0] = ' ';
+			curr->argv[i][1] = '\0';
+			// arr_len += 1;
+			i++;
+		}
+		else if (tokens->type == T_AND)
+		{
+			printf("token type = T_AND\n");
+			// TODO: Do something
+		}
+		else if (tokens->type == T_OR)
+		{
+			printf("token type = T_OR\n");
+			// TODO: Do something
 		}
 		if (hd == NULL)
 			hd = curr;
