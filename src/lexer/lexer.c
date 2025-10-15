@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 16:45:10 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 17:43:29 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,6 +174,7 @@ t_token *lex_input(const char *s)
 		else
 		{
 			word = extract_word(s, &i);
+			printf("word (else flow) = %s\n", word);
 			add_token_back(&tokens, token_new(T_WORD, word));
 		}
 	}

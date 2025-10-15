@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 16:55:41 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 17:41:36 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,11 @@ void	execute_commands(t_token *tokens, t_shell *shell, char **envp, char **argv)
 		execute_builtin(a, shell, tokens);
 		return ;
 	}
+	// else if (a->type == T_WORD && ft_strncmp(a->argv[0], "\n", ft_strlen(a->argv[0])) == 0)
+	// {
+	// 	printf("\n");
+	// 	return ;
+	// }
 	pid = fork();
 	if (handle_pid_err(pid, argv, envp, tokens) == -1)
 		exit(1);	// Todo: need to update 
@@ -139,6 +144,14 @@ int	main(int argc, char **argv, char **envp)
 
 	init_vars_signals(&shell, envp, argc, argv);
 	rl_catch_signals = 0;
+	
+	int i;
+	i = 0;
+	// while (envp[i]) // this part of the code prints all the env vars.
+	// {
+	// 	printf("envp[%d] = %s\n", i, envp[i]);
+	// 	i++;
+	// }
 	while(1)
 	{
 		line = readline("MS$ ");

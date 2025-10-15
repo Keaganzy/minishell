@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:52:28 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 17:33:44 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_pwd(char **av, t_shell *shell)
 	(void)av;
 	(void)shell;
 
-	if (getcwd(c, sizeof(c) != 0))
+	if (getcwd(c, sizeof(c)) != 0)
 	{
 		printf("%s\n", c);
 		return (0);

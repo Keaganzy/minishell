@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:53:15 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 17:49:38 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,25 @@ int is_builtin(t_ast *ast)
 		return (0);
 	av_len = ft_strlen(ast->argv[0]);
 	// printf("past check 1\n");
-	if (ft_strncmp(ast->argv[0], "cd", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "cd", av_len > 2 ? av_len : 2) == 0)
 		return (1);
 	// printf("past check 2\n");
-	if (ft_strncmp(ast->argv[0], "echo", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "echo", av_len > 4 ? av_len : 4) == 0)
 		return (1);
 	// printf("past check 3\n");
-	if (ft_strncmp(ast->argv[0], "env", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "env", av_len > 3 ? av_len : 3) == 0)
 		return (1);
 	// printf("past check 4\n");
-	if (ft_strncmp(ast->argv[0], "exit", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "exit", av_len > 4 ? av_len : 4) == 0)
 		return (1);
 	// printf("past check 5\n");	
-	if (ft_strncmp(ast->argv[0], "export", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "export", av_len > 6 ? av_len : 6) == 0)
 		return (1);
 	// printf("past check 6\n");
-	if (ft_strncmp(ast->argv[0], "unset", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "unset", av_len > 5 ? av_len : 5) == 0)
 		return (1);
 	// printf("past check 7\n");
-	if (ft_strncmp(ast->argv[0], "pwd", av_len) == 0)
+	if (ft_strncmp(ast->argv[0], "pwd", av_len > 3 ? av_len : 3) == 0)
 		return (1);
 	// printf("past check 8\n");
 	return (0);
