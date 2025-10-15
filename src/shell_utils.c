@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 16:54:27 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:01:24 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void cleanup_shell(t_shell *shell, t_token *tokens)
 	// free(shell->env);
 	(void)shell;
 	token_free_all(&tokens);
+	// Todo: need to cleanup AST also
 	return ;
 }
 

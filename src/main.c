@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 17:41:36 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:23:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,15 +155,22 @@ int	main(int argc, char **argv, char **envp)
 	while(1)
 	{
 		line = readline("MS$ ");
+		printf("line is %s\n", line);
 		if (!line)					// ctrl-D (EOF)
 		{
 			printf("exit\n");		// remove this to save lines?
 			break ;
 		}
-		history_add(line);
+		if (*line == '\0')
+		{
+			free(line);
+			continue ;
+		}
+		add_history(line);
 		tokens = lex_input(line);
 		print_tokens(tokens);
 		execute_commands(tokens, &shell, envp, argv);  // TODO: need to add this back later.
+		
 		free(line);
 		token_free_all(&tokens);
 	}

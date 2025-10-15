@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 17:33:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:01:40 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ int	ft_exit(char **av, t_shell *shell, t_token *tokens)
 	(void)av;
 	(void)shell;
 	
-	printf("exit\n");
 	cleanup_shell(shell, tokens);
+	printf("exit\n");
 	exit(0);
 }
 

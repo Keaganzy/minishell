@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/20 00:41:27 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:56:41 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:23:31 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	history_init(void)
 	read_history(HISTORY_FILE);
 }
 
-void	history_add(const char *line)
-{
-	if (*line)
-		add_history(line);
-}
+// void	history_add(const char *line)
+// {
+// 	if (*line)
+// 		add_history(line);
+// }
 
 // void	history_save(void)
 // {

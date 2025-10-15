@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 16:54:38 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:23:43 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int	builtin_cd(char **av, char **env);
 # define HISTORY_FILE "~/.minishell_history"
 
 void	history_init(void);
-void	history_add(const char *line);
+// void	history_add(const char *line);
 
 //executor module
 int is_builtin(t_ast *ast);
