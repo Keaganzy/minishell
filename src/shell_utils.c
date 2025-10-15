@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:54:20 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:54:27 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,3 +27,4 @@ void cleanup_shell(t_shell *shell, t_token *tokens)
 	token_free_all(&tokens);
 	return ;
 }
+

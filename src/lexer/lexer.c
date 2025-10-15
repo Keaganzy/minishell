@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:56:52 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:45:10 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char	*extract_word(const char *s, size_t *i)
 char	*extract_till_next_inv_comma(const char *s, size_t *i)
 {
 	size_t			start;
+	size_t			end;
 	unsigned char	inv_comma;
 
 	inv_comma = s[*i];
@@ -116,7 +117,10 @@ char	*extract_till_next_inv_comma(const char *s, size_t *i)
 	start = *i;
 	while (s[*i] && s[*i] != inv_comma)
 		(*i)++;
-	return (ft_strndup(s + start, *i - start));
+	end = *i;
+	if (s[*i])
+		(*i)++;
+	return (ft_strndup(s + start, end - start));
 }
 
 void	print_tokens(t_token *token)
@@ -137,8 +141,9 @@ t_token *lex_input(const char *s)
 {
 	size_t			i;
 	t_token			*tokens;
-	t_token_type	t;
 	char			*word;
+	char			*tmp;
+	size_t			w_len;
 
 	i = 0;
 	tokens = NULL;
@@ -146,28 +151,30 @@ t_token *lex_input(const char *s)
 	{
 		if (is_space((unsigned char)s[i]))
 		{
-			t = get_op_type(s, &i);
-			add_token_back(&tokens, token_new(t, NULL));
+			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL));
 		}
 		else if (s[i] == '"' || s[i] == '\'')
 		{
 			word = extract_till_next_inv_comma(s, &i);
+			w_len = ft_strlen(word) + 1;
+			while (s[i] == '"' || s[i] == '\'')
+			{
+				tmp = extract_till_next_inv_comma(s, &i);
+				w_len += ft_strlen(tmp);
+				word = realloc(word, w_len);
+				ft_strlcat(word, tmp, w_len);
+				free(tmp);
+			}
 			add_token_back(&tokens, token_new(T_WORD, word));
-			// free(word);	// TODO: need to free during cleanup
 			if (s[i] == '"' || s[i] == '\'')
 				i++;
 		}
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '(' || s[i] == ')')
-		{
-			t = get_op_type(s, &i);
-			printf("t = %d\n", t);
-			add_token_back(&tokens, token_new(t, NULL));
-		}
+			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL));
 		else
 		{
 			word = extract_word(s, &i);
 			add_token_back(&tokens, token_new(T_WORD, word));
-			// free(word);
 		}
 	}
 	// print_tokens(tokens);	// TODO: remove this later

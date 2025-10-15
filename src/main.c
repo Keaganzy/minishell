@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:53:58 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:55:41 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,7 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 
 	init_vars_signals(&shell, envp, argc, argv);
+	rl_catch_signals = 0;
 	while(1)
 	{
 		line = readline("MS$ ");

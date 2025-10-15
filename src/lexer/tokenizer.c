@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 23:59:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:57:13 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:26:44 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	token_free(t_token *tok)
 {
 	if (!tok)
 		return ;
-	free(tok->value);
+	if (tok->type == T_WORD)
+		free(tok->value);
 	free(tok);
 }
 

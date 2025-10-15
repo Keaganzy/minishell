@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:51:55 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 16:54:38 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <string.h>
 # include <sys/wait.h>
 # include <limits.h>
+# include <unistd.h>
 # include <fcntl.h>
 
 # define PROMPT	"MS$"
