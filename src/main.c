@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 18:23:06 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 18:27:27 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,6 @@ int	main(int argc, char **argv, char **envp)
 	while(1)
 	{
 		line = readline("MS$ ");
-		printf("line is %s\n", line);
 		if (!line)					// ctrl-D (EOF)
 		{
 			printf("exit\n");		// remove this to save lines?
