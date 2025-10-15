@@ -6,11 +6,12 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 22:52:55 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:40:48 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/15 14:54:27 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+// #include <readline/readline.h>
 
 void	sigint_handler(int sig)
 {
