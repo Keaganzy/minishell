@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 00:00:40 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/18 23:46:40 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	ft_echo(char **av, t_shell *shell)
 	int	n_flag;
 
 	(void)shell;
-	printf("echo called\n");
 	i = 1;
 	n_flag = 0;
 	if (av[i] && is_flag_n(av[i]))
