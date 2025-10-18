@@ -3,22 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:52:28 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/18 23:44:20 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <linux/limits.h>
+#if defined(__LINUX___)
+	#include <linux/limits.h>
+#endif
 
 int	ft_env(char **av, t_shell *shell)
 {
 	int	i;
 
 	(void)av;
-	if (!shell || shell->env)
+	if (!shell || !shell->env)
 		return (1);
 	i = 0;
 	while (shell->env[i])

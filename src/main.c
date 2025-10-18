@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:53:58 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/18 23:26:32 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 	{
 		if (ft_strncmp((*envp)[i], key, key_len) == 0 && (*envp)[i][key_len] == '=')
 		{
-			free((*envp)[i]);
+			// free((*envp)[i]);	// TODO: check whether this needs to be uncommented
 			(*envp)[i] = new_var;
 			return (0);
 		}
@@ -51,7 +51,7 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 		new_env[j] = (*envp)[j];
 	new_env[i] = new_var;
 	new_env[i + 1] = NULL;
-	free(*envp);
+	// free(*envp);
 	*envp = new_env;
 	return (0);
 }
@@ -120,7 +120,7 @@ void	execute_commands(t_token *tokens, t_shell *shell, char **envp, char **argv)
 		exit(1);	// Todo: need to update 
 	if (pid == 0)
 	{
-		execute_ast(a, shell);
+		execute_ast(a, shell, tokens);
 		exit(shell->exit_code);	//TODO might need to properly terminate and free 
 	}
 	else if (pid > 0)

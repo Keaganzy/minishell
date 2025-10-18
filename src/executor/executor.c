@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:53:15 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/18 23:36:55 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,19 +54,19 @@ int is_builtin(t_ast *ast)
 	return (0);
 }
 
-// static void	wait_for_all_children(void)
-// {
-// 	pid_t	pid;
-// 	int		status;
+static void	wait_for_all_children(void)
+{
+	pid_t	pid;
+	int		status;
 	
-// 	while ((pid = wait(&status)) > 0)
-// 	{
-// 		if (WIFEXITED(status))
-// 			printf("Child %d exited with status %d\n", pid, WEXITSTATUS(status));
-// 		else if (WIFSIGNALED(status))
-// 			printf("Child %d was killed by signal %d\n", pid, WTERMSIG(status));
-// 	}
-// }
+	while ((pid = wait(&status)) > 0)
+	{
+		if (WIFEXITED(status))
+			printf("Child %d exited with status %d\n", pid, WEXITSTATUS(status));
+		else if (WIFSIGNALED(status))
+			printf("Child %d was killed by signal %d\n", pid, WTERMSIG(status));
+	}
+}
 
 int	execute_builtin(t_ast *ast, t_shell *shell, t_token *tokens)
 {
@@ -95,56 +95,55 @@ int	execute_builtin(t_ast *ast, t_shell *shell, t_token *tokens)
 	return (-100);
 }
 
-int	execute_ast(t_ast *root, t_shell *shell)
+int	execute_ast(t_ast *root, t_shell *shell, t_token *tokens)
 {
 
 	(void)root;
 	(void)shell;
-// 	int		prev_fd;
-// 	t_ast	*ast;
-// 	int		pipe_fd[2];
-// 	pid_t	pid;
+	int		prev_fd;
+	t_ast	*ast;
+	int		pipe_fd[2];
+	pid_t	pid;
 	
-// 	printf("execute ast called\n");
-// 	prev_fd = -1;	// for pipe chaining
-// 	ast = root;
-// 	while (ast)
-// 	{
-// 		if (ast->right)	// if there is a command to the right
-// 			pipe(pipe_fd);
-// 		pid = fork();
-// 		if (pid == 0)	// child
-// 		{
-// 			if (prev_fd != -1)	// handle input from previous pipe
-// 			{
-// 				dup2(prev_fd, STDIN_FILENO);
-// 				close(prev_fd);
-// 			}
-// 			if (ast->right)	// handle output to the next pipe
-// 			{
-// 				close(pipe_fd[0]);		// close read end
-// 				dup2(pipe_fd[1], STDOUT_FILENO);
-// 				close(pipe_fd[1]);
-// 			}
-// 			apply_redirections(ast);	// handle redirections
-// 			if (is_builtin(ast))
-// 				execute_builtin(ast, shell);
-// 			else
-// 				execve(*shell->env, ast->argv, shell->env); // path should be in the first arg, args = second arg, g_env = third arg
-// 			perror("execve"); // if execve fails
-// 			exit(1);
-// 		}
-// 		if (prev_fd != -1)	// parent
-// 			close(prev_fd);	// close prev pipe read end
-// 		if (ast->right)
-// 		{
-// 			close(pipe_fd[1]);	// close write end
-// 			prev_fd = pipe_fd[0];
-// 		}
-// 		else
-// 			prev_fd = -1;
-// 		ast = ast->right;
-// 	}
-// 	wait_for_all_children();
+	prev_fd = -1;	// for pipe chaining
+	ast = root;
+	while (ast)
+	{
+		if (ast->right)	// if there is a command to the right
+			pipe(pipe_fd);
+		pid = fork();
+		if (pid == 0)	// child
+		{
+			if (prev_fd != -1)	// handle input from previous pipe
+			{
+				dup2(prev_fd, STDIN_FILENO);
+				close(prev_fd);
+			}
+			if (ast->right)	// handle output to the next pipe
+			{
+				close(pipe_fd[0]);		// close read end
+				dup2(pipe_fd[1], STDOUT_FILENO);
+				close(pipe_fd[1]);
+			}
+			apply_redirections(ast);	// handle redirections
+			if (is_builtin(ast))
+				execute_builtin(ast, shell, tokens);
+			else
+				execve(*shell->env, ast->argv, shell->env); // path should be in the first arg, args = second arg, g_env = third arg
+			perror("execve"); // if execve fails
+			exit(1);
+		}
+		if (prev_fd != -1)	// parent
+			close(prev_fd);	// close prev pipe read end
+		if (ast->right)
+		{
+			close(pipe_fd[1]);	// close write end
+			prev_fd = pipe_fd[0];
+		}
+		else
+			prev_fd = -1;
+		ast = ast->right;
+	}
+	wait_for_all_children();
 	return (0);
 }

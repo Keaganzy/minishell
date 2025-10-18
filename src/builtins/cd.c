@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:50:07 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/18 23:31:47 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,15 @@ int	builtin_cd(char **av, char **env) //int	builtin_cd(char **av, t_env **env)
 	char	*path;
 	char 	c[4096];	// current working directory
 	char	*prev_pwd;
-	size_t	av_len;
 	
-	av_len = ft_strlen(av[1]);
-	if (!av[1] || ft_strncmp(av[1], "~", av_len) == 0)
+	// if (!av[1])
+	// {
+	// 	printf("Please provide a path.\n");
+	// 	return (0);
+	// }
+	if (!av[1] || ft_strncmp(av[1], "~", ft_strlen(av[1])) == 0)
 		path = getenv_value(env, "HOME");
-	else if (ft_strncmp(av[1], "~", av_len) == 0)
+	else if (ft_strncmp(av[1], "~", ft_strlen(av[1])) == 0)
 	{
 		path = getenv_value(env, "OLDPWD");
 		if (path)
@@ -33,7 +36,7 @@ int	builtin_cd(char **av, char **env) //int	builtin_cd(char **av, t_env **env)
 		path = av[1];
 	if (!path)
 	{
-		fprintf(stderr, "cd: path not set\n");
+		printf("cd: path not set\n");
 		return (1);
 	}
 	prev_pwd = getenv_value(env, "PWD");
@@ -47,5 +50,6 @@ int	builtin_cd(char **av, char **env) //int	builtin_cd(char **av, t_env **env)
 		setenv_value(&env, "OLDPWD", prev_pwd);
 		setenv_value(&env, "PWD", c);
 	}
+	printf("returning...\n");
 	return (0);
 }

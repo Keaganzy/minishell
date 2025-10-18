@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:51:55 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/18 23:26:44 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	history_add(const char *line);
 //executor module
 int is_builtin(t_ast *ast);
 int	builtin_cd(char **av, char **env);
-int	execute_ast(t_ast *root, t_shell *shell);
+int	execute_ast(t_ast *root, t_shell *shell, t_token *tokens);
 int	execute_builtin(t_ast *ast, t_shell *shell, t_token *tokens);
 int	apply_redirections(t_ast *ast);
 int	redirect_input(t_ast *ast);
