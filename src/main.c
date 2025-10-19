@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/19 21:17:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 00:14:13 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,13 +74,12 @@ char	*getenv_value(char **env, const char *key)
 	return (NULL);
 }
 
-static int	handle_pid_err(int pid, char **argv, char **envp, t_token *tokens)
+static int	handle_pid_err(int pid, char **argv, char **envp)
 {
 	if (pid == 0)
 	{
 		execve(argv[0], argv, envp);
 		perror("execve");
-		token_free_all(&tokens);
 		return (-1);
 	}
 	else if (pid < 0)
@@ -111,17 +110,17 @@ void	execute_commands(t_token *tokens, t_shell *shell, char **argv)
 	
 	// a = parse_token(tokens);
 	a = parse_pipeline(&tokens);
-	
+	token_free_all(&tokens);
 	if (a->type == N_CMD && is_builtin(a))
-		execute_builtin(a, shell, tokens);
+		execute_builtin(a, shell);
 	else
 	{
 		pid = fork();
-		if (handle_pid_err(pid, argv, shell->env, tokens) == -1)
+		if (handle_pid_err(pid, argv, shell->env) == -1)
 			exit(1);	// Todo: need to update. should this be shell->exit_code?
 		if (pid == 0)
 		{
-			execute_ast(a, shell, tokens);
+			execute_ast(a, shell);
 			exit(shell->exit_code);	//TODO might need to properly terminate and free 
 		}
 		else if (pid > 0)
@@ -148,7 +147,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 		history_add(line);
 		tokens = lex_input(line);
-		print_tokens(tokens);
+		// print_tokens(tokens);
 		execute_commands(tokens, &shell, argv);  // TODO: rewrite this with a different function to create, parse and read the AST
 		free(line);
 		token_free_all(&tokens);

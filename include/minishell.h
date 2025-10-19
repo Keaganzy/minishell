@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/19 21:16:39 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 00:39:25 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct	s_ast // abstract syntax tree
 }	t_ast;
 
 // void	start_shell(t_shell *shell);
-void	cleanup_shell(t_shell *shell, t_token *tokens);
+void	cleanup_shell(t_shell *shell);
 void	execute_commands(t_token *tokens, t_shell *shell, char **argv);
 void	set_signals(void);
 void	sigint_handler(int sig);
@@ -109,22 +109,26 @@ void	history_init(void);
 void	history_add(const char *line);
 
 //executor module
-int is_builtin(t_ast *ast);
-int	builtin_cd(char **av, char **env);
-int	execute_ast(t_ast *root, t_shell *shell, t_token *tokens);
-int	execute_builtin(t_ast *ast, t_shell *shell, t_token *tokens);
-int	apply_redirections(t_ast *ast);
-int	redirect_input(t_ast *ast);
-int	redirect_output(t_ast *ast);
-int	redirect_append(t_ast *ast);
-int	redirect_heredoc(const char *limiter);
+int		is_builtin(t_ast *ast);
+int		builtin_cd(char **av, char **env);
+int		execute_ast(t_ast *root, t_shell *shell);
+int		execute_builtin(t_ast *ast, t_shell *shell);
+int		execute_cmd(t_ast *root, t_shell *shell);
+int		execute_pipe(t_ast *root, t_shell *shell);
+int		execute_redir(t_ast *root, t_shell *shell);
+int		apply_redirections(t_ast *ast);
+int		redirect_input(t_ast *ast);
+int		redirect_output(t_ast *ast);
+int		redirect_append(t_ast *ast);
+int		redirect_heredoc(const char *limiter);
+int		apply_redirection_to_current_fd(t_ast *root);
 
 // builtins module
 int	ft_echo(char **av, t_shell *shell);
 int	ft_cd(char **av, t_shell *shell);
 int	ft_pwd(char **av, t_shell *shell);
 int	ft_env(char **av, t_shell *shell);
-int	ft_exit(char **av, t_shell *shell, t_token *tokens);
+int	ft_exit(char **av, t_shell *shell);
 int	ft_unset(char **av, t_shell *shell);
 int	ft_export(char **av, t_shell *shell);
 
