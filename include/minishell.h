@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/19 16:06:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:16:39 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,5 +135,6 @@ int	builtin_cd(char **av, char **env);
 t_ast	*new_ast(t_node_type type);
 t_ast	*parse_token(t_token *tokens);
 void	free_ast(t_ast *root);
+t_ast	*parse_pipeline(t_token **curr);
 
 #endif

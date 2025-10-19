@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 16:29:26 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/19 18:14:18 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:28:48 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ t_ast *parse_simple_cmd(t_token **curr)
 	size_t	size;
 	t_token	*tmp;
 	
-	tmp = curr;
+	tmp = *curr;
 	size = 0;
 	i = 0;
 	while (tmp && tmp->type != T_PIPE && tmp->type != T_REDIR_APPEND && tmp->type != T_REDIR_OUT)
@@ -70,7 +70,7 @@ t_ast *parse_simple_cmd(t_token **curr)
 		}
 		*curr = (*curr)->next;
 	}
-	cmd_node->argv[i] = '\0';
+	cmd_node->argv[i] = NULL;
 	return (cmd_node);
 }
 
@@ -94,21 +94,3 @@ t_ast *parse_redirections(t_token **curr)
 	return (cmd);
 }
 
-t_ast *parse_pipeline(t_token **curr)
-{
-	t_ast	*n_left;
-	t_ast	*n_pipe;
-
-	n_left = parse_redirections(curr);
-	while (*curr && (*curr)->type == T_PIPE)
-	{
-		*curr = (*curr)->next; // skip pipe
-		n_pipe = new_ast(N_PIPE);
-		n_pipe->left = n_left;
-		n_pipe->right = parse_redirections(curr); // get the right side of the pipe.
-		if (!n_pipe->right)
-			return (NULL);
-		n_left = n_pipe; // new pipe node becomes the root for the next iteration
-	}
-	return (n_left);
-}

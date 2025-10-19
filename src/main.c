@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/19 18:15:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/19 21:17:37 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void	execute_commands(t_token *tokens, t_shell *shell, char **argv)
 	int		status;
 	
 	// a = parse_token(tokens);
-	a = parse_pipeline(tokens);
+	a = parse_pipeline(&tokens);
 	
 	if (a->type == N_CMD && is_builtin(a))
 		execute_builtin(a, shell, tokens);
