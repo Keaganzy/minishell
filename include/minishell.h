@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/18 23:26:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/19 16:06:44 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct	s_ast // abstract syntax tree
 
 // void	start_shell(t_shell *shell);
 void	cleanup_shell(t_shell *shell, t_token *tokens);
-void	execute_commands(t_token *tokens, t_shell *shell, char **envp, char **argv);
+void	execute_commands(t_token *tokens, t_shell *shell, char **argv);
 void	set_signals(void);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
