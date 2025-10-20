@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 09:55:33 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 21:56:19 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,28 +63,28 @@ int	execute_cmd(t_ast *root, t_shell *shell)
 	return (1); // TODO: check if this is correct
 }
 
-int	execute_redir(t_ast *root, t_shell *shell)
+int	execute_redir(t_ast *curr, t_shell *shell)
 {
-	if (apply_redirection_to_curr_fd(root) == -1)
+	if (apply_redirection_to_curr_fd(curr) == -1)
 		return (1);
-	return (execute_ast(root->left, shell));
+	return (execute_ast(curr->left, shell));
 }
 
-int	apply_redirection_to_curr_fd(t_ast *root) // TODO: need to figure out input arg (root / curr node?)
+int	apply_redirection_to_curr_fd(t_ast *curr) // TODO: need to figure out input arg (root / curr node?)
 {
 	int	file_fd;
 	int	target_fd;
 
-	if (!root || !root->filename)
+	if (!curr || !curr->filename)
 		return(1);	// missing filename
-	if (root->type == N_REDIR_OUT)
+	if (curr->type == N_REDIR_OUT)
 	{
-		file_fd = open(root->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		file_fd = open(curr->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		target_fd = STDOUT_FILENO;
 	}
-	else if (root->type == N_REDIR_IN)
+	else if (curr->type == N_REDIR_IN)
 	{
-		file_fd = open(root->filename, O_RDONLY);
+		file_fd = open(curr->filename, O_RDONLY);
 		target_fd = STDIN_FILENO;
 	}
 	else
@@ -94,7 +94,7 @@ int	apply_redirection_to_curr_fd(t_ast *root) // TODO: need to figure out input 
 	}
 	if (file_fd == -1) // fileopen error
 	{
-		perror(root->filename);
+		perror(curr->filename);
 		return (1);
 	}
 	if (dup2(file_fd, target_fd) == -1)

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 09:49:50 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 21:57:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ typedef struct	s_ast // abstract syntax tree
 
 // void	start_shell(t_shell *shell);
 void	cleanup_shell(t_shell *shell);
-void	execute_commands(t_token *tokens, t_shell *shell, char **argv);
 void	set_signals(void);
 void	sigint_handler(int sig);
 void	sigquit_handler(int sig);
@@ -115,13 +114,13 @@ int		execute_ast(t_ast *root, t_shell *shell);
 int		execute_builtin(t_ast *ast, t_shell *shell);
 int		execute_cmd(t_ast *root, t_shell *shell);
 int		execute_pipe(t_ast *root, t_shell *shell);
-int		execute_redir(t_ast *root, t_shell *shell);
+int		execute_redir(t_ast *curr, t_shell *shell);
 int		apply_redirections(t_ast *ast);
 int		redirect_input(t_ast *ast);
 int		redirect_output(t_ast *ast);
 int		redirect_append(t_ast *ast);
 int		redirect_heredoc(const char *limiter);
-int		apply_redirection_to_curr_fd(t_ast *root);
+int		apply_redirection_to_curr_fd(t_ast *curr);
 
 // builtins module
 int	ft_echo(char **av, t_shell *shell);
@@ -132,8 +131,9 @@ int	ft_exit(char **av, t_shell *shell);
 int	ft_unset(char **av, t_shell *shell);
 int	ft_export(char **av, t_shell *shell);
 
-int	try_builtin(char **argv, t_shell **shell);
-int	builtin_cd(char **av, char **env);
+int		try_builtin(char **argv, t_shell **shell);
+void	print_ast(t_ast *node, int level);
+
 
 // parser module
 t_ast	*new_ast(t_node_type type);

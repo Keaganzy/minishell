@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 00:35:22 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 21:33:14 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,6 @@ int	execute_ast(t_ast *root, t_shell *shell)
 {
 	// int		prev_fd;
 	t_ast	*ast;
-	// int		pipe_fd[2];
-	// pid_t	pid;
-	// char 	c[4096];
 	
 	(void)shell;
 	// prev_fd = -1;	// for pipe chaining
@@ -107,43 +104,4 @@ int	execute_ast(t_ast *root, t_shell *shell)
 	else if (ast->type == N_REDIR_OUT || ast->type == N_REDIR_IN)
 		return (execute_redir(ast, shell));
 	return (0);
-	// while (ast)
-	// {
-	// 	if (ast->right)	// if there is a command to the right
-	// 		pipe(pipe_fd);
-	// 	pid = fork();
-	// 	if (pid == 0)	// child
-	// 	{
-	// 		if (prev_fd != -1)	// handle input from previous pipe
-	// 		{
-	// 			dup2(prev_fd, STDIN_FILENO);
-	// 			close(prev_fd);
-	// 		}
-	// 		if (ast->right)	// handle output to the next pipe
-	// 		{
-	// 			close(pipe_fd[0]);		// close read end
-	// 			dup2(pipe_fd[1], STDOUT_FILENO);
-	// 			close(pipe_fd[1]);
-	// 		}
-	// 		apply_redirections(ast);	// handle redirections
-	// 		if (is_builtin(ast))
-	// 			execute_builtin(ast, shell, tokens);
-	// 		else
-	// 			execve(getcwd(c, sizeof(c)), ast->argv, shell->env); // path should be in the first arg, args = second arg, g_env = third arg
-	// 		perror("execve"); // if execve fails
-	// 		exit(1);
-	// 	}
-	// 	if (prev_fd != -1)	// parent
-	// 		close(prev_fd);	// close prev pipe read end
-	// 	if (ast->right)
-	// 	{
-	// 		close(pipe_fd[1]);	// close write end
-	// 		prev_fd = pipe_fd[0];
-	// 	}
-	// 	else
-	// 		prev_fd = -1;
-	// 	ast = ast->right;
-	// }
-	// wait_for_all_children();
-	// return (0);
 }

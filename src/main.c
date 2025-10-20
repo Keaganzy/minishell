@@ -6,10 +6,9 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 00:14:13 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 22:00:00 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "minishell.h"
 #include "libft.h"
@@ -74,23 +73,6 @@ char	*getenv_value(char **env, const char *key)
 	return (NULL);
 }
 
-static int	handle_pid_err(int pid, char **argv, char **envp)
-{
-	if (pid == 0)
-	{
-		execve(argv[0], argv, envp);
-		perror("execve");
-		return (-1);
-	}
-	else if (pid < 0)
-	{
-		perror("fork");
-		return (-2);
-	}
-	else
-		return (0);
-}
-
 static void	init_vars_signals(t_shell *shell, char **envp, int argc,
 	char **argv)
 {
@@ -102,39 +84,12 @@ static void	init_vars_signals(t_shell *shell, char **envp, int argc,
 	set_signals();
 }
 
-void	execute_commands(t_token *tokens, t_shell *shell, char **argv)
-{
-	t_ast	*a;
-	pid_t	pid;
-	int		status;
-	
-	// a = parse_token(tokens);
-	a = parse_pipeline(&tokens);
-	token_free_all(&tokens);
-	if (a->type == N_CMD && is_builtin(a))
-		execute_builtin(a, shell);
-	else
-	{
-		pid = fork();
-		if (handle_pid_err(pid, argv, shell->env) == -1)
-			exit(1);	// Todo: need to update. should this be shell->exit_code?
-		if (pid == 0)
-		{
-			execute_ast(a, shell);
-			exit(shell->exit_code);	//TODO might need to properly terminate and free 
-		}
-		else if (pid > 0)
-		{
-			waitpid(pid, &status, 0);
-		}
-	}
-}
-
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
 	t_token	*tokens;
 	char	*line;
+	t_ast	*a;
 
 	init_vars_signals(&shell, envp, argc, argv);
 	while(1)
@@ -148,9 +103,13 @@ int	main(int argc, char **argv, char **envp)
 		history_add(line);
 		tokens = lex_input(line);
 		// print_tokens(tokens);
-		execute_commands(tokens, &shell, argv);  // TODO: rewrite this with a different function to create, parse and read the AST
-		free(line);
+		a = parse_pipeline(&tokens);
+		// print_ast(a, 3);
 		token_free_all(&tokens);
+		free(line);
+		execute_ast(a, &shell);
+		
+		// token_free_all(&tokens);
 	}
 	return (0);
 }
