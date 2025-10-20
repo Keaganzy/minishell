@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 00:39:46 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 09:55:33 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static int	cleanup_and_wait(int *pipe_fd, int *status, pid_t left_pid, pid_t rig
 {
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	wait_pid(right_pid, status, 0);
-	wait_pid(left_pid, NULL, 0);
+	waitpid(right_pid, status, 0);
+	waitpid(left_pid, NULL, 0);
 	if (WIFEXITED(*status))	// return status of the rightmost command.
 		return (WEXITSTATUS(status));
 	return (1);
@@ -60,7 +60,7 @@ int	execute_cmd(t_ast *root, t_shell *shell)
 		return (1);
 	if (is_builtin(root))
 		return (execute_builtin(root, shell));
-		
+	return (1); // TODO: check if this is correct
 }
 
 int	execute_redir(t_ast *root, t_shell *shell)
@@ -70,7 +70,7 @@ int	execute_redir(t_ast *root, t_shell *shell)
 	return (execute_ast(root->left, shell));
 }
 
-int	apply_redirection_to_current_fd(t_ast *root) // TODO: need to figure out input arg (root / curr node?)
+int	apply_redirection_to_curr_fd(t_ast *root) // TODO: need to figure out input arg (root / curr node?)
 {
 	int	file_fd;
 	int	target_fd;

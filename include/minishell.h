@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 00:39:25 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 09:49:50 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int		redirect_input(t_ast *ast);
 int		redirect_output(t_ast *ast);
 int		redirect_append(t_ast *ast);
 int		redirect_heredoc(const char *limiter);
-int		apply_redirection_to_current_fd(t_ast *root);
+int		apply_redirection_to_curr_fd(t_ast *root);
 
 // builtins module
 int	ft_echo(char **av, t_shell *shell);
