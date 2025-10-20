@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/18 23:46:40 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/19 22:36:38 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,10 @@ int	ft_echo(char **av, t_shell *shell)
 	}
 	while (av[i])
 	{
+		if (av[i][0] == '$')
+		{
+			
+		}
 		printf("%s", av[i]);
 		// if (av[i+1])
 		// 	printf(" ");
