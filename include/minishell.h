@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 21:57:11 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/21 00:07:01 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,10 @@ void	history_add(const char *line);
 //executor module
 int		is_builtin(t_ast *ast);
 int		builtin_cd(char **av, char **env);
-int		execute_ast(t_ast *root, t_shell *shell);
+int		execute_ast(t_ast *curr, t_shell *shell);
 int		execute_builtin(t_ast *ast, t_shell *shell);
-int		execute_cmd(t_ast *root, t_shell *shell);
-int		execute_pipe(t_ast *root, t_shell *shell);
+int		execute_cmd(t_ast *curr, t_shell *shell);
+int		execute_pipe(t_ast *curr, t_shell *shell);
 int		execute_redir(t_ast *curr, t_shell *shell);
 int		apply_redirections(t_ast *ast);
 int		redirect_input(t_ast *ast);
@@ -121,6 +121,7 @@ int		redirect_output(t_ast *ast);
 int		redirect_append(t_ast *ast);
 int		redirect_heredoc(const char *limiter);
 int		apply_redirection_to_curr_fd(t_ast *curr);
+char	*find_full_path(char **env, char *av);
 
 // builtins module
 int	ft_echo(char **av, t_shell *shell);

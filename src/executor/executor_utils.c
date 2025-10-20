@@ -6,11 +6,12 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 21:56:19 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/21 00:08:20 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 static int	cleanup_and_wait(int *pipe_fd, int *status, pid_t left_pid, pid_t right_pid)
 {
@@ -23,7 +24,7 @@ static int	cleanup_and_wait(int *pipe_fd, int *status, pid_t left_pid, pid_t rig
 	return (1);
 }
 
-int	execute_pipe(t_ast *root, t_shell *shell)
+int	execute_pipe(t_ast *curr, t_shell *shell)
 {
 	int		pipe_fd[2];
 	pid_t	left_pid;
@@ -38,7 +39,7 @@ int	execute_pipe(t_ast *root, t_shell *shell)
 		close(pipe_fd[0]);		// close read end
 		dup2(pipe_fd[1], STDOUT_FILENO);	// redirect stdout to write end
 		close(pipe_fd[1]);
-		execute_ast(root->left, shell);
+		execute_ast(curr->left, shell);
 		exit(shell->exit_code);
 	}
 	right_pid = fork();
@@ -47,62 +48,54 @@ int	execute_pipe(t_ast *root, t_shell *shell)
 		close(pipe_fd[1]); // close write end
 		dup2(pipe_fd[0], STDIN_FILENO);	// redirect STDIN from read end
 		close(pipe_fd[0]);
-		execute_ast(root->right, shell);
+		execute_ast(curr->right, shell);
 		exit(shell->exit_code);
 	}
 	return (cleanup_and_wait(pipe_fd, &status, left_pid, right_pid));
 }
 
-int	execute_cmd(t_ast *root, t_shell *shell)
+int	execute_cmd(t_ast *curr, t_shell *shell)
 {
+	char	*cmd_path;
+
+	cmd_path = NULL;
 	// apply redirections first
-	if (apply_redirections(root) == -1)
+	if (apply_redirections(curr) == -1)
 		return (1);
-	if (is_builtin(root))
-		return (execute_builtin(root, shell));
-	return (1); // TODO: check if this is correct
+	if (is_builtin(curr))
+		return (execute_builtin(curr, shell));
+	// cmd_path = getenv_value(shell->env, "PATH");
+	cmd_path = find_full_path(shell->env, curr->argv[0]);
+	if (cmd_path == NULL)
+	{
+		printf("%s: command not found.\n", curr->argv[0]);
+		return (127);	// exit code for Command not found.
+	}
+	execve(cmd_path, curr->argv, shell->env);
+	free(cmd_path);
+	perror("execve failed");
+	return (126);  // exit code for execution failed
 }
 
-int	execute_redir(t_ast *curr, t_shell *shell)
+char	*find_full_path(char **env, char *av)
 {
-	if (apply_redirection_to_curr_fd(curr) == -1)
-		return (1);
-	return (execute_ast(curr->left, shell));
-}
+	char	*path;
+	int		p_len;
 
-int	apply_redirection_to_curr_fd(t_ast *curr) // TODO: need to figure out input arg (root / curr node?)
-{
-	int	file_fd;
-	int	target_fd;
-
-	if (!curr || !curr->filename)
-		return(1);	// missing filename
-	if (curr->type == N_REDIR_OUT)
-	{
-		file_fd = open(curr->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-		target_fd = STDOUT_FILENO;
-	}
-	else if (curr->type == N_REDIR_IN)
-	{
-		file_fd = open(curr->filename, O_RDONLY);
-		target_fd = STDIN_FILENO;
-	}
+	p_len = 0;
+	path = NULL;
+	if (!env || !av)
+		return (NULL);
+	if (av[0] == '\\') // check if the first char of provided file is "\"
+		path = ft_strdup(av);
 	else
 	{
-		// TODO: Handle heredoc, N_REDIR_APPEND here
-		return (0);
+		p_len = ft_strlen(getenv_value(env, "PATH")) + 1;
+		path = ft_strndup(getenv_value(env, "PATH"), p_len);
+		if (!path)
+			return (NULL);
+		path = realloc(path, p_len + ft_strlen(av));
+		ft_strlcat(path, av, p_len);
 	}
-	if (file_fd == -1) // fileopen error
-	{
-		perror(curr->filename);
-		return (1);
-	}
-	if (dup2(file_fd, target_fd) == -1)
-	{
-		perror("dup2 failed");
-		close(file_fd);
-		return (1);
-	}
-	close(file_fd);
-	return (0);
+	return (path);
 }

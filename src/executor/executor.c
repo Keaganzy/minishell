@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 21:33:14 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 23:38:37 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,16 @@ int	execute_builtin(t_ast *ast, t_shell *shell)
 	return (-100);
 }
 
-int	execute_ast(t_ast *root, t_shell *shell)
+int	execute_ast(t_ast *curr, t_shell *shell)
 {
 	// int		prev_fd;
 	t_ast	*ast;
 	
 	(void)shell;
 	// prev_fd = -1;	// for pipe chaining
-	if (!root)
+	if (!curr)
 		return (0);
-	ast = root;
+	ast = curr;
 	if (ast->type == N_PIPE)
 		return (execute_pipe(ast, shell));
 	else if (ast->type == N_CMD)
