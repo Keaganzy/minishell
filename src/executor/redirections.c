@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/15 14:48:42 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/20 23:47:56 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,51 @@ int	apply_redirections(t_ast *ast)
 	// 		redirect_heredoc(ast->filename);
 	// 	ast = ast->right;
 	// }
+	return (0);
+}
+
+int	execute_redir(t_ast *curr, t_shell *shell)
+{
+	printf("execute_redir\n");
+	if (apply_redirection_to_curr_fd(curr) == -1)
+		return (1);
+	return (execute_ast(curr->left, shell));
+}
+
+int	apply_redirection_to_curr_fd(t_ast *curr) // TODO: need to figure out input arg (root / curr node?)
+{
+	int	file_fd;
+	int	target_fd;
+
+	printf("apply redir to curr fd called\n");
+	if (!curr || !curr->filename)
+		return(1);	// missing filename
+	if (curr->type == N_REDIR_OUT)
+	{
+		file_fd = open(curr->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+		target_fd = STDOUT_FILENO;
+	}
+	else if (curr->type == N_REDIR_IN)
+	{
+		file_fd = open(curr->filename, O_RDONLY);
+		target_fd = STDIN_FILENO;
+	}
+	else
+	{
+		// TODO: Handle heredoc, N_REDIR_APPEND here
+		return (0);
+	}
+	if (file_fd == -1) // fileopen error
+	{
+		perror(curr->filename);
+		return (1);
+	}
+	if (dup2(file_fd, target_fd) == -1)
+	{
+		perror("dup2 failed");
+		close(file_fd);
+		return (1);
+	}
+	close(file_fd);
 	return (0);
 }

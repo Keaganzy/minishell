@@ -53,3 +53,7 @@ dkms.conf
 
 # debug information files
 *.dwo
+
+# text files
+file1.txt
+file2.txt
