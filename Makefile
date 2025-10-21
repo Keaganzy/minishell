@@ -6,7 +6,7 @@
 #    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/10/20 21:59:33 by jotong           ###   ########.fr        #
+#    Updated: 2025/10/21 23:07:34 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,8 @@ NAME			= minishell
 PARSER_FILES	= $(SRC_DIR)/$(PARSER_DIR)/parser.c
 LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c $(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
 BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c $(SRC_DIR)/$(BUILTINS_DIR)/echo.c \
-					$(SRC_DIR)/$(BUILTINS_DIR)/env.c
+					$(SRC_DIR)/$(BUILTINS_DIR)/env.c \
+					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
 EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \

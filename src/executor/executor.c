@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 23:38:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/21 22:37:19 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ int	execute_builtin(t_ast *ast, t_shell *shell)
 	char	*cmd;
 	int		arg_len;
 
-	// printf("execute builtin called\n");
+	printf("execute builtin called\n");
 	if (!ast || !ast->argv || !ast->argv[0])
 		return (1);
 	cmd = ast->argv[0];

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 00:07:01 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/21 23:41:55 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ int	ft_env(char **av, t_shell *shell);
 int	ft_exit(char **av, t_shell *shell);
 int	ft_unset(char **av, t_shell *shell);
 int	ft_export(char **av, t_shell *shell);
+int	add_update_env_vars(t_shell *shell, char *av);
 
 int		try_builtin(char **argv, t_shell **shell);
 void	print_ast(t_ast *node, int level);
