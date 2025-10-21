@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 00:05:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/21 23:29:08 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ char	*getenv_value(char **env, const char *key)
 	}
 	return (NULL);
 }
-
 
 int	setenv_value(char ***envp, const char *key, const char *value)
 {
