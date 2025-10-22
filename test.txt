@@ -1,0 +1,6 @@
+checkpt 2
+checkpt 3
+function completed
+execute builtin called
+hello
+[?2004hMS$ e^Z[?2004l

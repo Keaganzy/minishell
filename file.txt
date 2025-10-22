@@ -1,0 +1,4 @@
+function completed
+execute builtin called
+hello
+[?2004hMS$ ^Z[?2004l
