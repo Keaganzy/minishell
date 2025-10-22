@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 15:14:12 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 16:42:03 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,6 @@ typedef struct	s_ast // abstract syntax tree
 void	cleanup_shell(t_shell *shell);
 void	set_signals(void);
 void	sigint_handler(int sig);
-void	sigquit_handler(int sig);
 char	*getenv_value(char **env, const char *key);
 int		setenv_value(char ***envp, const char *key, const char *value);
 
