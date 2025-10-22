@@ -1,35 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin-utils.c                                    :+:      :+:    :+:   */
+/*   cleanup_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/21 23:07:01 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 15:12:14 by jotong           ###   ########.fr       */
+/*   Created: 2025/10/22 13:44:38 by jotong            #+#    #+#             */
+/*   Updated: 2025/10/22 15:43:26 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 
-int	add_update_env_vars(t_shell *shell, char *av)
+char **cleanup_dup_envp(t_shell *shell, int index)
 {
-	char	*val;
-	char	*key;
 	int		i;
-	int		status;
+	char	**duped_env;
+
+	i = 0;
+	duped_env = shell->env;
+	while (i < index)
+	{
+		free(duped_env[i]);
+		i++;
+	}
+	free(duped_env);
+	shell->env = NULL;
+	return (shell->env);
+}
+
+void cleanup_shell(t_shell *shell)
+{
+	int	i;
 	
 	i = 0;
-	status = 0;
-	while (av[i] && av[i] != '=')
+	while (shell->env[i])
 		i++;
-	key = ft_strndup(av, i);
-	val = ft_strdup(&av[i + 1]);
-	if (setenv_value(&shell->env, key, val) != 0)
-		status = 1;
-	free(key);
-	free(val);
-	return (status);
+	cleanup_dup_envp(shell, i - 1);
+	return ;
 }
 

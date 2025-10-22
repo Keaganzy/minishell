@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 23:06:27 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 15:44:56 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#if defined(__LINUX___)
-	#include <linux/limits.h>
+#ifdef __linux__
+# include <limits.h>
 #endif
 
 int	ft_env(char **av, t_shell *shell)
@@ -61,9 +61,17 @@ int	ft_export(char **av, t_shell *shell)
 
 int	ft_unset(char **av, t_shell *shell)
 {
-	(void)av;
-	(void)shell;
-	// nothing to unset cos no options
+	if (!av)
+		return (1);
+	if (!av[1])
+	{
+		printf("unset: not enough arguments.\n");
+		return (1);
+	}
+	if (getenv_value(shell->env, av[1]) == NULL)
+		return (0);
+	else
+		unsetenv_value(&shell->env, av[1]);
 	return (0);
 }
 
