@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/20 23:47:56 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 19:07:29 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,10 +127,13 @@ int	apply_redirection_to_curr_fd(t_ast *curr) // TODO: need to figure out input 
 	printf("apply redir to curr fd called\n");
 	if (!curr || !curr->filename)
 		return(1);	// missing filename
+	printf("filename: %s!\n", curr->filename);
+	printf("curr type is %d\n", curr->type);
 	if (curr->type == N_REDIR_OUT)
 	{
 		file_fd = open(curr->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		target_fd = STDOUT_FILENO;
+		printf("file_fd = %d, target_fd = %d\n", file_fd, target_fd);
 	}
 	else if (curr->type == N_REDIR_IN)
 	{
@@ -147,12 +150,13 @@ int	apply_redirection_to_curr_fd(t_ast *curr) // TODO: need to figure out input 
 		perror(curr->filename);
 		return (1);
 	}
-	if (dup2(file_fd, target_fd) == -1)
+	if (dup2(file_fd, target_fd) == -1) // TODO: something in this fn is not working for >
 	{
 		perror("dup2 failed");
 		close(file_fd);
 		return (1);
 	}
 	close(file_fd);
+	printf("function completed\n");
 	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/10/22 15:26:23 by jotong           ###   ########.fr        #
+#    Updated: 2025/10/22 18:16:01 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,7 +38,8 @@ EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/redirections.c
 REQ_SRC			:= $(SRC_DIR)/main.c $(SRC_DIR)/signals.c \
-					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/cleanup_utils.c \
+					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/shell_utils_2.c \
+					$(SRC_DIR)/cleanup_utils.c \
 					$(PARSER_FILES) $(LEXER_FILES) \
 					$(HISTORY_FILES) $(EXECUTOR_FILES) \
 					$(BUILTINS_FILES)

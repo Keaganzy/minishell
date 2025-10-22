@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 16:13:33 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 17:44:17 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,34 +167,3 @@ int	unsetenv_value(char ***envp, const char *key)
 	(*envp) = realloc((*envp), (i - 1) * sizeof(char *));
 	return (0);
 }
-
-
-// int	unset_and_shift_up(t_shell *shell, char *key)
-// {
-// 	int		i;
-// 	int		freed;
-// 	size_t	k_len;
-	
-// 	i = 0;
-// 	freed = -1;
-// 	k_len = ft_strlen(key);
-// 	while (shell->env[i])
-// 	{
-// 		if (ft_strncmp(shell->env[i], key, k_len) 
-// 			&& shell->env[i][k_len + 1] == '=')
-// 		{
-// 			free(shell->env[i]);
-// 			freed = i;
-// 		}
-// 		if (freed != -1 && i >= freed)
-// 		{
-// 			if (shell->env[i+1])
-// 				shell->env[i] = shell->env[i+1];
-// 			else
-// 				shell->env[i] = NULL;
-// 		}
-// 		i++;
-// 	}
-// 	shell->env = realloc(shell->env, i - 1);
-// 	printf("i = %d\n", i);
-// }

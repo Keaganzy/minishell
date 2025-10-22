@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 16:42:03 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 18:17:10 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <sys/wait.h>
 # include <limits.h>
 # include <fcntl.h>
+#include <errno.h>
 
 # define PROMPT	"MS$"
 # define BUFFER_SIZE 1024
@@ -138,6 +139,8 @@ t_ast	*parse_token(t_token *tokens);
 void	free_ast(t_ast *root);
 t_ast	*parse_pipeline(t_token **curr);
 
+// shell utils
 char **cleanup_dup_envp(t_shell *shell, int index);
+void	print_err(const char *s, char *av);
 
 #endif

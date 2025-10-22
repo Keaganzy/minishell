@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:22 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 15:17:18 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 18:57:52 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ t_ast *parse_redirections(t_token **curr)
 	{
 		node = new_ast(((*curr)->type == T_REDIR_IN) ? N_REDIR_IN : N_REDIR_OUT);
 		*curr = (*curr)->next;
+		if ((*curr)->type == T_SPACE)	// this skips the space after the >
+			*curr = (*curr)->next;
 		if (!*curr || (*curr)->type != T_WORD)
 			return (NULL); // redirection without a file
 		node->filename = ft_strdup((*curr)->value);

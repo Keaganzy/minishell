@@ -6,11 +6,12 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 16:24:39 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 18:30:22 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 #ifdef __linux__
 # include <limits.h>
 #endif
@@ -42,12 +43,13 @@ int	ft_export(char **av, t_shell *shell)
 		return (1);
 	if (av[1])
 	{
-		while (av[i])
-		{
-			if (add_update_env_vars(shell, av[i]) != 0)
-				status = 1;
-			i++;
-		}
+		if (ft_strchr(av[1], '=') != NULL)
+			while (av[i])
+			{
+				if (add_update_env_vars(shell, av[i]) != 0)
+					status = 1;
+				i++;
+			}
 		return (status);
 	}
 	i = 0;
