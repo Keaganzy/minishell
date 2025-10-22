@@ -1,7 +1,0 @@
-execute builtin called
-hello
-[?2004hMS$ exit
-[?2004l  |   |   | ---[COMMAND]---
-  | CMD ARGS: ["exit"]
-execute builtin called
-exit

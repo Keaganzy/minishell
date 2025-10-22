@@ -1,4 +1,0 @@
-execute builtin called
-hello
-[?2004hMS$ [?2004l
-exit
