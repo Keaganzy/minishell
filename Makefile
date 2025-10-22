@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
+#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/10/21 23:07:34 by jotong           ###   ########.fr        #
+#    Updated: 2025/10/22 15:26:23 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,8 +27,10 @@ FLAG			= -Wall -Wextra -Werror -I$(LIBFT_DIR) $(INC) -g
 NAME			= minishell
 
 PARSER_FILES	= $(SRC_DIR)/$(PARSER_DIR)/parser.c
-LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c $(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
-BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c $(SRC_DIR)/$(BUILTINS_DIR)/echo.c \
+LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c \
+					$(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
+BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
+					$(SRC_DIR)/$(BUILTINS_DIR)/echo.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
@@ -36,8 +38,9 @@ EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/redirections.c
 REQ_SRC			:= $(SRC_DIR)/main.c $(SRC_DIR)/signals.c \
-					$(SRC_DIR)/shell_utils.c $(PARSER_FILES) \
-					$(LEXER_FILES) $(HISTORY_FILES) $(EXECUTOR_FILES) \
+					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/cleanup_utils.c \
+					$(PARSER_FILES) $(LEXER_FILES) \
+					$(HISTORY_FILES) $(EXECUTOR_FILES) \
 					$(BUILTINS_FILES)
 HEADER			= minishell.h
 OBJ 			= $(REQ_SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)

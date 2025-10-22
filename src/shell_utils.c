@@ -3,31 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 23:29:08 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 16:13:33 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
-void cleanup_shell(t_shell *shell)
-{
-	// int	i;
-
-	// i = 0;
-	// while (shell->env[i])
-	// {
-	// 	free(shell->env[i]);
-	// 	i++;
-	// }
-	// free(shell->env);
-	(void)shell;
-	// token_free_all(&tokens);
-	return ;
-}
 
 // Helper function to convert the enum type to a readable string
 static char *get_node_type_name(t_node_type type)
@@ -135,7 +119,6 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 	{
 		if (ft_strncmp((*envp)[i], key, key_len) == 0 && (*envp)[i][key_len] == '=')
 		{
-			// free((*envp)[i]);	// TODO: check whether this needs to be uncommented
 			(*envp)[i] = new_var;
 			return (0);
 		}
@@ -151,7 +134,67 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 		new_env[j] = (*envp)[j];
 	new_env[i] = new_var;
 	new_env[i + 1] = NULL;
-	// free(*envp);
 	*envp = new_env;
 	return (0);
 }
+
+int	unsetenv_value(char ***envp, const char *key)
+{
+	int		i;
+	int		freed;
+	size_t	k_len;
+	
+	i = 0;
+	freed = -1;
+	k_len = ft_strlen(key);
+	while ((*envp)[i])
+	{
+		if (ft_strncmp((*envp)[i], key, k_len) == 0
+			&& (*envp)[i][k_len] == '=')
+		{
+			free((*envp)[i]);
+			freed = i;
+		}
+		if (freed != -1 && i >= freed)
+		{
+			if ((*envp)[i+1])
+				(*envp)[i] = (*envp)[i+1];
+			else
+				(*envp)[i] = NULL;
+		}
+		i++;
+	}
+	(*envp) = realloc((*envp), (i - 1) * sizeof(char *));
+	return (0);
+}
+
+
+// int	unset_and_shift_up(t_shell *shell, char *key)
+// {
+// 	int		i;
+// 	int		freed;
+// 	size_t	k_len;
+	
+// 	i = 0;
+// 	freed = -1;
+// 	k_len = ft_strlen(key);
+// 	while (shell->env[i])
+// 	{
+// 		if (ft_strncmp(shell->env[i], key, k_len) 
+// 			&& shell->env[i][k_len + 1] == '=')
+// 		{
+// 			free(shell->env[i]);
+// 			freed = i;
+// 		}
+// 		if (freed != -1 && i >= freed)
+// 		{
+// 			if (shell->env[i+1])
+// 				shell->env[i] = shell->env[i+1];
+// 			else
+// 				shell->env[i] = NULL;
+// 		}
+// 		i++;
+// 	}
+// 	shell->env = realloc(shell->env, i - 1);
+// 	printf("i = %d\n", i);
+// }

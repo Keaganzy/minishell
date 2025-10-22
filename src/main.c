@@ -3,22 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 00:09:40 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 14:56:20 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
+static char **dup_envp(t_shell *shell, char **envp)
+{
+	char	**duped;
+	int		i;
+	int		count;
+
+	i = 0;
+	count = 0;
+	while (envp[count])
+		count++;
+	duped = malloc(sizeof(char *) * (count + 1));
+	if (!duped)
+		return (NULL);
+	while (i < count)
+	{
+		duped[i] = ft_strdup(envp[i]);
+		if (!duped[i])
+			return (cleanup_dup_envp(shell, i));
+		i++;
+	}
+	duped[i] = NULL;
+	return (duped);
+}
+
 static void	init_vars_signals(t_shell *shell, char **envp, int argc,
 	char **argv)
 {
 	(void)argc;
 	(void)argv;
-	shell->env = envp;
+	shell->env = dup_envp(shell, envp);
 	shell->exit_code = 0;
 	shell->running = 1;
 	set_signals();
@@ -48,8 +72,6 @@ int	main(int argc, char **argv, char **envp)
 		token_free_all(&tokens);
 		free(line);
 		execute_ast(a, &shell);
-		
-		// token_free_all(&tokens);
 	}
 	return (0);
 }

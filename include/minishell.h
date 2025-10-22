@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 23:41:55 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 15:14:12 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,9 +98,6 @@ void			token_free(t_token *tok);
 void			token_free_all(t_token **lst);
 void			print_tokens(t_token *token);
 
-int	try_builtin(char **argv, t_shell **shell);
-int	builtin_cd(char **av, char **env);
-
 // history module
 # define HISTORY_FILE "~/.minishell_history"
 
@@ -132,15 +129,16 @@ int	ft_exit(char **av, t_shell *shell);
 int	ft_unset(char **av, t_shell *shell);
 int	ft_export(char **av, t_shell *shell);
 int	add_update_env_vars(t_shell *shell, char *av);
+int	unsetenv_value(char ***envp, const char *key);
 
-int		try_builtin(char **argv, t_shell **shell);
 void	print_ast(t_ast *node, int level);
-
 
 // parser module
 t_ast	*new_ast(t_node_type type);
 t_ast	*parse_token(t_token *tokens);
 void	free_ast(t_ast *root);
 t_ast	*parse_pipeline(t_token **curr);
+
+char **cleanup_dup_envp(t_shell *shell, int index);
 
 #endif

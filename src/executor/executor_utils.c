@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 00:08:20 by jotong           ###   ########.fr       */
+/*   Updated: 2025/10/22 10:32:23 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	cleanup_and_wait(int *pipe_fd, int *status, pid_t left_pid, pid_t rig
 	waitpid(right_pid, status, 0);
 	waitpid(left_pid, NULL, 0);
 	if (WIFEXITED(*status))	// return status of the rightmost command.
-		return (WEXITSTATUS(status));
+		return (WEXITSTATUS(*status));
 	return (1);
 }
 
