@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 15:28:49 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/12 13:55:29 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 14:54:19 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,12 @@
 /* ************************************************************************** */
 /*                           PARSER UTILITIES                                 */
 /* ************************************************************************** */
+
+static void skip_spaces(t_parser *p)
+{
+    while (p->current && p->current->type == T_SPACE)
+        p->current = p->current->next;
+}
 
 static t_token	*peek(t_parser *p)
 {
@@ -30,6 +36,8 @@ static t_token	*advance(t_parser *p)
 	tmp = p->current;
 	if (p->current)
 		p->current = p->current->next;
+
+	skip_spaces(p);
 	return (tmp);
 }
 
@@ -79,6 +87,8 @@ static t_ast	*create_binary_node(t_node_type type, t_ast *left,
 	return (node);
 }
 
+
+
 static t_ast	*create_redir_node(t_node_type type, char *filename,
 		t_ast *cmd)
 {
@@ -109,11 +119,21 @@ static int	count_words(t_parser *p)
 
 	count = 0;
 	tmp = p->current;
-	while (tmp && tmp->type == T_WORD)
-	{
-		count++;
-		tmp = tmp->next;
-	}
+	while (tmp)
+    {
+        // Skip spaces
+        while (tmp && tmp->type == T_SPACE)
+            tmp = tmp->next;
+
+        // Count word
+        if (tmp && tmp->type == T_WORD)
+        {
+            count++;
+            tmp = tmp->next;
+        }
+        else
+            break;
+    }
 	return (count);
 }
 
@@ -363,13 +383,37 @@ t_ast	*parse(t_token *tokens)
 
 	parser.tokens = tokens;
 	parser.current = tokens;
+
+	skip_spaces(&parser);
+
 	ast = parse_or(&parser);
 	if (!ast)
+	{
+		printf("hi2");
 		return (NULL);
+	}
+
+	printf("DEBUG: After parsing, current token:\n");
+    if (parser.current == NULL)
+        printf("  current = NULL (good!)\n");
+    else
+    {
+        printf("  current is NOT NULL (bad!)\n");
+        printf("  Type: %d\n", parser.current->type);
+        printf("  Value: '%s'\n", parser.current->value ? parser.current->value : "(null)");
+        if (parser.current->next)
+            printf("  Has next token\n");
+        else
+            printf("  No next token\n");
+    }
+
+	skip_spaces(&parser);
 	if (parser.current != NULL)
 	{
+		printf("hi3");
 		free_ast(ast);
 		return (NULL);
 	}
+	printf("hi");
 	return (ast);
 }

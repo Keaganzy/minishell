@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 15:46:21 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 14:41:51 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,10 @@ void	print_tokens(t_token *token)
 			printf("token value = %s (len = %zu)\n", token->value, ft_strlen(token->value));
 		else
 			printf("token has no value\n");
+		if (token->next == NULL)
+			printf("it reached NULL\n");
 		token = token->next;
+
 	}
 	printf("done parsing and printing tokens\n");
 }
