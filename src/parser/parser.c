@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 15:28:49 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/12 14:54:19 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 15:33:21 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ static t_ast	*parse_or(t_parser *p)
 	t_ast	*right;
 
 	left = parse_and(p);
-	printf("address of left1: %p.", &left);
+	// printf("address of left1: %p.", &left);
 	if (!left)
 		return (NULL);
 	while (match(p, T_OR))
@@ -182,7 +182,7 @@ static t_ast	*parse_or(t_parser *p)
 			return (NULL);
 		}
 		left = create_binary_node(N_OR, left, right);
-		printf("address of left: %p.", &left);
+		// printf("address of left: %p.", &left);
 		if (!left)
 		{
 			free_ast(right);
@@ -389,7 +389,6 @@ t_ast	*parse(t_token *tokens)
 	ast = parse_or(&parser);
 	if (!ast)
 	{
-		printf("hi2");
 		return (NULL);
 	}
 
@@ -410,10 +409,8 @@ t_ast	*parse(t_token *tokens)
 	skip_spaces(&parser);
 	if (parser.current != NULL)
 	{
-		printf("hi3");
 		free_ast(ast);
 		return (NULL);
 	}
-	printf("hi");
 	return (ast);
 }

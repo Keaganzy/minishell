@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 15:07:05 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 15:31:10 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void			add_token_back(t_token **lst, t_token *new);
 void			token_free(t_token *tok);
 void			token_free_all(t_token **lst);
 void			print_tokens(t_token *token);
+void	print_token_stream_colored(t_token *tokens);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"
