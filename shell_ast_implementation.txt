@@ -561,7 +561,7 @@ Token* tokenize(char *input, int *count) {
         token = strtok(NULL, " \t\n");
     }
     
-    tokens[*count].type = TOKEN_EOF;
+    tokens[*count].tNype = TOKEN_EOF;
     tokens[*count].value = NULL;
     
     return tokens;

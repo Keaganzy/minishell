@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:14:20 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/12 13:14:21 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 13:45:03 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 t_ast	*new_ast(t_node_type type)
 {

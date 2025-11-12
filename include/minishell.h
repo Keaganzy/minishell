@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 18:17:10 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 13:52:31 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,9 @@ typedef	enum	e_node_type
 	N_REDIR_IN,
 	N_REDIR_OUT,
 	N_REDIR_APPEND,
-	N_HEREDOC
+	N_HEREDOC,
+	N_OR,
+	N_AND
 }	t_node_type;
 
 typedef enum	e_token_type
@@ -76,6 +78,12 @@ typedef struct	s_ast // abstract syntax tree
 	struct s_ast	*left;		// left side of a pipe
 	struct s_ast	*right;		// right side of a pipe
 }	t_ast;
+
+typedef struct s_parser
+{
+	t_token	*current;
+	t_token	*tokens;
+}	t_parser;
 
 // void	start_shell(t_shell *shell);
 void	cleanup_shell(t_shell *shell);
@@ -131,13 +139,17 @@ int	ft_export(char **av, t_shell *shell);
 int	add_update_env_vars(t_shell *shell, char *av);
 int	unsetenv_value(char ***envp, const char *key);
 
-void	print_ast(t_ast *node, int level);
+// void	print_ast(t_ast *node, int level);
+void	print_ast(t_ast *node);
 
 // parser module
 t_ast	*new_ast(t_node_type type);
 t_ast	*parse_token(t_token *tokens);
 void	free_ast(t_ast *root);
 t_ast	*parse_pipeline(t_token **curr);
+t_ast	*parse(t_token *tokens);
+void	free_ast(t_ast *root);
+t_ast	*new_ast(t_node_type type);
 
 // shell utils
 char **cleanup_dup_envp(t_shell *shell, int index);

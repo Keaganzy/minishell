@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/13 15:44:48 by ksng              #+#    #+#             */
-/*   Updated: 2025/10/13 15:56:00 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 13:32:36 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,17 +67,17 @@ static void	restore_fds(t_exec_context *ctx)
 /*                           FORWARD DECLARATIONS                             */
 /* ************************************************************************** */
 
-static int	execute_node(t_ast_node *node, t_exec_context *ctx);
-static int	execute_command(t_ast_node *node, t_exec_context *ctx);
-static int	execute_pipe(t_ast_node *node, t_exec_context *ctx);
-static int	execute_redir(t_ast_node *node, t_exec_context *ctx);
-static int	execute_logical(t_ast_node *node, t_exec_context *ctx);
+static int	execute_node(t_ast *node, t_exec_context *ctx);
+static int	execute_command(t_ast *node, t_exec_context *ctx);
+static int	execute_pipe(t_ast *node, t_exec_context *ctx);
+static int	execute_redir(t_ast *node, t_exec_context *ctx);
+static int	execute_logical(t_ast *node, t_exec_context *ctx);
 
 /* ************************************************************************** */
 /*                           MAIN EXECUTOR                                    */
 /* ************************************************************************** */
 
-int	execute_ast(t_ast_node *root, char **envp)
+int	execute_ast(t_ast *root, char **envp)
 {
 	t_exec_context	*ctx;
 	int				status;
@@ -92,7 +92,7 @@ int	execute_ast(t_ast_node *root, char **envp)
 	return (status);
 }
 
-static int	execute_node(t_ast_node *node, t_exec_context *ctx)
+static int	execute_node(t_ast *node, t_exec_context *ctx)
 {
 	if (!node)
 		return (0);
@@ -112,7 +112,7 @@ static int	execute_node(t_ast_node *node, t_exec_context *ctx)
 /*                           LOGICAL OPERATORS (&&, ||)                       */
 /* ************************************************************************** */
 
-static int	execute_logical(t_ast_node *node, t_exec_context *ctx)
+static int	execute_logical(t_ast *node, t_exec_context *ctx)
 {
 	int	left_status;
 
@@ -137,7 +137,7 @@ static int	execute_logical(t_ast_node *node, t_exec_context *ctx)
 /*                           PIPE EXECUTION                                   */
 /* ************************************************************************** */
 
-static int	execute_pipe_child(t_ast_node *node, int *pipefd,
+static int	execute_pipe_child(t_ast *node, int *pipefd,
 		t_exec_context *ctx, int is_left)
 {
 	if (is_left)
@@ -171,7 +171,7 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 	return (final_status);
 }
 
-static int	execute_pipe(t_ast_node *node, t_exec_context *ctx)
+static int	execute_pipe(t_ast *node, t_exec_context *ctx)
 {
 	int		pipefd[2];
 	pid_t	pid1;
@@ -268,7 +268,7 @@ static int	setup_heredoc(char *delimiter)
 	return (0);
 }
 
-static int	setup_redirection(t_ast_node *node)
+static int	setup_redirection(t_ast *node)
 {
 	if (node->type == N_REDIR_IN)
 		return (setup_redir_in(node->filename));
@@ -281,7 +281,7 @@ static int	setup_redirection(t_ast_node *node)
 	return (1);
 }
 
-static int	execute_redir(t_ast_node *node, t_exec_context *ctx)
+static int	execute_redir(t_ast *node, t_exec_context *ctx)
 {
 	int	status;
 
@@ -397,7 +397,7 @@ static int	execute_external(char **args, t_exec_context *ctx)
 	return (1);
 }
 
-static int	execute_command(t_ast_node *node, t_exec_context *ctx)
+static int	execute_command(t_ast *node, t_exec_context *ctx)
 {
 	int	status;
 
