@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 13:35:28 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 17:26:11 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ char **cleanup_dup_envp(t_shell *shell, int index)
 	return (shell->env);
 }
 
-void cleanup_shell(t_shell *shell)
-{
-	int	i;
-	
-	i = 0;
-	while (shell->env[i])
-		i++;
-	cleanup_dup_envp(shell, i - 1);
-	return ;
-}
+// void cleanup_shell(t_shell *shell)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (shell->env[i])
+// 		i++;
+// 	cleanup_dup_envp(shell, i - 1);
+// 	return ;
+// }

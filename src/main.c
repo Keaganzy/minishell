@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 15:32:42 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 17:42:34 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,12 @@ int	main(int argc, char **argv, char **envp)
 		a = parse(tokens);
 		// print_ast(a, 3);
 		print_ast(a);
-		token_free_all(&tokens);
-		free(line);
 		execute_ast(a, &shell);
+		token_free_all(&tokens);
+		free_ast(a);
+		free(line);
+		rl_clear_history();
+		cleanup_shell(&shell);
 	}
 	return (0);
 }

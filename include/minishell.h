@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 15:31:10 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 17:24:42 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,11 @@ t_ast	*parse_pipeline(t_token **curr);
 t_ast	*parse(t_token *tokens);
 void	free_ast(t_ast *root);
 t_ast	*new_ast(t_node_type type);
+void	free_argv(char **argv, int count);
 
 // shell utils
 char **cleanup_dup_envp(t_shell *shell, int index);
 void	print_err(const char *s, char *av);
+void cleanup_shell(t_shell *shell);
 
 #endif

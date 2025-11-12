@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 13:53:00 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 17:25:13 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@
 //     {
 //         printf("  | FILENAME: \"%s\"\n", node->filename);
 //     }
-    
+
 //     // 3. Recurse on Left Child
 //     if (node->left)
 //     {
@@ -79,6 +79,22 @@
 //         print_ast(node->right, level + 1);
 //     }
 // }
+
+void cleanup_shell(t_shell *shell)
+{
+    int i;
+
+    if (shell->env)
+    {
+        i = 0;
+        while (shell->env[i])
+        {
+            free(shell->env[i]);
+            i++;
+        }
+        free(shell->env);
+    }
+}
 
 char	*getenv_value(char **env, const char *key)
 {
@@ -143,7 +159,7 @@ int	unsetenv_value(char ***envp, const char *key)
 	int		i;
 	int		freed;
 	size_t	k_len;
-	
+
 	i = 0;
 	freed = -1;
 	k_len = ft_strlen(key);
@@ -475,7 +491,7 @@ void	print_ast(t_ast *root)
 **
 ** t_token *tokens = tokenize(line);
 ** t_ast *ast = parse(tokens);
-** 
+**
 ** // Print the AST
 ** print_ast(ast);  // Complete visualization
 **
