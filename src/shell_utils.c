@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 17:25:13 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 19:13:23 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -394,7 +394,7 @@ static void	print_args_detailed(char **args, int depth)
 			printf("  ");
 			j++;
 		}
-		printf("    [%d]: \"%s\"\n", i, args[i]);
+		printf("    [%d]: %s\n", i, args[i]);
 		i++;
 	}
 }

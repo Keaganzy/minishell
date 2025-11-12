@@ -1,0 +1,38 @@
+function completed
+[?2004hMS$ [KMS$ [KMS$ [KMS$ [KMS$ [KMS$ [KMS$ [KMS$ grep main < input.c >> log.txt^C[?2004l
+MS$ grep main < input.c >> log.txt[?2004hasd
+[?2004l
+Token Stream (Colored):
+[0;36m[grep][0m → [0m[SPACE][0m → [0;36m[main][0m → [0m[SPACE][0m → [0;33m[REDIR_IN][0m → [0m[SPACE][0m → [0;36m[input.c][0m → [0m[SPACE][0m → [0;33m[REDIR_APPEND][0m → [0m[SPACE][0m → [0;36m[log.txtasd][0m
+
+DEBUG: After parsing, current token:
+  current = NULL (good!)
+
+=====================================
+         AST VISUALIZATION           
+=====================================
+
+AST Tree:
+REDIR_APPEND ("log.txtasd")
+├── REDIR_IN ("input.c")
+│   ├── CMD [grep main]
+
+=====================================
+       DETAILED NODE INFO            
+=====================================
+┌─ ROOT ─────────────
+│ Type: REDIR_APPEND
+│ Filename: "log.txtasd"
+└────────────────────
+  ┌─ LEFT ─────────────
+  │ Type: REDIR_IN
+  │ Filename: "input.c"
+  └────────────────────
+    ┌─ LEFT ─────────────
+    │ Type: CMD
+    │ Arguments:
+        [0]: "grep"
+        [1]: "main"
+    └────────────────────
+=====================================
+
