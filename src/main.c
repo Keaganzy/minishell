@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 17:42:34 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 20:48:07 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,18 +66,14 @@ int	main(int argc, char **argv, char **envp)
 		}
 		history_add(line);
 		tokens = lex_input(line);
-		print_token_stream_colored(tokens);
-		//print_tokens(tokens);
+		// print_tokens(tokens);
 		// a = parse_pipeline(&tokens);
 		a = parse(tokens);
 		// print_ast(a, 3);
-		print_ast(a);
-		execute_ast(a, &shell);
+		// print_ast(a);
 		token_free_all(&tokens);
-		free_ast(a);
 		free(line);
-		rl_clear_history();
-		cleanup_shell(&shell);
+		execute_ast(a, &shell);
 	}
 	return (0);
 }

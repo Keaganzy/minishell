@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 20:17:14 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 20:27:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -471,8 +471,6 @@ t_token *lex_input(const char *s)
 			// free(word);
 		}
 	}
-	printf("inv_comma = %d\n", inv_comma);
-	printf("d_inv_comma = %d\n", d_inv_comma);
 	if (inv_comma != 0 || d_inv_comma != 0)
 	{
 		printf("Brackets are not closed!\n");

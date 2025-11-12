@@ -6,11 +6,12 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 19:59:38 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 21:15:07 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
 static int	is_flag_n(char *arg)
 {
@@ -34,28 +35,69 @@ static void skip_past_n(char **av, int *n_flag, int *i)
 	}
 }
 
+static void free_struct (char **substr)
+{
+	int j;
+
+	j = 0;
+	while (substr[j])
+	{
+		free(substr[j]);
+		substr[j] = NULL;
+		j++;
+	}
+	free(substr);
+	substr = NULL;
+}
+
+static void parse_and_echo_substrs(char *s, t_shell *shell)
+{
+	int		j;
+	char	**substr;
+	char	*val;
+
+	j = 0;
+	if (!s)
+		return;
+	substr = ft_split(s, ' ');
+	if (substr == NULL)
+		return ;
+	while (substr[j])
+	{
+		if (j != 0)
+			printf(" ");
+		if (substr[j][0] == '$')
+		{
+			if (!substr[j][1])
+				printf("$");
+			else
+			{
+				val = getenv_value(shell->env, &substr[j][1]);
+				if (val != NULL)
+					printf("%s", val);
+			}
+		}
+		else
+			printf("%s", substr[j]);
+		j++;
+	}
+	free_struct(substr);
+	return ;
+}
 int	ft_echo(char **av, t_shell *shell)
 {
 	int		i;
 	int		n_flag;
-	char	*val;
 
 	i = 1;
 	n_flag = 0;
 	skip_past_n(av, &n_flag, &i);
 	while (av[i])
 	{
-		// printf("%s",av[i]);
-		if (i > 1 && !is_flag_n(av[i-1]))
+		if (i > 1 && av[i-1] && !is_flag_n(av[i-1]))
 			printf(" ");
-		if (av[i][0] == '$')
-		{
-			val = getenv_value(shell->env, &av[i][1]);
-			if (val != NULL)
-				printf("%s", val);
-		}
-		else
-			printf("%s", av[i]);
+		
+		parse_and_echo_substrs(av[i], shell);
 		i++;
 	}
 	if (!n_flag)
