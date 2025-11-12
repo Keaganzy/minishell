@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 19:50:52 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/12 20:17:14 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -406,6 +406,25 @@ void	print_token_diagnostic(t_token *tokens)
 ** print_token_diagnostic(tokens);
 */
 
+static void update_inv_comma_counter(int *dinv, int *inv, char c)
+{
+	if (c == '"')
+	{
+		if ((*dinv) == 0)
+			(*dinv)++;
+		else
+			(*dinv)--;
+	}	
+	else
+	{
+		if ((*inv) == 0)
+			(*inv)++;
+		else
+			(*inv)--;
+	}
+	return ;
+}
+
 t_token *lex_input(const char *s)
 {
 	size_t			i;
@@ -428,19 +447,16 @@ t_token *lex_input(const char *s)
 		}
 		else if (s[i] == '"' || s[i] == '\'')
 		{
-			if (s[i] == '"' && d_inv_comma > 0)
-				d_inv_comma++;
-			else
-				d_inv_comma--;
-			if (s[i] == '\'' && inv_comma > 0)
-				inv_comma++;
-			else
-				inv_comma--;
+			// add handle comma funct here
+			update_inv_comma_counter(&d_inv_comma, &inv_comma, s[i]);
 			word = extract_till_next_inv_comma(s, &i);
 			add_token_back(&tokens, token_new(T_WORD, word));
 			// free(word);	// TODO: need to free during cleanup
 			if (s[i] == '"' || s[i] == '\'')
+			{
+				update_inv_comma_counter(&d_inv_comma, &inv_comma, s[i]);
 				i++;
+			}
 		}
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '(' || s[i] == ')' || s[i] == '&')
 		{
@@ -455,6 +471,8 @@ t_token *lex_input(const char *s)
 			// free(word);
 		}
 	}
+	printf("inv_comma = %d\n", inv_comma);
+	printf("d_inv_comma = %d\n", d_inv_comma);
 	if (inv_comma != 0 || d_inv_comma != 0)
 	{
 		printf("Brackets are not closed!\n");
