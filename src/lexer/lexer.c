@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 14:41:51 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 15:10:48 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,7 @@ int	is_space(char c)
 
 t_token_type	get_op_type(const char *s, size_t *i)
 {
-	if (s[*i] == '|')
-	{
-		(*i)++;
-		return (T_PIPE);
-	}
-	else if (s[*i] == '<')
+	if (s[*i] == '<')
 	{
 		if (s[*i + 1] == '<')
 		{
@@ -84,6 +79,11 @@ t_token_type	get_op_type(const char *s, size_t *i)
 	{
 		(*i) += 2;
 		return (T_OR);
+	}
+	else if (s[*i] == '|')
+	{
+		(*i)++;
+		return (T_PIPE);
 	}
 	else if (is_space((unsigned char)s[*i]))
 	{
@@ -160,7 +160,7 @@ t_token *lex_input(const char *s)
 			if (s[i] == '"' || s[i] == '\'')
 				i++;
 		}
-		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '(' || s[i] == ')')
+		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '(' || s[i] == ')' || s[i] == '&')
 		{
 			t = get_op_type(s, &i);
 			// printf("t = %d\n", t);
