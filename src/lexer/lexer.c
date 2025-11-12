@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 15:27:20 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/12 19:50:52 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ char	*extract_word(const char *s, size_t *i)
 
 	start = *i;
 	while (s[*i] && !is_space((unsigned char)s[*i]) && s[*i] != '|'
-		&& s[*i] != '<' && s[*i] != '>' && s[*i] != '(' && s[*i] != ')')
+		&& s[*i] != '<' && s[*i] != '>' && s[*i] != '(' && s[*i] != ')'
+		&& s[*i] != '\'' && s[*i] != '"')
 		(*i)++;
 	return (ft_strndup(s + start, *i - start));
 }
@@ -405,15 +406,18 @@ void	print_token_diagnostic(t_token *tokens)
 ** print_token_diagnostic(tokens);
 */
 
-
 t_token *lex_input(const char *s)
 {
 	size_t			i;
 	t_token			*tokens;
 	t_token_type	t;
 	char			*word;
+	int				d_inv_comma;
+	int				inv_comma;
 
 	i = 0;
+	inv_comma = 0;
+	d_inv_comma = 0;
 	tokens = NULL;
 	while (s[i])
 	{
@@ -424,6 +428,14 @@ t_token *lex_input(const char *s)
 		}
 		else if (s[i] == '"' || s[i] == '\'')
 		{
+			if (s[i] == '"' && d_inv_comma > 0)
+				d_inv_comma++;
+			else
+				d_inv_comma--;
+			if (s[i] == '\'' && inv_comma > 0)
+				inv_comma++;
+			else
+				inv_comma--;
 			word = extract_till_next_inv_comma(s, &i);
 			add_token_back(&tokens, token_new(T_WORD, word));
 			// free(word);	// TODO: need to free during cleanup
@@ -443,6 +455,11 @@ t_token *lex_input(const char *s)
 			// free(word);
 		}
 	}
-	// print_tokens(tokens);	// TODO: remove this later
+	if (inv_comma != 0 || d_inv_comma != 0)
+	{
+		printf("Brackets are not closed!\n");
+		token_free_all(&tokens);
+		return (NULL);
+	}
 	return (tokens);
 }
