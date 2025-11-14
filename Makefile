@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
+#    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/11/12 13:44:43 by jotong           ###   ########.fr        #
+#    Updated: 2025/11/14 18:01:05 by ksng             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,8 +26,11 @@ OBJ_DIR			= obj
 FLAG			= -Wall -Wextra -Werror -I$(LIBFT_DIR) $(INC) -g
 NAME			= minishell
 
-PARSER_FILES	= $(SRC_DIR)/$(PARSER_DIR)/parser.c \
-					$(SRC_DIR)/$(PARSER_DIR)/parser_utils.c
+PARSER_FILES	= $(SRC_DIR)/$(PARSER_DIR)/parser_new.c \
+					$(SRC_DIR)/$(PARSER_DIR)/parser_utils_new.c \
+					$(SRC_DIR)/$(PARSER_DIR)/parser_cmd_redirect_new.c \
+					$(SRC_DIR)/$(PARSER_DIR)/parser_cmd_redirect_utils_new.c \
+					$(SRC_DIR)/$(PARSER_DIR)/parser_node_utils_new.c
 LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c \
 					$(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
 BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
@@ -56,7 +59,7 @@ BONUS_FOLDER	= bonus
 
 # BONUS Server files
 # FLAG_BONUS		= -Wall -Wextra -Werror -I../$(LIBFT_FOLDER)
-# REQ_SRC_S_BONUS	= 
+# REQ_SRC_S_BONUS	=
 # HEADER_BONUS	= $(BONUS_FOLDER)/minishell.h
 # OBJ_BONUS		= $(addprefix $(BONUS_FOLDER)/,$(REQ_SRC_S_BONUS:.c=.o))
 
@@ -91,7 +94,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 # Clean OBJ files
 clean:
 	@rm -rf $(OBJ_DIR)
-	@$(MAKE) -C $(LIBFT_DIR) clean 
+	@$(MAKE) -C $(LIBFT_DIR) clean
 # @rm -f $(OBJ) $(OBJ_BONUS)
 
 # Clean all

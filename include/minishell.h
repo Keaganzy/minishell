@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 17:24:42 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/14 17:59:44 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,14 +144,38 @@ int	unsetenv_value(char ***envp, const char *key);
 void	print_ast(t_ast *node);
 
 // parser module
+//_________________________//
+// parser
+t_ast *parse(t_token *tokens);
+t_ast	*parse_or(t_parser *p);
+// parser_cmd_redir
+t_ast	*parse_command(t_parser *p);
+t_ast *parse_one_redir(t_parser *p, t_ast *cmd);
+// parser_utils
+void skip_spaces(t_parser *p);
+t_token	*peek(t_parser *p);
+t_token	*advance(t_parser *p);
+int	match(t_parser *p, t_token_type type);
+t_token	*expect(t_parser *p, t_token_type type);
+// parser_cmd_redirect_utils
+int is_redirection(t_token_type type);
+t_node_type	get_redir_type(t_token_type type);
+int	count_words(t_parser *p);
+// parser_node_utils
+t_ast	*create_node(t_node_type type);
+t_ast	*create_binary_node(t_node_type type, t_ast *left, t_ast *right);
+t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd);
 t_ast	*new_ast(t_node_type type);
-t_ast	*parse_token(t_token *tokens);
-void	free_ast(t_ast *root);
-t_ast	*parse_pipeline(t_token **curr);
-t_ast	*parse(t_token *tokens);
-void	free_ast(t_ast *root);
-t_ast	*new_ast(t_node_type type);
-void	free_argv(char **argv, int count);
+void free_ast(t_ast *node);
+// OLD PARSER//
+// t_ast	*new_ast(t_node_type type);
+// t_ast	*parse_token(t_token *tokens);
+// void	free_ast(t_ast *root);
+// t_ast	*parse_pipeline(t_token **curr);
+// t_ast	*parse(t_token *tokens);
+// void	free_ast(t_ast *root);
+// t_ast	*new_ast(t_node_type type);
+// void	free_argv(char **argv, int count);
 
 // shell utils
 char **cleanup_dup_envp(t_shell *shell, int index);
