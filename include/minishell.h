@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/14 17:59:44 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:44:24 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct	s_ast // abstract syntax tree
 	t_node_type		type;
 	char			**argv;		// for commands
 	char			*filename;	// for redirections
+	char			*heredoc_content; // for heredoc content
 	struct s_ast	*left;		// left side of a pipe
 	struct s_ast	*right;		// right side of a pipe
 }	t_ast;
@@ -161,6 +162,7 @@ t_token	*expect(t_parser *p, t_token_type type);
 int is_redirection(t_token_type type);
 t_node_type	get_redir_type(t_token_type type);
 int	count_words(t_parser *p);
+char	*read_heredoc_content(char *delimiter);
 // parser_node_utils
 t_ast	*create_node(t_node_type type);
 t_ast	*create_binary_node(t_node_type type, t_ast *left, t_ast *right);

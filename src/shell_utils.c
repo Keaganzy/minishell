@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 19:13:23 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/14 20:07:12 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -426,6 +426,8 @@ static void	print_node_detailed(t_ast *node, int depth, char *position)
 			i++;
 		}
 		printf("│ Filename: \"%s\"\n", node->filename);
+		if (node->heredoc_content)
+		printf("│ Here_Content: \"%s\"\n", node->heredoc_content);
 	}
 	if (node->argv)
 	{

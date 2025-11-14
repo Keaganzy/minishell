@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
+#    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/09/11 23:37:08 by jotong            #+#    #+#              #
-#    Updated: 2025/09/13 23:30:05 by jotong           ###   ########.fr        #
+#    Updated: 2025/11/14 19:55:46 by ksng             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,14 +22,14 @@ REQ_SRC 	= ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c \
 			ft_strmapi.c ft_strncmp.c ft_strnstr.c ft_strrchr.c ft_strjoin.c \
 			ft_strtrim.c ft_substr.c ft_tolower.c ft_toupper.c ft_calloc.c \
 			ft_strdup.c ft_printf.c ft_p_nbr_base.c ft_p_nbr.c ft_p_str.c \
-			ft_p_ptr.c ft_p_unbr.c get_next_line.c
+			ft_p_ptr.c ft_p_unbr.c get_next_line.c ft_strcmp.c
 OBJ 		= $(REQ_SRC:.c=.o)
 
 # Bonus files
 BONUS_SRC	= ft_lstadd_back_bonus.c ft_lstadd_front_bonus.c \
 			ft_lstclear_bonus.c ft_lstdelone_bonus.c ft_lstlast_bonus.c \
 			ft_lstiter_bonus.c ft_lstlast_bonus.c ft_lstmap_bonus.c \
-			ft_lstnew_bonus.c ft_lstsize_bonus.c 
+			ft_lstnew_bonus.c ft_lstsize_bonus.c
 BONUS_OBJ	= $(BONUS_SRC:.c=.o)
 
 HEADER		= libft.h

@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:56:13 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/14 17:52:52 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:42:06 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,4 +54,30 @@ int	count_words(t_parser *p)
             break;
     }
 	return (count);
+}
+
+char	*read_heredoc_content(char *delimiter)
+{
+	char	*line;
+	char	*content;
+	char	*tmp;
+
+	content = ft_strdup("");
+	while (1)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break ;
+		}
+		tmp = content;
+		content = ft_strjoin(content, line);
+		free(tmp);
+		tmp = content;
+		content = ft_strjoin(content, "\n");
+		free(tmp);
+		free(line);
+	}
+	return (content);
 }

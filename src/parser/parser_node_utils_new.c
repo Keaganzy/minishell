@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_node_utils.c                                :+:      :+:    :+:   */
+/*   parser_node_utils_new.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 17:39:56 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/14 17:44:57 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:59:56 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_ast	*create_node(t_node_type type)
 	node->type = type;
 	node->argv = NULL;
 	node->filename = NULL;
+	node->heredoc_content = NULL;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
@@ -89,10 +90,10 @@ void free_ast(t_ast *node)
         }
         free(node->argv);
     }
-
-    if (node->filename)
-        free(node->filename);
-
+	if (node->filename)
+		free(node->filename);
+	if (node->heredoc_content)
+		free(node->heredoc_content);
     // Finally, free the node itself (DO THIS LAST!)
     free(node);
 

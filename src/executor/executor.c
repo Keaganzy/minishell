@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:21:47 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/21 22:37:19 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/14 20:00:30 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "libft.h"
 
 // focus on functions that run commands, deciding how to execute them, and calling
-// the right low level functions. 
+// the right low level functions.
 
 // Other responsibilities:
 // manage piping between multiple commands
@@ -25,7 +25,7 @@
 int is_builtin(t_ast *ast)
 {
 	int	av_len;
-	
+
 	if (!(ast || ast->argv || ast->argv[0]))
 		return (0);
 	av_len = ft_strlen(ast->argv[0]);
@@ -50,7 +50,7 @@ void	wait_for_all_children(void)
 {
 	pid_t	pid;
 	int		status;
-	
+
 	while ((pid = wait(&status)) > 0)
 	{
 		if (WIFEXITED(status))
@@ -90,18 +90,19 @@ int	execute_builtin(t_ast *ast, t_shell *shell)
 int	execute_ast(t_ast *curr, t_shell *shell)
 {
 	// int		prev_fd;
-	t_ast	*ast;
-	
 	(void)shell;
 	// prev_fd = -1;	// for pipe chaining
 	if (!curr)
 		return (0);
-	ast = curr;
-	if (ast->type == N_PIPE)
-		return (execute_pipe(ast, shell));
-	else if (ast->type == N_CMD)
-		return (execute_cmd(ast, shell));
-	else if (ast->type == N_REDIR_OUT || ast->type == N_REDIR_IN)
-		return (execute_redir(ast, shell));
+	if (curr->left != NULL)
+		execute_ast(curr->left, shell);
+	if (curr->right != NULL)
+		execute_ast(curr->right, shell);
+	if (curr->type == N_PIPE)
+		return (execute_pipe(curr, shell));
+	else if (curr->type == N_CMD)
+		return (execute_cmd(curr, shell));
+	else if (curr->type == N_REDIR_OUT || curr->type == N_REDIR_IN)
+		return (execute_redir(curr, shell));
 	return (0);
 }

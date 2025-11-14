@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/14 18:30:39 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:43:35 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd)
 	t_token		*redir_token;
 	t_token		*file_token;
 	t_node_type redir_type;
+	t_ast		*node;
 
 	redir_token = advance(p);
 	redir_type = get_redir_type(redir_token->type);
@@ -80,6 +81,13 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd)
 	{
 		free_ast(cmd);
 		return (NULL);
+	}
+	if (redir_type == N_HEREDOC)
+	{
+		node = create_redir_node(redir_type, file_token->value, cmd);
+		if (node)
+			node->heredoc_content = read_heredoc_content(file_token->value);
+		return (node);
 	}
 	return (create_redir_node(redir_type, file_token->value, cmd));
 }
