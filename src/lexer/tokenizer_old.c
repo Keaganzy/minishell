@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 23:59:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 17:40:30 by ksng             ###   ########.fr       */
+/*   Updated: 2025/10/15 14:57:13 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ t_token	*token_new(t_token_type type, const char *value)
 	if (!tok)
 		return (NULL);
 	tok->type = type;
-	if (value)
-		tok->value = (char *)value;
-	else
-		tok->value = NULL;
+	tok->value = value ? ft_strdup(value): NULL;
 	tok->next = NULL;
 	return (tok);
 }
@@ -48,8 +45,7 @@ void	token_free(t_token *tok)
 {
 	if (!tok)
 		return ;
-	if (tok->value)
-		free(tok->value);
+	free(tok->value);
 	free(tok);
 }
 
