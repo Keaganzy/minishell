@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 23:07:01 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 15:12:14 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/18 15:25:44 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,14 @@ int	add_update_env_vars(t_shell *shell, char *av)
 	char	*key;
 	int		i;
 	int		status;
-	
+
 	i = 0;
 	status = 0;
 	while (av[i] && av[i] != '=')
 		i++;
 	key = ft_strndup(av, i);
 	val = ft_strdup(&av[i + 1]);
-	if (setenv_value(&shell->env, key, val) != 0)
+	if (setenv_value(&shell->envp, key, val) != 0)
 		status = 1;
 	free(key);
 	free(val);

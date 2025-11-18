@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/14 19:44:24 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/18 16:19:54 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,11 @@
 
 typedef struct s_shell
 {
-	char	**env;
+	char	**envp;
 	int		exit_code;
+	int     last_exit_status;    // $? - last exit status
+    int     stdin_backup;        // Backup for stdin
+    int     stdout_backup;
 	int		running;
 }	t_shell;
 
@@ -86,8 +89,8 @@ typedef struct s_parser
 	t_token	*tokens;
 }	t_parser;
 
+
 // void	start_shell(t_shell *shell);
-void	cleanup_shell(t_shell *shell);
 void	set_signals(void);
 void	sigint_handler(int sig);
 char	*getenv_value(char **env, const char *key);
@@ -116,12 +119,12 @@ void	history_add(const char *line);
 
 //executor module
 int		is_builtin(t_ast *ast);
-int		builtin_cd(char **av, char **env);
+int		builtin_cd(char **av, t_shell *shell);
 int		execute_ast(t_ast *curr, t_shell *shell);
 int		execute_builtin(t_ast *ast, t_shell *shell);
-int		execute_cmd(t_ast *curr, t_shell *shell);
-int		execute_pipe(t_ast *curr, t_shell *shell);
-int		execute_redir(t_ast *curr, t_shell *shell);
+// int		execute_cmd(t_ast *curr, t_shell *shell);
+// int		execute_pipe(t_ast *curr, t_shell *shell);
+// int		execute_redir(t_ast *curr, t_shell *shell);
 int		apply_redirections(t_ast *ast);
 int		redirect_input(t_ast *ast);
 int		redirect_output(t_ast *ast);
@@ -129,6 +132,8 @@ int		redirect_append(t_ast *ast);
 int		redirect_heredoc(const char *limiter);
 int		apply_redirection_to_curr_fd(t_ast *curr);
 char	*find_full_path(char **env, char *av);
+char	**get_paths_from_env(char **envp);
+void	free_array(char **arr);
 
 // builtins module
 int	ft_echo(char **av, t_shell *shell);
@@ -169,15 +174,6 @@ t_ast	*create_binary_node(t_node_type type, t_ast *left, t_ast *right);
 t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd);
 t_ast	*new_ast(t_node_type type);
 void free_ast(t_ast *node);
-// OLD PARSER//
-// t_ast	*new_ast(t_node_type type);
-// t_ast	*parse_token(t_token *tokens);
-// void	free_ast(t_ast *root);
-// t_ast	*parse_pipeline(t_token **curr);
-// t_ast	*parse(t_token *tokens);
-// void	free_ast(t_ast *root);
-// t_ast	*new_ast(t_node_type type);
-// void	free_argv(char **argv, int count);
 
 // shell utils
 char **cleanup_dup_envp(t_shell *shell, int index);

@@ -1,0 +1,6 @@
+==202541== Memcheck, a memory error detector
+==202541== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==202541== Using Valgrind-3.25.1 and LibVEX; rerun with -h for copyright info
+==202541== Command: ./minishell
+==202541== Parent PID: 202402
+==202541== 

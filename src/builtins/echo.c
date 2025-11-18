@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 21:15:07 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/18 15:24:32 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void parse_and_echo_substrs(char *s, t_shell *shell)
 				printf("$");
 			else
 			{
-				val = getenv_value(shell->env, &substr[j][1]);
+				val = getenv_value(shell->envp, &substr[j][1]);
 				if (val != NULL)
 					printf("%s", val);
 			}
@@ -96,7 +96,7 @@ int	ft_echo(char **av, t_shell *shell)
 	{
 		if (i > 1 && av[i-1] && !is_flag_n(av[i-1]))
 			printf(" ");
-		
+
 		parse_and_echo_substrs(av[i], shell);
 		i++;
 	}

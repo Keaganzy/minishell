@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/10/22 10:32:23 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/18 14:59:55 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,13 +65,13 @@ int	execute_cmd(t_ast *curr, t_shell *shell)
 	if (is_builtin(curr))
 		return (execute_builtin(curr, shell));
 	// cmd_path = getenv_value(shell->env, "PATH");
-	cmd_path = find_full_path(shell->env, curr->argv[0]);
+	cmd_path = find_full_path(shell->envp, curr->argv[0]);
 	if (cmd_path == NULL)
 	{
 		printf("%s: command not found.\n", curr->argv[0]);
 		return (127);	// exit code for Command not found.
 	}
-	execve(cmd_path, curr->argv, shell->env);
+	execve(cmd_path, curr->argv, shell->envp);
 	free(cmd_path);
 	perror("execve failed");
 	return (126);  // exit code for execution failed

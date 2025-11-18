@@ -6,7 +6,7 @@
 #    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/11/14 18:01:05 by ksng             ###   ########.fr        #
+#    Updated: 2025/11/18 15:27:03 by ksng             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,12 +38,13 @@ BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
-EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
+EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/exec.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/redirections.c
 REQ_SRC			:= $(SRC_DIR)/main.c $(SRC_DIR)/signals.c \
 					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/shell_utils_2.c \
 					$(SRC_DIR)/cleanup_utils.c \
+					$(SRC_DIR)/print_utils.c \
 					$(PARSER_FILES) $(LEXER_FILES) \
 					$(HISTORY_FILES) $(EXECUTOR_FILES) \
 					$(BUILTINS_FILES)

@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/13 22:15:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 17:26:11 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/18 14:51:54 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,15 @@ char **cleanup_dup_envp(t_shell *shell, int index)
 	char	**duped_env;
 
 	i = 0;
-	duped_env = shell->env;
+	duped_env = shell->envp;
 	while (i < index)
 	{
 		free(duped_env[i]);
 		i++;
 	}
 	free(duped_env);
-	shell->env = NULL;
-	return (shell->env);
+	shell->envp = NULL;
+	return (shell->envp);
 }
 
 // void cleanup_shell(t_shell *shell)

@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/14 18:05:44 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/18 16:30:47 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,44 +37,61 @@ static char **dup_envp(t_shell *shell, char **envp)
 	return (duped);
 }
 
-static void	init_vars_signals(t_shell *shell, char **envp, int argc,
-	char **argv)
+t_shell	*init_shell(char **envp)
 {
-	(void)argc;
-	(void)argv;
-	shell->env = dup_envp(shell, envp);
+	t_shell	*shell;
+
+	shell = malloc(sizeof(t_shell));
+	if (!shell)
+		return (NULL);
+	shell->envp = dup_envp(shell, envp);
+	if (!shell->envp)
+	{
+		free(shell);
+		return (NULL);
+	}
+	shell->last_exit_status = 0;
 	shell->exit_code = 0;
+	shell->stdin_backup = -1;
+	shell->stdout_backup = -1;
 	shell->running = 1;
 	set_signals();
+	return (shell);
 }
+
 
 int	main(int argc, char **argv, char **envp)
 {
-	t_shell	shell;
+	t_shell	*shell;
 	t_token	*tokens;
 	char	*line;
-	t_ast	*a;
+	t_ast	*ast;
 
-	init_vars_signals(&shell, envp, argc, argv);
-	while(1)
+	(void)argc;
+	(void)argv;
+	shell = init_shell(envp);
+	if (!shell)
+		return (1);
+	while(!shell->exit_code)
 	{
 		line = readline("MS$ ");
 		if (!line)					// ctrl-D (EOF)
 		{
-			printf("exit\n");		// remove this to save lines?
+			printf("exit\n");		// remove this to save lines? yes
 			break ;
 		}
 		history_add(line);
 		tokens = lex_input(line);
-		print_token_stream_colored(tokens);
-		// print_tokens(tokens);
-		// a = parse_pipeline(&tokens);
-		a = parse(tokens);
-		// print_ast(a, 3);
-		print_ast(a);
-		token_free_all(&tokens);
-		free(line);
-		execute_ast(a, &shell);
-	}
-	return (0);
+		print_token_stream_colored(tokens); //
+		ast = parse(tokens);
+		print_ast(ast); //
+		if (ast)
+			execute_ast(ast, shell);
+		free_ast(ast); // call all these in another function (norm)
+		token_free_all(&tokens); // call all these in another function (norm)
+		free(line); // call all these in another function (norm)
+	} // lines saved 3 + 2 prints + 2 frees just nice 25.
+	rl_clear_history();
+	cleanup_shell(shell);
+	return (shell->last_exit_status);
 }
