@@ -6,7 +6,7 @@
 #    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/11/18 15:27:03 by ksng             ###   ########.fr        #
+#    Updated: 2025/11/18 22:31:08 by ksng             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,9 +38,12 @@ BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
-EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/exec.c \
+EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \
-					$(SRC_DIR)/$(EXECUTOR_DIR)/redirections.c
+					$(SRC_DIR)/$(EXECUTOR_DIR)/cmd_exec.c \
+					$(SRC_DIR)/$(EXECUTOR_DIR)/pipe_exec.c \
+					$(SRC_DIR)/$(EXECUTOR_DIR)/redir_exec.c \
+					$(SRC_DIR)/$(EXECUTOR_DIR)/logical_exec.c
 REQ_SRC			:= $(SRC_DIR)/main.c $(SRC_DIR)/signals.c \
 					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/shell_utils_2.c \
 					$(SRC_DIR)/cleanup_utils.c \

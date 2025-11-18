@@ -1,45 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cleanup_utils.c                                    :+:      :+:    :+:   */
+/*   logical_exec.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/13 22:15:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 22:06:34 by ksng             ###   ########.fr       */
+/*   Created: 2025/11/18 21:58:39 by ksng              #+#    #+#             */
+/*   Updated: 2025/11/18 21:59:48 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "libft.h"
 
-char **cleanup_dup_envp(t_shell *shell, int index)
+int	execute_logical(t_ast *node, t_shell *shell)
 {
-	int		i;
-	char	**duped_env;
+	int	left_status;
 
-	i = 0;
-	duped_env = shell->envp;
-	while (i < index)
+	left_status = execute_node(node->left, shell);
+	shell->last_exit_status = left_status;
+	if (node->type == N_AND)
 	{
-		free(duped_env[i]);
-		i++;
+		if (left_status == 0)
+			return (execute_node(node->right, shell));
+		return (left_status);
 	}
-	free(duped_env);
-	shell->envp = NULL;
-	return (shell->envp);
-}
-
-void	free_array(char **arr)
-{
-	int	i;
-
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i])
+	if (node->type == N_OR)
 	{
-		free(arr[i]);
-		i++;
+		if (left_status != 0)
+			return (execute_node(node->right, shell));
+		return (left_status);
 	}
-	free(arr);
+	return (1);
 }

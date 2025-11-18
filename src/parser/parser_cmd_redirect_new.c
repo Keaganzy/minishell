@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/14 19:43:35 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/18 21:45:55 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd)
 	if (redir_type == N_HEREDOC)
 	{
 		node = create_redir_node(redir_type, file_token->value, cmd);
-		if (node)
-			node->heredoc_content = read_heredoc_content(file_token->value);
+		// if (node)
+		// 	node->heredoc_content = read_heredoc_content(file_token->value);
 		return (node);
 	}
 	return (create_redir_node(redir_type, file_token->value, cmd));

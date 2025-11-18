@@ -6,96 +6,97 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 14:59:55 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/18 22:40:56 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-static int	cleanup_and_wait(int *pipe_fd, int *status, pid_t left_pid, pid_t right_pid)
+char	**get_paths_from_env(char **envp)
 {
-	close(pipe_fd[0]);
-	close(pipe_fd[1]);
-	waitpid(right_pid, status, 0);
-	waitpid(left_pid, NULL, 0);
-	if (WIFEXITED(*status))	// return status of the rightmost command.
-		return (WEXITSTATUS(*status));
-	return (1);
+	int		i;
+	char	*path_value;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
+		{
+			path_value = envp[i] + 5;
+			return (ft_split(path_value, ':'));
+		}
+		i++;
+	}
+	return (NULL);
 }
 
-int	execute_pipe(t_ast *curr, t_shell *shell)
+int	setup_redir_in(char *filename)
 {
-	int		pipe_fd[2];
-	pid_t	left_pid;
-	pid_t	right_pid;
-	int		status;
+	int fd;
 
-	if (pipe(pipe_fd) == -1)
-		return (perror("pipe"), 1);
-	left_pid = fork();	// execute left command
-	if (left_pid == 0)
+	fd = open(filename, O_RDONLY);
+	if (fd == -1)
 	{
-		close(pipe_fd[0]);		// close read end
-		dup2(pipe_fd[1], STDOUT_FILENO);	// redirect stdout to write end
-		close(pipe_fd[1]);
-		execute_ast(curr->left, shell);
-		exit(shell->exit_code);
+		perror(filename);
+		return(1);
 	}
-	right_pid = fork();
-	if(right_pid == 0)
-	{
-		close(pipe_fd[1]); // close write end
-		dup2(pipe_fd[0], STDIN_FILENO);	// redirect STDIN from read end
-		close(pipe_fd[0]);
-		execute_ast(curr->right, shell);
-		exit(shell->exit_code);
-	}
-	return (cleanup_and_wait(pipe_fd, &status, left_pid, right_pid));
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (0);
 }
 
-int	execute_cmd(t_ast *curr, t_shell *shell)
+int	setup_redir_out(char *filename)
 {
-	char	*cmd_path;
+	int fd;
 
-	cmd_path = NULL;
-	// apply redirections first
-	if (apply_redirections(curr) == -1)
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (fd == -1)
+	{
+		perror(filename);
 		return (1);
-	if (is_builtin(curr))
-		return (execute_builtin(curr, shell));
-	// cmd_path = getenv_value(shell->env, "PATH");
-	cmd_path = find_full_path(shell->envp, curr->argv[0]);
-	if (cmd_path == NULL)
-	{
-		printf("%s: command not found.\n", curr->argv[0]);
-		return (127);	// exit code for Command not found.
 	}
-	execve(cmd_path, curr->argv, shell->envp);
-	free(cmd_path);
-	perror("execve failed");
-	return (126);  // exit code for execution failed
+	dup2(fd,STDOUT_FILENO);
+	close(fd);
+	return(0);
 }
 
-char	*find_full_path(char **env, char *av)
+int	setup_redir_append(char *filename)
 {
-	char	*path;
-	int		p_len;
+	int fd;
 
-	p_len = 0;
-	path = NULL;
-	if (!env || !av)
-		return (NULL);
-	if (av[0] == '\\') // check if the first char of provided file is "\"
-		path = ft_strdup(av);
-	else
+	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (fd == -1)
 	{
-		p_len = ft_strlen(getenv_value(env, "PATH")) + 1;
-		path = ft_strndup(getenv_value(env, "PATH"), p_len);
-		if (!path)
-			return (NULL);
-		path = realloc(path, p_len + ft_strlen(av));
-		ft_strlcat(path, av, p_len);
+		perror(filename);
+		return (1);
 	}
-	return (path);
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (0);
+}
+
+int	setup_heredoc(char *delimiter, t_shell *shell)
+{
+	int		pipefd[2];
+	char	*line;
+
+	if (pipe(pipefd) == -1)
+		return (1);
+	while (!shell->exit_code)
+	{
+		line = readline("> ");
+		if (!line || ft_strcmp(line, delimiter) == 0)
+		{
+			free(line);
+			break;
+		}
+		write(pipefd[1], line, ft_strlen(line));
+		write(pipefd[1], "\n", 1);
+		free(line);
+	}
+	close(pipefd[1]);
+	dup2(pipefd[0], STDIN_FILENO);
+	close(pipefd[0]);
+	return (0);
 }
