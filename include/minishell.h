@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 16:16:00 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/19 17:47:42 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ int		setenv_value(char ***envp, const char *key, const char *value);
 // lexer module
 int				check_commas_closed(char *s);
 int				check_invalid_pipes(char *s);
+int				is_space(char c);
+t_token_type	handle_space(const char *s, size_t *i);
 
 char 			*ft_strndup(const char *src, size_t num);
 t_token			*tokenize_input(const char *input);

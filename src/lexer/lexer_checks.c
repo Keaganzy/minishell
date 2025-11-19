@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 16:04:36 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/19 17:10:01 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,13 @@ static int	check_brackets_closed(char *s)
 	{
 		if (s[i] == '(')
 			brackets++;
-		else if(s[i] == ')')
+		else if (s[i] == ')')
 			brackets--;
 		i++;
 	}
 	if (brackets != 0)
-		return 0;
-	return 1;
+		return (0);
+	return (1);
 }
 
 static int	check_empty_brackets(char *s)
@@ -69,10 +69,10 @@ int	check_syntax(char *s)
 	if (!s)
 		return (1);
 	if (check_brackets_closed(s) == 0)
-		return(syntax_err("Unexpected syntax error near the brackets.\n"));
+		return (syntax_err("Unexpected syntax error near the brackets.\n"));
 	else if (check_commas_closed(s) == 0)
-		return(syntax_err("Unclosed inv commas.\n"));
+		return (syntax_err("Unclosed inv commas.\n"));
 	else if (check_empty_brackets(s) == 0 || check_invalid_pipes(s) == 0)
-		return(syntax_err("Syntax error."));
+		return (syntax_err("Syntax error."));
 	return (1);
 }

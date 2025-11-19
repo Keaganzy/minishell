@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 23:59:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/12 17:40:30 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/19 17:11:13 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 
 t_token	*token_new(t_token_type type, const char *value)
 {
-	t_token *tok = malloc(sizeof(t_token));
+	t_token	*tok;
+
+	tok = malloc(sizeof(t_token));
 	if (!tok)
 		return (NULL);
 	tok->type = type;
@@ -36,7 +38,7 @@ void	add_token_back(t_token **lst, t_token *new)
 	if (!*lst)
 	{
 		*lst = new;
-		return;
+		return ;
 	}
 	curr = *lst;
 	while (curr->next)
@@ -55,7 +57,7 @@ void	token_free(t_token *tok)
 
 void	token_free_all(t_token **lst)
 {
-	t_token *curr;
+	t_token	*curr;
 	t_token	*next;
 
 	if (!lst)
@@ -65,7 +67,7 @@ void	token_free_all(t_token **lst)
 	{
 		next = curr->next;
 		token_free(curr);
-		curr= next;
+		curr = next;
 	}
 	*lst = NULL;
 }
