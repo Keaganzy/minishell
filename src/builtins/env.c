@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 15:25:26 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/19 21:59:34 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,21 @@
 # include <limits.h>
 #endif
 
-int	ft_env(char **av, t_shell *shell)
+static void	extract_and_update_vars(char **av, t_shell *shell, int *status)
 {
 	int	i;
 
-	(void)av;
-	if (!shell || !shell->envp)
-		return (1);
-	i = 0;
-	while (shell->envp[i])
+	i = 1;
+	if (ft_strchr(av[1], '=') != NULL)
 	{
-		printf("%s\n", shell->envp[i]);
-		i++;
+		while (av[i])
+		{
+			if (add_update_env_vars(shell, av[i]) != 0)
+				*status = 1;
+			i++;
+		}
 	}
-	return (0);
+	return ;
 }
 
 int	ft_export(char **av, t_shell *shell)
@@ -43,13 +44,7 @@ int	ft_export(char **av, t_shell *shell)
 		return (1);
 	if (av[1])
 	{
-		if (ft_strchr(av[1], '=') != NULL)
-			while (av[i])
-			{
-				if (add_update_env_vars(shell, av[i]) != 0)
-					status = 1;
-				i++;
-			}
+		extract_and_update_vars(av, shell, &status);
 		return (status);
 	}
 	i = 0;
@@ -68,20 +63,22 @@ int	ft_unset(char **av, t_shell *shell)
 	i = 1;
 	if (!av)
 		return (1);
-	if (!av[1])
-	{
-		printf("unset: not enough arguments.\n");
-		return (1);
-	}
 	while (av[i])
 	{
-		if (getenv_value(shell->envp, av[i]) == NULL)
-			continue ;
-		else
+		if (validate_identifiers(av) != 1)
+		{
+			printf("Invalid identifier\n");
+			return (1);
+		}
+		i++;
+	}
+	i = 1;
+	while (av[i])
+	{
+		if (getenv_value(shell->envp, av[i]) != NULL)
 			unsetenv_value(&shell->envp, av[i]);
 		i++;
 	}
-
 	return (0);
 }
 
@@ -89,7 +86,6 @@ int	ft_exit(char **av, t_shell *shell)
 {
 	(void)av;
 	(void)shell;
-
 	printf("exit\n");
 	cleanup_shell(shell);
 	exit(0);
@@ -98,9 +94,9 @@ int	ft_exit(char **av, t_shell *shell)
 int	ft_pwd(char **av, t_shell *shell)
 {
 	char	c[PATH_MAX];
+
 	(void)av;
 	(void)shell;
-
 	if (getcwd(c, sizeof(c)) != 0)
 	{
 		printf("%s\n", c);

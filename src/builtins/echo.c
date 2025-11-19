@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 15:24:32 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/19 21:37:13 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ static int	is_flag_n(char *arg)
 	i = 1;
 	while (arg[i] == 'n')
 		i++;
-	return (arg[i] == '\0');	// returns true if "-n", "-nnn" etc
+	return (arg[i] == '\0');
 }
 
-static void skip_past_n(char **av, int *n_flag, int *i)
+static void	skip_past_n(char **av, int *n_flag, int *i)
 {
 	if (av[*i] && is_flag_n(av[*i]))
 	{
@@ -35,55 +35,42 @@ static void skip_past_n(char **av, int *n_flag, int *i)
 	}
 }
 
-static void free_struct (char **substr)
+static void	handle_reset_k_space(size_t *k, size_t j)
 {
-	int j;
-
-	j = 0;
-	while (substr[j])
-	{
-		free(substr[j]);
-		substr[j] = NULL;
-		j++;
-	}
-	free(substr);
-	substr = NULL;
+	*k = 0;
+	if (j != 0)
+		printf(" ");
+	return ;
 }
 
-static void parse_and_echo_substrs(char *s, t_shell *shell)
+void	parse_and_echo_substrs(char *s, t_shell *shell)
 {
-	int		j;
+	size_t	j;
+	size_t	k;
 	char	**substr;
-	char	*val;
 
 	j = 0;
-	if (!s)
-		return;
 	substr = ft_split(s, ' ');
 	if (substr == NULL)
 		return ;
 	while (substr[j])
 	{
-		if (j != 0)
-			printf(" ");
-		if (substr[j][0] == '$')
+		handle_reset_k_space(&k, j);
+		while (substr[j][k] != '\0')
 		{
-			if (!substr[j][1])
-				printf("$");
-			else
-			{
-				val = getenv_value(shell->envp, &substr[j][1]);
-				if (val != NULL)
-					printf("%s", val);
-			}
+			if (handle_dollars_tilde(substr[j], shell, &k))
+				break ;
+			if (k == 0 && handle_asterisk(substr[j]))
+				break ;
+			printf("%c", substr[j][k]);
+			k++;
 		}
-		else
-			printf("%s", substr[j]);
 		j++;
 	}
-	free_struct(substr);
+	free_substr(substr);
 	return ;
 }
+
 int	ft_echo(char **av, t_shell *shell)
 {
 	int		i;
@@ -92,13 +79,15 @@ int	ft_echo(char **av, t_shell *shell)
 	i = 1;
 	n_flag = 0;
 	skip_past_n(av, &n_flag, &i);
-	while (av[i])
+	while (av[i] != (void *)0)
 	{
-		if (i > 1 && av[i-1] && !is_flag_n(av[i-1]))
+		if (i > 1 && av[i - 1] && !is_flag_n (av[i - 1]))
 			printf(" ");
-
-		parse_and_echo_substrs(av[i], shell);
-		i++;
+		if (av[i])
+		{
+			parse_and_echo_substrs(av[i], shell);
+			i++;
+		}
 	}
 	if (!n_flag)
 		printf("\n");

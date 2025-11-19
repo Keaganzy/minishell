@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 17:47:42 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/19 22:03:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,15 +139,20 @@ int	setup_heredoc(char *delimiter, t_shell *shell);
 int	execute_logical(t_ast *node, t_shell *shell);
 
 // builtins module
-int	ft_echo(char **av, t_shell *shell);
-int	builtin_cd(char **av, t_shell *shell);
-int	ft_pwd(char **av, t_shell *shell);
-int	ft_env(char **av, t_shell *shell);
-int	ft_exit(char **av, t_shell *shell);
-int	ft_unset(char **av, t_shell *shell);
-int	ft_export(char **av, t_shell *shell);
-int	add_update_env_vars(t_shell *shell, char *av);
-int	unsetenv_value(char ***envp, const char *key);
+void	free_substr (char **substr);
+int 	handle_asterisk(char *substr);
+int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k);
+void 	parse_and_echo_substrs(char *s, t_shell *shell);
+int		validate_identifiers(char **av);
+int		ft_echo(char **av, t_shell *shell);
+int		builtin_cd(char **av, t_shell *shell);
+int		ft_pwd(char **av, t_shell *shell);
+int		ft_env(char **av, t_shell *shell);
+int		ft_exit(char **av, t_shell *shell);
+int		ft_unset(char **av, t_shell *shell);
+int		ft_export(char **av, t_shell *shell);
+int		add_update_env_vars(t_shell *shell, char *av);
+int		unsetenv_value(char ***envp, const char *key);
 
 // void	print_ast(t_ast *node, int level);
 void	print_ast(t_ast *node);

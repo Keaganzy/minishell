@@ -6,7 +6,7 @@
 #    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/11/19 17:18:31 by jotong           ###   ########.fr        #
+#    Updated: 2025/11/19 21:44:51 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,6 +39,7 @@ LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c \
 BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/echo.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env.c \
+					$(SRC_DIR)/$(BUILTINS_DIR)/env2.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
 EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \

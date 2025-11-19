@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 16:30:47 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/19 21:21:57 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,9 @@ int	main(int argc, char **argv, char **envp)
 		}
 		history_add(line);
 		tokens = lex_input(line);
-		print_token_stream_colored(tokens); //
+		print_token_stream_colored(tokens);
 		ast = parse(tokens);
-		print_ast(ast); //
+		print_ast(ast);
 		if (ast)
 			execute_ast(ast, shell);
 		free_ast(ast); // call all these in another function (norm)
