@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 22:14:13 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/19 16:16:00 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,19 +97,23 @@ char	*getenv_value(char **env, const char *key);
 int		setenv_value(char ***envp, const char *key, const char *value);
 
 // lexer module
+int				check_commas_closed(char *s);
+int				check_invalid_pipes(char *s);
+
 char 			*ft_strndup(const char *src, size_t num);
 t_token			*tokenize_input(const char *input);
 t_token_type	get_op_type(const char *s, size_t *i);
 void			free_tokens(t_token *tokens);
 char			*extract_word(const char *s, size_t *i);
 t_token 		*lex_input(const char *s);
-
+int				check_syntax(char *s);
 t_token			*token_new(t_token_type type, const char *value);
 void			add_token_back(t_token **lst, t_token *new);
 void			token_free(t_token *tok);
 void			token_free_all(t_token **lst);
 void			print_tokens(t_token *token);
-void	print_token_stream_colored(t_token *tokens);
+void			print_token_stream_colored(t_token *tokens);
+char			*extract_till_next_inv_comma(const char *s, size_t *i);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
+#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/11/18 22:31:08 by ksng             ###   ########.fr        #
+#    Updated: 2025/11/19 15:55:47 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,8 @@ PARSER_FILES	= $(SRC_DIR)/$(PARSER_DIR)/parser_new.c \
 					$(SRC_DIR)/$(PARSER_DIR)/parser_cmd_redirect_utils_new.c \
 					$(SRC_DIR)/$(PARSER_DIR)/parser_node_utils_new.c
 LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c \
+					$(SRC_DIR)/$(LEXER_DIR)/lexer_checks.c \
+					$(SRC_DIR)/$(LEXER_DIR)/lexer_checks2.c \
 					$(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
 BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/echo.c \
