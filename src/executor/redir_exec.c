@@ -6,12 +6,28 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:56:01 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/18 22:36:39 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/21 15:39:45 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+
+static int setup_rechain(t_ast *node, t_shell *shell)
+{
+	int status;
+
+	(void)shell;
+	if (!node)
+		return (0);
+	if (node->left && (node->left->type == N_REDIR_IN || node->left->type == N_REDIR_OUT || node->left->type == N_REDIR_APPEND || node->left->type == N_HEREDOC))
+	{
+		status = setup_rechain(node->left, shell);
+		if (status != 0)
+			return (0);
+	}
+	return (setup_redirections(node, shell));
+}
 
 static void	backup_fds(t_shell *shell)
 {
@@ -35,8 +51,9 @@ static void restore_fds(t_shell *shell)
 	}
 }
 
-static int	setup_redirections(t_ast *node, t_shell *shell)
+int	setup_redirections(t_ast *node, t_shell *shell)
 {
+	(void)shell;
 	if (node->type == N_REDIR_IN)
 		return (setup_redir_in(node->filename));
 	if (node->type == N_REDIR_OUT)
@@ -44,22 +61,28 @@ static int	setup_redirections(t_ast *node, t_shell *shell)
 	if (node->type == N_REDIR_APPEND)
 		return (setup_redir_append(node->filename));
 	if (node->type == N_HEREDOC)
-		return (setup_heredoc(node->filename, shell));
+		return (setup_heredoc(node));
 	return (1);
 }
 
 int	execute_redir(t_ast *node, t_shell *shell)
 {
 	int status;
+	t_ast	*cmd;
 
 	backup_fds(shell);
-	status = setup_redirections(node, shell);
+	status = setup_rechain(node, shell);
 	if (status != 0)
 	{
 		restore_fds(shell);
 		return (status);
 	}
-	status = execute_node(node->left, shell);
+	cmd = node;
+	while (cmd && (cmd->type == N_REDIR_IN || cmd->type == N_REDIR_OUT || cmd->type == N_REDIR_APPEND || cmd->type == N_HEREDOC))
+	{
+		cmd = cmd->left;
+	}
+	status = execute_node(cmd, shell);
 	restore_fds(shell);
 	return (status);
 }

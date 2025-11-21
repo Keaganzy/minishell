@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 22:40:56 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/21 14:03:58 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,27 +76,23 @@ int	setup_redir_append(char *filename)
 	return (0);
 }
 
-int	setup_heredoc(char *delimiter, t_shell *shell)
+int	setup_heredoc(t_ast *node)
 {
 	int		pipefd[2];
-	char	*line;
+
+	if (!node->heredoc_content)
+		return (1);
 
 	if (pipe(pipefd) == -1)
 		return (1);
-	while (!shell->exit_code)
-	{
-		line = readline("> ");
-		if (!line || ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
-			break;
-		}
-		write(pipefd[1], line, ft_strlen(line));
-		write(pipefd[1], "\n", 1);
-		free(line);
-	}
+
+	// Write pre-read content to pipe
+	write(pipefd[1], node->heredoc_content, ft_strlen(node->heredoc_content));
 	close(pipefd[1]);
+
+	// Redirect stdin to pipe
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
+
 	return (0);
 }

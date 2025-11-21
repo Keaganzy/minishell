@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 22:03:09 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/21 16:02:05 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,9 @@ int	execute_redir(t_ast *node, t_shell *shell);
 int	setup_redir_in(char *filename);
 int	setup_redir_out(char *filename);
 int	setup_redir_append(char *filename);
-int	setup_heredoc(char *delimiter, t_shell *shell);
+int	setup_heredoc(t_ast *node);
 int	execute_logical(t_ast *node, t_shell *shell);
+int	setup_redirections(t_ast *node, t_shell *shell);
 
 // builtins module
 void	free_substr (char **substr);
