@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 21:37:13 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/21 11:21:05 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	parse_and_echo_substrs(char *s, t_shell *shell)
 		j++;
 	}
 	free_substr(substr);
-	return ;
 }
 
 int	ft_echo(char **av, t_shell *shell)
