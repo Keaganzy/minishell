@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 17:48:39 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/23 23:05:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,21 +21,24 @@ t_token_type	handle_space(const char *s, size_t *i)
 	return (T_SPACE);
 }
 
-static void	ft_strjoin_and_free(char **new_s, char *substr)
+char	*ft_strjoin_and_free(char **new_s, char *substr, int to_free)
 {
 	char	*tmp;
 
 	if (!substr)
-		return ;
+		return (NULL);
 	if (!(*new_s))
 	{
 		*new_s = substr;
-		return ;
+		return (NULL);
 	}
 	tmp = *new_s;
 	*new_s = ft_strjoin(*new_s, substr);
-	free(tmp);
-	free(substr);
+	if (to_free == 1 || to_free == 2)
+		free(tmp);
+	if (to_free == 2)
+		free(substr);
+	return (new_s);
 }
 
 static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
@@ -43,7 +46,7 @@ static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] != '"' && s[*i] != '\'')
 		return (0);
 	if (*word)
-		ft_strjoin_and_free(word, extract_till_next_inv_comma(s, i));
+		*word = ft_strjoin_and_free(word, extract_till_next_inv_comma(s, i), 2);
 	else
 		*word = extract_till_next_inv_comma(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
@@ -57,7 +60,7 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 {
 	if (s[*i] == '\0')
 		return (0);
-	ft_strjoin_and_free(word, extract_word(s, i));
+	*word = ft_strjoin_and_free(word, extract_word(s, i), 2);
 	if (s[*i] == ' ' || s[*i] == '\0')
 	{
 		add_token_back(tokens, token_new(T_WORD, *word));

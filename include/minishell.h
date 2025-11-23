@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/21 16:02:05 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/23 23:05:41 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ int				check_commas_closed(char *s);
 int				check_invalid_pipes(char *s);
 int				is_space(char c);
 t_token_type	handle_space(const char *s, size_t *i);
+char			*ft_strjoin_and_free(char **new_s, char *substr, int to_free);
 
 char 			*ft_strndup(const char *src, size_t num);
 t_token			*tokenize_input(const char *input);
@@ -141,8 +142,8 @@ int	setup_redirections(t_ast *node, t_shell *shell);
 
 // builtins module
 void	free_substr (char **substr);
-int 	handle_asterisk(char *substr);
-int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k);
+int 	handle_asterisk(char *substr, char **s_final);
+int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final);
 void 	parse_and_echo_substrs(char *s, t_shell *shell);
 int		validate_identifiers(char **av);
 int		ft_echo(char **av, t_shell *shell);

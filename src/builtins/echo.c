@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/21 11:21:05 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/23 23:05:23 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	parse_and_echo_substrs(char *s, t_shell *shell)
 	size_t	j;
 	size_t	k;
 	char	**substr;
+	char	*s_final;
 
 	j = 0;
 	substr = ft_split(s, ' ');
@@ -58,11 +59,11 @@ void	parse_and_echo_substrs(char *s, t_shell *shell)
 		handle_reset_k_space(&k, j);
 		while (substr[j][k] != '\0')
 		{
-			if (handle_dollars_tilde(substr[j], shell, &k))
+			if (handle_dollars_tilde(substr[j], shell, &k, &s_final))
 				break ;
-			if (k == 0 && handle_asterisk(substr[j]))
+			if (k == 0 && handle_asterisk(substr[j], &s_final))
 				break ;
-			printf("%c", substr[j][k]);
+			s_final = ft_strjoin_and_free(s_final, substr[j][k], 1); // printf("%c", substr[j][k]);
 			k++;
 		}
 		j++;

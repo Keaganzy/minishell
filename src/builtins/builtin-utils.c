@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 23:07:01 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/21 11:13:07 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/23 23:01:35 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	expansion_match_handlers(char *substr, char *d_name)
 	return (free (to_match), 1);
 }
 
-int	handle_asterisk(char *substr)
+int	handle_asterisk(char *substr, char **s_final)
 {
 	DIR				*dir;
 	struct dirent	*entry;
@@ -83,8 +83,8 @@ int	handle_asterisk(char *substr)
 		if (expansion_match_handlers(substr, entry->d_name))
 		{
 			if (count > 0)
-				printf(" ");
-			printf("%s", entry->d_name);
+				*s_final = ft_strjoin_and_free(s_final, " "); // printf(" ");
+			*s_final = ft_strjoin_and_free(s_final, entry->d_name); // printf("%s", entry->d_name);
 			count++;
 		}
 	}

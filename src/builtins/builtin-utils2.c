@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 10:26:20 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/21 11:42:13 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/23 23:07:14 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,25 +48,25 @@ void	free_substr(char **substr)
 	substr = NULL;
 }
 
-int	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k)
+int	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final)
 {
 	char	*val;
 
 	if (substr[*k] == '~' && substr[*k + 1] == '\0')
 	{
-		printf("%s", getenv_value(shell->envp, "HOME"));
+		*s_final = ft_strjoin_and_free(s_final, getenv_value(shell->envp, "HOME"), 1); // printf("%s", getenv_value(shell->envp, "HOME"));
 		return (1);
 	}
 	if (substr[*k] != '$')
 		return (0);
 	if (!substr[*k + 1])
-		printf("$");
+		*s_final = ft_strjoin_and_free(s_final, "$", 1); //  printf("$");
 	else
 	{
 		val = getenv_value(shell->envp, &substr[*k + 1]);
 		if (val != NULL)
 		{
-			printf("%s", val);
+			*s_final = ft_strjoin_and_free(s_final, val, 1); // printf("%s", val);
 			return (1);
 		}
 	}
