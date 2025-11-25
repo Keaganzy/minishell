@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/18 20:27:38 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/21 18:15:40 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,17 @@ static int execute_external(t_ast *ast, t_shell *shell)
 int execute_cmd(t_ast *node, t_shell *shell)
 {
 	int status;
+	int i;
 
+	i = 0;
 	if (!node->argv || !node->argv[0])
 		return (0);
+	//send arguements to function $ EXPANDER
+	while (node->argv[i])
+	{
+		//jtfunction(node->argv[i]);
+		i++;
+	}
 	if (is_builtin(node))
 		status = execute_builtin(node, shell);
 	else

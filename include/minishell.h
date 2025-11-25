@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/23 23:05:41 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/25 14:45:50 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,6 +178,7 @@ t_ast	*create_binary_node(t_node_type type, t_ast *left, t_ast *right);
 t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd);
 t_ast	*new_ast(t_node_type type);
 void free_ast(t_ast *node);
+t_ast *parser_word(t_parser *p);
 
 // shell utils
 char **cleanup_dup_envp(t_shell *shell, int index);

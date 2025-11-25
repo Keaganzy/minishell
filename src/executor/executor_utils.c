@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/21 14:03:58 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/21 18:15:35 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int	setup_redir_in(char *filename)
 {
 	int fd;
 
+	//jtfunction(filename);//
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
@@ -50,6 +51,7 @@ int	setup_redir_out(char *filename)
 {
 	int fd;
 
+	//jtfunction(filename);//
 	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
@@ -65,6 +67,7 @@ int	setup_redir_append(char *filename)
 {
 	int fd;
 
+	//jtfunction(filename);//
 	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
@@ -85,7 +88,7 @@ int	setup_heredoc(t_ast *node)
 
 	if (pipe(pipefd) == -1)
 		return (1);
-
+	//jtfunction(node->heredoc_content);//
 	// Write pre-read content to pipe
 	write(pipefd[1], node->heredoc_content, ft_strlen(node->heredoc_content));
 	close(pipefd[1]);

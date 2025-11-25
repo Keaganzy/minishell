@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:20:42 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/14 17:59:36 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/25 14:08:56 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,18 +100,70 @@ static t_ast	*parse_pipe(t_parser *p)
 
 static t_ast *parse_redirection(t_parser *p)
 {
-	t_ast *cmd;
+	// t_ast *cmd;
 
-	cmd = parse_command(p);
-	if (!cmd)
-		return (NULL);
-	while (peek(p) && is_redirection(peek(p)->type))
-	{
-		cmd = parse_one_redir(p, cmd);
-		if (!cmd)
-			return (NULL);
-	}
-	return (cmd);
+	// cmd = parse_command(p);
+	// if (!cmd)
+	// 	return (NULL);
+	// while (peek(p) && is_redirection(peek(p)->type))
+	// {
+	// 	cmd = parse_one_redir(p, cmd);
+	// 	if (!cmd)
+	// 		return (NULL);
+	// }
+	// return (cmd);
+	t_ast *cmd;
+    t_ast *bottom;
+
+    cmd = NULL;
+
+    // Parse redirections BEFORE command
+    while (peek(p) && is_redirection(peek(p)->type))
+    {
+        cmd = parse_one_redir(p, cmd);
+        if (!cmd)
+            return (NULL);
+    }
+
+    // Parse the command
+    if (peek(p) && (match(p, T_WORD) || match(p, T_OPEN_BRACKET)))
+    {
+        if (cmd)
+        {
+            // Attach command at bottom of redir chain
+            bottom = cmd;
+            while (bottom->left)
+                bottom = bottom->left;
+            bottom->left = parse_command(p);
+            if (!bottom->left)
+                return (free_ast(cmd), NULL);
+        }
+        else
+        {
+            // No redirections yet, just parse command
+            cmd = parse_command(p);
+            if (!cmd)
+                return (NULL);
+        }
+    }
+    else if (cmd)
+    {
+        // We have redirections but no command - ERROR!
+        free_ast(cmd);
+        // Print error message
+        ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", 2);
+        return (NULL);
+    }
+
+    // Parse redirections AFTER command
+    while (peek(p) && is_redirection(peek(p)->type))
+    {
+        cmd = parse_one_redir(p, cmd);
+        if (!cmd)
+            return (NULL);
+    }
+
+    return (cmd);
 }
 
 

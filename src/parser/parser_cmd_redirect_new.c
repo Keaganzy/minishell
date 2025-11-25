@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/21 13:58:43 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/21 18:57:19 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 //parse_command
 
-static t_ast *parse_word(t_parser *p)
+t_ast *parser_word(t_parser *p)
 {
 	t_ast	*node;
 	int		word_count;
@@ -61,7 +61,7 @@ t_ast	*parse_command(t_parser *p)
 		return (node);
 	}
 	if (match(p, T_WORD))
-		return (parse_word(p));
+		return (parser_word(p));
 	return (NULL);
 }
 
