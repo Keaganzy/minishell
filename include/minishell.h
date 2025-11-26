@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 17:32:12 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/26 19:11:54 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ int	setup_redirections(t_ast *node, t_shell *shell);
 
 // builtins module
 void	free_substr (char **substr);
-int 	handle_asterisk(char *substr, char **s_final);
+char 	*handle_asterisk(char *substr);
 int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final);
 void 	parse_and_echo_substrs(char **s, t_shell *shell);
 int		validate_identifiers(char **av);
@@ -157,6 +157,7 @@ int		add_update_env_vars(t_shell *shell, char *av);
 int		unsetenv_value(char ***envp, const char *key);
 char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free);
 int 	wildcard_match(char *pattern, char *str);
+char	**setup_args_arr(char **new_av, int *i, int *n_flag);
 
 // void	print_ast(t_ast *node, int level);
 void	print_ast(t_ast *node);

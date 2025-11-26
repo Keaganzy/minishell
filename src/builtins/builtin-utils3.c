@@ -6,15 +6,12 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:34:29 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 17:45:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/26 19:15:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
-#include <stdlib.h>
-#include <string.h>
 
 /* **************************************************************** */
 /*                       Helper: free **ptr                         */

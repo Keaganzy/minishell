@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 15:59:59 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/26 19:13:23 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,83 +25,110 @@ static int	is_flag_n(char *arg)
 	return (arg[i] == '\0');
 }
 
-static void	skip_past_n(char **av, int *n_flag, int *i)
+void parse_and_echo_substrs(char **s, t_shell *shell)
 {
-	if (av[*i] && is_flag_n(av[*i]))
-	{
-		*n_flag = 1;
-		while (av[*i] && is_flag_n(av[*i]))
-			(*i)++;
-	}
-}
+    size_t j;
+    char **substr;
+    char *s_final;
+    char *expanded;
 
-static void	handle_reset_k_space(size_t *k, size_t j)
-{
-	*k = 0;
-	if (j != 0)
-		printf(" ");
-	return ;
-}
+	(void)shell;
+    j = 0;
+    s_final = NULL;
+    substr = ft_split(*s, ' ');
+    if (!substr)
+        return;
 
-void	parse_and_echo_substrs(char **s, t_shell *shell)
-{
-	size_t	j;
-	size_t	k;
-	char	**substr;
-	char	*s_final;
+    while (substr[j])
+    {
+        expanded = handle_asterisk(substr[j]); // get wildcard expansion
+        // TODO: add handle_dollars_tilde here if needed
 
-	j = 0;
-	s_final = NULL;
-	substr = ft_split(*s, ' ');
-	if (substr == NULL)
-		return ;
-	while (substr[j])
-	{
-		handle_reset_k_space(&k, j);
-		while (substr[j][k] != '\0')
-		{
-			if (handle_dollars_tilde(substr[j], shell, &k, &s_final)
-				|| (k == 0 && handle_asterisk(substr[j], &s_final)))
-				break ;
-			s_final = ft_strjoin_char_and_free(&s_final, substr[j][k], 0); // printf("%c", substr[j][k]);
-			printf("s_final in parse & echo substrs: %s\n", s_final);
-			k++;
-		}
-		j++;
-	}
-	free_substr(substr);
-	free(*s);
-	*s = s_final;
+        if (s_final)
+        {
+            char *tmp = s_final;
+            s_final = ft_strjoin(s_final, " ");
+            free(tmp);
+
+            tmp = s_final;
+            s_final = ft_strjoin(s_final, expanded);
+            free(tmp);
+        }
+        else
+        {
+            s_final = ft_strdup(expanded);
+        }
+
+        free(expanded);
+        j++;
+    }
+
+    free_substr(substr);
+    free(*s);
+    *s = s_final;
 }
 
 int	ft_echo(char **av, t_shell *shell)
 {
 	int		i;
 	int		n_flag;
+	char	*output; // the final concatenated output
 
+	(void)shell;
 	i = 1;
 	n_flag = 0;
-	skip_past_n(av, &n_flag, &i);
-	while (av[i] != (void *)0)
+	output = NULL;
+
+	// skip -n flags
+	while (av[i] && av[i][0] == '-' && is_flag_n(av[i]))
 	{
-		// if (i > 1 && av[i - 1] && !is_flag_n (av[i - 1])) // TODO: check if ksng will handle this
-		// 	printf(" "); // substr = ft_strjoin_and_free(&substr, " ", 1);
-		parse_and_echo_substrs(&av[i], shell);
+		n_flag = 1;
 		i++;
 	}
-	// if (!n_flag)
-	// 	printf("\n"); // TODO: check if ksng is handling this.
-	// start print statement
-	i = 1;
+	// loop over remaining arguments
 	while (av[i])
 	{
-		printf("%s", av[i]);
-		if (i > 1)
-			printf(" ");
+		char *expanded = ft_strdup(av[i]); // copy original argument
+		if (!expanded)
+			return (1); // malloc failure
+
+		// expand $VAR, ~, and wildcard patterns in-place
+		parse_and_echo_substrs(&expanded, shell);
+
+		// append to output string
+		if (output)
+		{
+			char *tmp = output;
+			output = ft_strjoin(output, " ");
+			free(tmp);
+			tmp = output;
+			output = ft_strjoin(output, expanded);
+			free(tmp);
+		}
+		else
+		{
+			output = ft_strdup(expanded);
+		}
+
+		free(expanded);
 		i++;
 	}
+
+	if (!output)
+		output = ft_strdup(""); // nothing to print
+
+	// add newline if no -n
 	if (!n_flag)
-		printf("\n");
-	// end print statement
+	{
+		char *tmp = output;
+		output = ft_strjoin(output, "\n");
+		free(tmp);
+	}
+
+	// print the final output
+	write(1, output, ft_strlen(output));
+	free(output);
+
 	return (0);
 }
+
