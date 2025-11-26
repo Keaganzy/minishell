@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/23 23:05:23 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/26 15:59:59 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static void	handle_reset_k_space(size_t *k, size_t j)
 	return ;
 }
 
-void	parse_and_echo_substrs(char *s, t_shell *shell)
+void	parse_and_echo_substrs(char **s, t_shell *shell)
 {
 	size_t	j;
 	size_t	k;
@@ -51,7 +51,8 @@ void	parse_and_echo_substrs(char *s, t_shell *shell)
 	char	*s_final;
 
 	j = 0;
-	substr = ft_split(s, ' ');
+	s_final = NULL;
+	substr = ft_split(*s, ' ');
 	if (substr == NULL)
 		return ;
 	while (substr[j])
@@ -59,16 +60,18 @@ void	parse_and_echo_substrs(char *s, t_shell *shell)
 		handle_reset_k_space(&k, j);
 		while (substr[j][k] != '\0')
 		{
-			if (handle_dollars_tilde(substr[j], shell, &k, &s_final))
+			if (handle_dollars_tilde(substr[j], shell, &k, &s_final)
+				|| (k == 0 && handle_asterisk(substr[j], &s_final)))
 				break ;
-			if (k == 0 && handle_asterisk(substr[j], &s_final))
-				break ;
-			s_final = ft_strjoin_and_free(s_final, substr[j][k], 1); // printf("%c", substr[j][k]);
+			s_final = ft_strjoin_char_and_free(&s_final, substr[j][k], 0); // printf("%c", substr[j][k]);
+			printf("s_final in parse & echo substrs: %s\n", s_final);
 			k++;
 		}
 		j++;
 	}
 	free_substr(substr);
+	free(*s);
+	*s = s_final;
 }
 
 int	ft_echo(char **av, t_shell *shell)
@@ -81,15 +84,24 @@ int	ft_echo(char **av, t_shell *shell)
 	skip_past_n(av, &n_flag, &i);
 	while (av[i] != (void *)0)
 	{
-		if (i > 1 && av[i - 1] && !is_flag_n (av[i - 1]))
+		// if (i > 1 && av[i - 1] && !is_flag_n (av[i - 1])) // TODO: check if ksng will handle this
+		// 	printf(" "); // substr = ft_strjoin_and_free(&substr, " ", 1);
+		parse_and_echo_substrs(&av[i], shell);
+		i++;
+	}
+	// if (!n_flag)
+	// 	printf("\n"); // TODO: check if ksng is handling this.
+	// start print statement
+	i = 1;
+	while (av[i])
+	{
+		printf("%s", av[i]);
+		if (i > 1)
 			printf(" ");
-		if (av[i])
-		{
-			parse_and_echo_substrs(av[i], shell);
-			i++;
-		}
+		i++;
 	}
 	if (!n_flag)
 		printf("\n");
+	// end print statement
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 10:26:20 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/23 23:07:14 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/26 14:27:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,35 @@ int	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final
 		}
 	}
 	return (1);
+}
+
+char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free)
+{
+	char	*tmp;
+	size_t	s_len;
+
+	if (!(*new_s) && !c)
+		return (NULL);
+	if (!c)
+		return (*new_s);
+	if (!(*new_s))
+	{
+		*new_s = malloc(2 * sizeof(char));
+		if (!(*new_s))
+			return (NULL);
+		ft_memcpy(*new_s, &c, 1);
+		(*new_s)[1] = '\0';
+		return (*new_s);
+	}
+	tmp = *new_s;
+	s_len = ft_strlen(*new_s);
+	*new_s = malloc((s_len + 2) * sizeof (char));
+	if (!(*new_s))
+		return (NULL);
+	ft_memcpy(*new_s, tmp, ft_strlen(tmp));
+	(*new_s)[s_len] = c;
+	(*new_s)[s_len + 1] = '\0';
+	if (to_free == 1 && tmp)
+		free(tmp);
+	return (*new_s);
 }
