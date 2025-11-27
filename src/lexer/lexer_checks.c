@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_checks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/21 18:23:27 by ksng             ###   ########.fr       */
+/*   Updated: 2025/11/27 22:49:17 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,7 @@ int	check_syntax(char *s)
 {
 	if (!s)
 		return (1);
-	// if (check_brackets_closed(s) == 0)
-	// 	return (syntax_err("Unexpected syntax error near the brackets.\n"));
-	/*else */if (check_commas_closed(s) == 0)
+	if (check_commas_closed(s) == 0)
 		return (syntax_err("Unclosed inv commas.\n"));
-	// else if (check_empty_brackets(s) == 0 || check_invalid_pipes(s) == 0)
-	// 	return (syntax_err("Syntax error."));
 	return (1);
 }

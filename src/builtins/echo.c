@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 19:13:23 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/28 00:37:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,8 @@ void parse_and_echo_substrs(char **s, t_shell *shell)
 
     while (substr[j])
     {
-        expanded = handle_asterisk(substr[j]); // get wildcard expansion
-        // TODO: add handle_dollars_tilde here if needed
-
+		expanded = handle_dollars_tilde(substr[j], shell);
+        expanded = handle_asterisk(expanded);
         if (s_final)
         {
             char *tmp = s_final;

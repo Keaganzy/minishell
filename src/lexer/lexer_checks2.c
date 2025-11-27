@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_checks2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:54:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 17:09:11 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/27 22:01:30 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,11 +55,9 @@ int	check_commas_closed(char *s)
 int	check_invalid_pipes(char *s)
 {
 	int	i;
-	int	has_args;
 	int	s_back;
 
 	i = 0;
-	has_args = 0;
 	s_back = ft_strlen(s);
 	while (s[i] && s[i] == ' ')
 		i++;

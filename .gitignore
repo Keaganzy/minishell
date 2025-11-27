@@ -57,3 +57,5 @@ dkms.conf
 # text files
 file1.txt
 file2.txt
+
+.DS_Store

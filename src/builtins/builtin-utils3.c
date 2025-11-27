@@ -3,19 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:34:29 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 19:15:21 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/27 23:21:53 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
-
-/* **************************************************************** */
-/*                       Helper: free **ptr                         */
-/* **************************************************************** */
 
 static void	free_tab(char **tab)
 {
@@ -32,32 +28,28 @@ static void	free_tab(char **tab)
 	free(tab);
 }
 
-/* **************************************************************** */
-/*               Split pattern by '*' into literal chunks           */
-/* **************************************************************** */
-
-static char	**split_chunks(char *pat, int *count)
+static char	**split_chunks(char *str, int *count)
 {
 	char	**res;
 	int		i;
 	int		j;
 	int		c;
 
-	res = malloc(sizeof(char *) * (ft_strlen(pat) + 1));
+	res = malloc(sizeof(char *) * (ft_strlen(str) + 1));
 	if (!res)
 		return (NULL);
 	i = 0;
 	c = 0;
-	while (pat[i])
+	while (str[i])
 	{
-		while (pat[i] == '*')
+		while (str[i] == '*')
 			i++;
-		if (!pat[i])
+		if (!str[i])
 			break ;
 		j = i;
-		while (pat[j] && pat[j] != '*')
+		while (str[j] && str[j] != '*')
 			j++;
-		res[c] = ft_strndup(pat + i, j - i);
+		res[c] = ft_strndup(str + i, j - i);
 		if (!res[c])
 			return (free_tab(res), NULL);
 		c++;
@@ -67,10 +59,6 @@ static char	**split_chunks(char *pat, int *count)
 	*count = c;
 	return (res);
 }
-
-/* **************************************************************** */
-/*                 Find the chunk inside str starting at pos        */
-/* **************************************************************** */
 
 static int	find_chunk(char *str, char *chunk, int pos)
 {
@@ -88,10 +76,6 @@ static int	find_chunk(char *str, char *chunk, int pos)
 	return (-1);
 }
 
-/* **************************************************************** */
-/*                   Match first chunk (prefix rule)                */
-/* **************************************************************** */
-
 static int	match_first(char *str, char **chunks, int *pos, int start_star)
 {
 	size_t	len;
@@ -105,13 +89,9 @@ static int	match_first(char *str, char **chunks, int *pos, int start_star)
 	return (0);
 }
 
-/* **************************************************************** */
-/*             Match middle chunks (ordered substrings rule)        */
-/* **************************************************************** */
-
 static int	match_middle(char *str, char **chunks, int n, int *pos)
 {
-	int		i;
+	int 	i;
 	int		newpos;
 
 	i = 1;
@@ -125,10 +105,6 @@ static int	match_middle(char *str, char **chunks, int n, int *pos)
 	}
 	return (0);
 }
-
-/* **************************************************************** */
-/*                     Match last chunk (suffix rule)               */
-/* **************************************************************** */
 
 static int	match_last(char *str, char **chunks, int n, int end_star)
 {
@@ -147,10 +123,6 @@ static int	match_last(char *str, char **chunks, int n, int end_star)
 		return (1);
 	return (0);
 }
-
-/* **************************************************************** */
-/*                       Main wildcard function                     */
-/* **************************************************************** */
 
 int	wildcard_match(char *pattern, char *str)
 {

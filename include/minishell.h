@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 19:11:54 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/28 00:22:56 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,8 @@ int	setup_redirections(t_ast *node, t_shell *shell);
 // builtins module
 void	free_substr (char **substr);
 char 	*handle_asterisk(char *substr);
-int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final);
+// int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final);
+char	*handle_dollars_tilde(char *chunk, t_shell *shell);
 void 	parse_and_echo_substrs(char **s, t_shell *shell);
 int		validate_identifiers(char **av);
 int		ft_echo(char **av, t_shell *shell);
