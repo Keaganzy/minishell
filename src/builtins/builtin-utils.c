@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 23:07:01 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/26 19:17:23 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/30 23:43:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,8 +48,7 @@ char *handle_asterisk(char *substr)
     }
     closedir(dir);
     if (!result) // no match
-        return ft_strdup(substr);
-
+        return (substr); // return ft_strdup(substr);
     return result;
 }
 
