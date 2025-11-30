@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 23:59:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 17:11:13 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/30 15:57:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-t_token	*token_new(t_token_type type, const char *value)
+t_token	*token_new(t_token_type type, const char *value, int s_quotes)
 {
 	t_token	*tok;
 
@@ -25,6 +25,9 @@ t_token	*token_new(t_token_type type, const char *value)
 		tok->value = (char *)value;
 	else
 		tok->value = NULL;
+	tok->single_quotes = 0;
+	if (s_quotes)
+		tok->single_quotes = 1;
 	tok->next = NULL;
 	return (tok);
 }

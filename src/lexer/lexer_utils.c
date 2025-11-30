@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:16:53 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/19 17:47:18 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/30 16:18:42 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*extract_word(const char *s, size_t *i)
 	return (ft_strndup(s + start, *i - start));
 }
 
-char	*extract_till_next_inv_comma(const char *s, size_t *i)
+char	*extract_till_next_inv_comma(const char *s, size_t *i, int *q)
 {
 	size_t			start;
 	unsigned char	inv_comma;
@@ -60,6 +60,8 @@ char	*extract_till_next_inv_comma(const char *s, size_t *i)
 	inv_comma = s[*i];
 	(*i)++;
 	start = *i;
+	if (inv_comma == '\'')
+		*q = 1;
 	while (s[*i] && s[*i] != inv_comma)
 		(*i)++;
 	(*i)++;
