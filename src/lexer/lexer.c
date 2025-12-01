@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/30 23:06:06 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/01 23:24:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 		*word = extract_till_next_inv_comma(s, i, &q);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 		return (1);
-	add_token_back(tokens, token_new(T_WORD, *word, q));
+	add_token_back(tokens, token_new(T_WORD, *word));
 	*word = NULL;
 	return (1);
 }
@@ -69,7 +69,7 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] == ' ' || s[*i] == '\0' || s[*i] == '<' || s[*i] == '>'
 		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&' )
 	{
-		add_token_back(tokens, token_new(T_WORD, *word, 0));
+		add_token_back(tokens, token_new(T_WORD, *word));
 		*word = NULL;
 	}
 	return (1);
@@ -89,13 +89,13 @@ t_token	*lex_input(const char *s)
 	while (s[i])
 	{
 		if (is_space((unsigned char)s[i]))
-			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL, 0));
+			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL));
 		else if (parse_quotes(&word, (char *)s, &tokens, &i))
 			continue ;
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '('
 			|| s[i] == ')' || s[i] == '&')
 		{
-			add_token_back (&tokens, token_new(get_op_type(s, &i), NULL, 0));
+			add_token_back (&tokens, token_new(get_op_type(s, &i), NULL));
 			word = NULL;
 		}
 		else if (parse_word(&word, (char *)s, &tokens, &i))

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/30 20:45:21 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/01 23:29:37 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ void parse_and_echo_substrs(char **s, t_shell *shell)
     while (substr[j])
     {
 		expanded = handle_dollars_tilde(substr[j], shell);
-		printf("expanded after dollars and tilde: %s\n", expanded);
         expanded = handle_asterisk(expanded);
-		printf("expanded after handling asterisk: %s\n", expanded);
         if (s_final)
         {
             char *tmp = s_final;
@@ -59,11 +57,9 @@ void parse_and_echo_substrs(char **s, t_shell *shell)
         {
             s_final = ft_strdup(expanded);
         }
-		printf("s_final after joining: %s\n", s_final);
         free(expanded);
         j++;
     }
-
     free_substr(substr);
     free(*s);
     *s = s_final;
