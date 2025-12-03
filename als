@@ -1,0 +1,18 @@
+ 
+als
+asd
+clean_logs.sh
+en.subject.pdf
+include
+lib
+logs
+Makefile
+minishell
+Minishell AST Visual Examples.pdf
+minishell_valgrind.supp
+obj
+Parser Precedence Visual Guide.pdf
+remake_minishell_valgrind_logs.sh
+shell_ast_implementation.txt
+src
+testing.c
