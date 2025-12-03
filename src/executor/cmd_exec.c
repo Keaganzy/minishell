@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/01 22:50:19 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 16:41:34 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int execute_cmd(t_ast *node, t_shell *shell)
 	while (node->argv[i])
 	{
 		//jtfunction(node->argv[i]);
+		expand_and_replace(&(node->argv[i]), shell);
 		i++;
 	}
 	if (is_builtin(node))

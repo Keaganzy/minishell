@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
+#    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/12/03 14:19:23 by jotong           ###   ########.fr        #
+#    Updated: 2025/12/03 16:43:31 by ksng             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -50,7 +50,8 @@ EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/cmd_exec.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/pipe_exec.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/redir_exec.c \
-					$(SRC_DIR)/$(EXECUTOR_DIR)/logical_exec.c
+					$(SRC_DIR)/$(EXECUTOR_DIR)/logical_exec.c \
+					$(SRC_DIR)/$(EXECUTOR_DIR)/strip_expand_exec.c
 REQ_SRC			:= $(SRC_DIR)/main.c $(SRC_DIR)/signals.c \
 					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/shell_utils_2.c \
 					$(SRC_DIR)/cleanup_utils.c \

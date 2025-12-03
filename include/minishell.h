@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 15:41:30 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 16:42:29 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,20 @@ typedef struct s_parser
 	t_token	*tokens;
 }	t_parser;
 
+typedef struct s_quote_state
+{
+	int	in_single;
+	int	in_double;
+}	t_quote_state;
+
+typedef struct s_expand_ctx
+{
+	char			**env;
+	t_quote_state	state;
+	int				i;
+	int				j;
+}	t_expand_ctx;
+
 
 // void	start_shell(t_shell *shell);
 void	set_signals(void);
@@ -141,6 +155,8 @@ int	setup_redir_append(char *filename);
 int	setup_heredoc(t_ast *node);
 int	execute_logical(t_ast *node, t_shell *shell);
 int	setup_redirections(t_ast *node, t_shell *shell);
+
+char	*expand_and_replace(char **s, t_shell *shell);
 
 // builtins module
 void	free_substr (char **substr);
