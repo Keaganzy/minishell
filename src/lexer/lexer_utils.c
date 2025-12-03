@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:16:53 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/30 16:18:42 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 11:06:41 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ char	*extract_word(const char *s, size_t *i)
 	return (ft_strndup(s + start, *i - start));
 }
 
+ // this extracts the substring starting from the character after
+ // the first inv comma (double or single) until the next equivalent inv comma
 char	*extract_till_next_inv_comma(const char *s, size_t *i, int *q)
 {
 	size_t			start;
