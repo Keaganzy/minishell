@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 16:57:54 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/03 18:23:30 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int	ft_echo(char **av, t_shell *shell)
 		output = ft_strjoin(output, "\n");
 		free(tmp);
 	}
-
 	// print the final output
 	write(1, output, ft_strlen(output));
 	// write(1, av[1], ft_strlen(av[1]));

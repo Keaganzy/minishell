@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:32:06 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/03 16:48:26 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/03 19:02:35 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void	init_quote_state(t_quote_state *state)
 {
 	state->in_single = 0;
 	state->in_double = 0;
+	state->flag = 0;
 }
 
 // static void	update_quote_state(char c, t_quote_state *state)
@@ -366,6 +367,11 @@ static int	copy_with_expansion(char *s, char *out, char **env)
 		{
 			if (!expand_variable(&s, &out, &i, env))
 				return (0);
+			if (*s == '*')
+			{
+				if (!expand_wildcard(&s, &out, &i))
+					return (0);
+			}
 		}
 		else if (*s == '*' && !state.in_single && !state.in_double)
 		{

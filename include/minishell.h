@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 16:42:29 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/03 18:17:23 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_quote_state
 {
 	int	in_single;
 	int	in_double;
+	int flag;
 }	t_quote_state;
 
 typedef struct s_expand_ctx
@@ -183,7 +184,7 @@ void	print_ast(t_ast *node);
 
 // parser module
 t_ast *parse(t_token *tokens);
-t_ast	*parse_or(t_parser *p);
+t_ast	*parse_and(t_parser *p);
 t_ast	*parse_command(t_parser *p);
 t_ast *parse_one_redir(t_parser *p, t_ast *cmd);
 void skip_spaces(t_parser *p);

@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/03 16:41:34 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/03 18:05:15 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,14 @@ int execute_cmd(t_ast *node, t_shell *shell)
 	if (!node->argv || !node->argv[0])
 		return (0);
 	//send arguements to function $ EXPANDER
-	while (node->argv[i])
+	if (is_builtin(node) && (ft_strncmp(node->argv[0], "echo", ft_strlen(node->argv[0])) == 0 && ft_strlen(node->argv[0]) == 4))
 	{
-		//jtfunction(node->argv[i]);
-		expand_and_replace(&(node->argv[i]), shell);
-		i++;
+		while (node->argv[i])
+		{
+			//jtfunction(node->argv[i]);
+			expand_and_replace(&(node->argv[i]), shell);
+			i++;
+		}
 	}
 	if (is_builtin(node))
 		status = execute_builtin(node, shell);

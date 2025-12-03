@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/21 18:57:19 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/03 18:18:38 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_ast	*parse_command(t_parser *p)
 	if (match(p, T_OPEN_BRACKET))
 	{
 		advance(p);
-		node = parse_or(p);
+		node = parse_and(p);
 		if (!node)
 			return (NULL);
 		if (!expect(p, T_CLOSE_BRACKET))

@@ -6,35 +6,35 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:20:42 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/25 14:08:56 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/03 18:17:56 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-static t_ast	*parse_and(t_parser *p);
+static t_ast	*parse_or(t_parser *p);
 static t_ast	*parse_pipe(t_parser *p);
 static t_ast	*parse_redirection(t_parser *p);
 
-t_ast	*parse_or(t_parser *p)
+t_ast	*parse_and(t_parser *p)
 {
 	t_ast	*left;
 	t_ast	*right;
 
-	left = parse_and(p);
+	left = parse_or(p);
 	if (!left)
 		return (NULL);
-	while (match(p, T_OR))
+	while (match(p, T_AND))
 	{
 		advance(p);
-		right = parse_and(p);
+		right = parse_or(p);
 		if (!right)
 		{
 			free_ast(left);
 			return (NULL);
 		}
-		left = create_binary_node(N_OR, left, right);
+		left = create_binary_node(N_AND, left, right);
 		if (!left)
 		{
 			free_ast(right);
@@ -44,7 +44,7 @@ t_ast	*parse_or(t_parser *p)
 	return (left);
 }
 
-static t_ast	*parse_and(t_parser *p)
+static t_ast	*parse_or(t_parser *p)
 {
 	t_ast	*left;
 	t_ast	*right;
@@ -52,7 +52,7 @@ static t_ast	*parse_and(t_parser *p)
 	left = parse_pipe(p);
 	if (!left)
 		return (NULL);
-	while (match(p, T_AND))
+	while (match(p, T_OR))
 	{
 		advance(p);
 		right = parse_pipe(p);
@@ -61,7 +61,7 @@ static t_ast	*parse_and(t_parser *p)
 			free_ast(left);
 			return (NULL);
 		}
-		left = create_binary_node(N_AND, left, right);
+		left = create_binary_node(N_OR, left, right);
 		if (!left)
 		{
 			free_ast(right);
@@ -175,7 +175,7 @@ t_ast *parse(t_token *tokens)
 	parser.current = tokens;
 	//parser.tokens = tokens; Used for error reporting later
 	skip_spaces(&parser);
-	ast = parse_or(&parser);
+	ast = parse_and(&parser);
 	if (!ast)
 		return (NULL);
 	skip_spaces(&parser);
