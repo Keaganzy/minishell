@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/01 23:24:11 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 13:43:03 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] != '"' && s[*i] != '\'')
 		return (0);
 	if (*word)
-		*word = ft_strjoin_and_free(word, extract_till_next_inv_comma(s, i, &q), 0);
+		*word = ft_strjoin_and_free(word, extract_till_next_inv_comma(s, i), 0);
 	else
-		*word = extract_till_next_inv_comma(s, i, &q);
+		*word = extract_till_next_inv_comma(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 		return (1);
 	add_token_back(tokens, token_new(T_WORD, *word));
