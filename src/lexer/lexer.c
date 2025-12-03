@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 13:43:03 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 14:19:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,24 @@ char	*ft_strjoin_and_free(char **new_s, char *substr, int to_free)
 	return (*new_s);
 }
 
+// static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
+// {
+// 	int	q;
+
+// 	q = 0;
+// 	if (s[*i] != '"' && s[*i] != '\'')
+// 		return (0);
+// 	if (*word)
+// 		*word = ft_strjoin_and_free(word, extract_till_next_inv_comma(s, i), 0);
+// 	else
+// 		*word = extract_till_next_inv_comma(s, i);
+// 	if (!(s[*i] == '\0' || s[*i] == ' '))
+// 		return (1);
+// 	add_token_back(tokens, token_new(T_WORD, *word));
+// 	*word = NULL;
+// 	return (1);
+// }
+
 static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 {
 	int	q;
@@ -51,9 +69,9 @@ static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] != '"' && s[*i] != '\'')
 		return (0);
 	if (*word)
-		*word = ft_strjoin_and_free(word, extract_till_next_inv_comma(s, i), 0);
+		*word = ft_strjoin_and_free(word, extract_word_with_inv_commas(s, i), 0);
 	else
-		*word = extract_till_next_inv_comma(s, i);
+		*word = extract_word_with_inv_commas(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 		return (1);
 	add_token_back(tokens, token_new(T_WORD, *word));
