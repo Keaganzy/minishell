@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 16:05:21 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 16:17:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,14 @@ int	check_syntax(char *s)
 int	check_has_equals(char *s)
 {
 	char	**substr;
-	int		i;
 
-	i = 0;
 	if (s[0] == '"' || s[0] == '\'')
 		substr = ft_split(s, s[0]);
 	else
 		substr = ft_split(s, ' ');
 	if (!substr)
 		return (0);
-	while (substr[i])
-	{
-		if (ft_strnstr(substr[i], "=", ft_strlen(substr[i])) != NULL)
-			return (printf("command \'%s\' not found.\n", substr[0]), 0);
-		i++;
-	}
+	if (ft_strnstr(substr[0], "=", ft_strlen(substr[0])) != NULL)
+		return (printf("command \'%s\' not found.\n", substr[0]), 0);
 	return (1);
 }
