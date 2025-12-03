@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 11:21:26 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/27 22:49:17 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,19 +71,4 @@ int	check_syntax(char *s)
 	if (check_commas_closed(s) == 0)
 		return (syntax_err("Unclosed inv commas.\n"));
 	return (1);
-}
-
-// this returns a pointer to the character after a substring containing inverted commas (double or single)
-char	*skip_till_next_inv_comma(const char *s, size_t *i, int *q)
-{
-	unsigned char	inv_comma;
-
-	inv_comma = s[*i];
-	(*i)++;
-	if (inv_comma == '\'')
-		*q = 1;
-	while (s[*i] && s[*i] != inv_comma)
-		(*i)++;
-	(*i)++;
-	return (&s[*i]);
 }

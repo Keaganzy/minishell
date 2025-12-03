@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 15:54:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 10:24:52 by jotong           ###   ########.fr       */
+/*   Updated: 2025/11/27 22:01:30 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,14 @@ static void	handle_inv_comma_count(char c, int *inv_comma, int *d_inv_comma)
 {
 	if (c == '"')
 	{
-		if (*inv_comma == 1)
-			return ;
-		else if (*d_inv_comma == 1)
+		if (*d_inv_comma == 1)
 			(*d_inv_comma)--;
 		else
 			(*d_inv_comma)++;
 	}
 	else if (c == '\'')
 	{
-		if (*d_inv_comma == 1)
-			return ;
-		else if (*inv_comma == 1)
+		if (*inv_comma == 1)
 			(*inv_comma)--;
 		else
 			(*inv_comma)++;
