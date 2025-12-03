@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 14:15:47 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 16:05:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,30 @@ int	check_syntax(char *s)
 {
 	if (!s)
 		return (1);
+	if (check_has_equals(s) == 0)
+		return (0);
 	if (check_commas_closed(s) == 0)
 		return (syntax_err("Unclosed inv commas.\n"));
 	return (1);
 }
 
+int	check_has_equals(char *s)
+{
+	char	**substr;
+	int		i;
+
+	i = 0;
+	if (s[0] == '"' || s[0] == '\'')
+		substr = ft_split(s, s[0]);
+	else
+		substr = ft_split(s, ' ');
+	if (!substr)
+		return (0);
+	while (substr[i])
+	{
+		if (ft_strnstr(substr[i], "=", ft_strlen(substr[i])) != NULL)
+			return (printf("command \'%s\' not found.\n", substr[0]), 0);
+		i++;
+	}
+	return (1);
+}

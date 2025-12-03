@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:16:27 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 14:17:51 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/03 14:48:13 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ char	*extract_word_with_inv_commas(const char *s, size_t *i)
 	unsigned char	inv_comma;
 
 	inv_comma = s[*i];
-	// (*i)++;
 	start = *i;
 	(*i)++;
 	while (s[*i] && s[*i] != inv_comma)
