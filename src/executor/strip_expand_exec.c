@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strip_expand_exec.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
+/*   Updated: 2025/12/07 16:39:44 by jotong           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include <dirent.h>
 #include "libft.h"
@@ -58,95 +70,85 @@ static char	*get_home_dir(char **env)
 
 int match_pattern(char *str, char *pattern)
 {
-    // R1: Termination
-    if (!*pattern)
-        return (!*str);
-    
-    // R2: Dotfile and Simple Character Matching
-    // Check if both strings start with a dot, OR if neither starts with a dot.
-    if (*str != *pattern && *pattern != '?')
-    {
-        // If the pattern starts with a literal char (or '?') AND it doesn't match
-        // the current char in str, then fail, unless pattern is '*'.
-        if (*pattern != '*')
-            return (0);
-    }
+	if (!*pattern)
+		return (!*str);
+	if (*str != *pattern && *pattern != '?')
+	{
+		if (*pattern != '*')
+			return (0);
+	}
+	if (*pattern == '.')
+	{
+		if (*str != '.')
+			return (0);
+	}
+	else if (*str == '.')
+	{
+		if (*pattern != '*')
+			return (0);
+	}
+	if (*pattern == '*')
+	{
+		while (*pattern == '*')
+			pattern++;
+		if (!*pattern)
+			return (1);
+		while (*str)
+		{
+			if (match_pattern(str, pattern))
+				return (1);
+			str++;
+		}
+		return (0);
+	}
+	if (*str && (*str == *pattern || *pattern == '?'))
+		return (match_pattern(str + 1, pattern + 1));
+	return (0);
+}
 
-    // R2.1: CRITICAL Dotfile Enforcement (Must fail if pattern requires a dot but string doesn't)
-    if (*pattern == '.') 
-    {
-        // If pattern starts with '.' but str does not, fail.
-        if (*str != '.')
-            return (0); 
-    } 
-    else if (*str == '.')
-    {
-        // If str starts with '.' but pattern does not, fail (unless pattern is '*').
-        if (*pattern != '*')
-            return (0);
-    }
-    
-    // R3: Wildcard '*'
-    if (*pattern == '*')
-    {
-        while (*pattern == '*')
-            pattern++;
-        if (!*pattern)
-            return (1);
-        
-        while (*str)
-        {
-            // IMPORTANT: Recursively call match_pattern with the rest of the pattern (pattern)
-            // against the rest of the string (str).
-            if (match_pattern(str, pattern))
-                return (1);
-            str++;
-        }
-        return (0); 
-    }
-    
-    // R4: Single Character Match ('?' or Literal Match)
-    if (*str && (*str == *pattern || *pattern == '?'))
-        return (match_pattern(str + 1, pattern + 1));
-    
-    return (0);
+static int	should_skip_dotdir(char *name, char *pattern)
+{
+	if (ft_strcmp(pattern, ".") == 0 || ft_strcmp(pattern, "..") == 0)
+		return (0);
+	if (pattern[0] == '.')
+		return (0);
+	if (ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0)
+		return (1);
+	return (0);
 }
 
 static char **get_matching_files(char *pattern)
 {
-    DIR             *dir;
-    struct dirent   *entry;
-    char            **matches;
-    int             count;
+	DIR				*dir;
+	struct dirent	*entry;
+	char			**matches;
+	int				count;
 
-    dir = opendir(".");
-    if (!dir)
-        return (NULL);
-    matches = malloc(sizeof(char *) * 1024);
-    count = 0;
-    entry = readdir(dir);
-    while (entry && count < 1023)
+	dir = opendir(".");
+	if (!dir)
+		return (NULL);
+	matches = malloc(sizeof(char *) * 1024);
+	count = 0;
+	entry = readdir(dir);
+	while (entry && count < 1023)
 	{
-		// Skip '.' and '..' unless the pattern is explicitly targeting them
-		if ((ft_strcmp(entry->d_name, ".") == 0 || ft_strcmp(entry->d_name, "..") == 0) &&
-			(ft_strcmp(pattern, ".") != 0 && ft_strcmp(pattern, "..") != 0 && pattern[0] != '.'))
+		if (should_skip_dotdir(entry->d_name, pattern))
 		{
 			entry = readdir(dir);
 			continue;
 		}
-
 		if (match_pattern(entry->d_name, pattern))
 			matches[count++] = ft_strdup(entry->d_name);
 		entry = readdir(dir);
 	}
-    matches[count] = NULL;
-    closedir(dir);
-    if (count == 0)
-    {
-        free(matches);
-        return (NULL);
-    }
-    return (matches);
+	matches[count] = NULL;
+	closedir(dir);
+	if (count == 0)
+	{
+		free(matches);
+		return (NULL);
+	}
+	return (matches);
 }
 
 static char	*join_matches(char **matches)
@@ -202,6 +204,20 @@ static int	contains_wildcard(char *s, char *end)
 	return (0);
 }
 
+static int	has_wildcard_ahead(char *s, t_quote_state *state)
+{
+	char	*tmp;
+
+	tmp = s;
+	while (*tmp && *tmp != ' ' && *tmp != '\t' && *tmp != '"' && *tmp != '\'')
+	{
+		if ((*tmp == '*' || *tmp == '?') && !state->in_single && !state->in_double)
+			return (1);
+		tmp++;
+	}
+	return (0);
+}
+
 /* ************************************************************************** */
 /*                           LENGTH CALCULATION                               */
 /* ************************************************************************** */
@@ -229,7 +245,6 @@ static size_t	calc_var_len(char *s, char **env)
 	if (!var_name)
 		return (0);
 	var_value = get_env_value(var_name, env);
-	
 	result = var_value ? ft_strlen(var_value) : 0;
 	free(var_name);
 	return (result);
@@ -248,11 +263,8 @@ static size_t	calc_wildcard_len(char **s)
 	while (**s && **s != ' ' && **s != '\t' && **s != '"' && **s != '\'')
 		(*s)++;
 	pattern_end = *s;
-	
-	// Check if pattern actually contains wildcards
 	if (!contains_wildcard(pattern_start, pattern_end))
 		return (pattern_end - pattern_start);
-	
 	pattern = ft_substr(pattern_start, 0, pattern_end - pattern_start);
 	matches = get_matching_files(pattern);
 	free(pattern);
@@ -298,7 +310,9 @@ static size_t	calculate_expanded_len(char *s, char **env)
 			len += calc_var_len(s, env);
 			s += get_var_len(s, 0);
 		}
-		else if (*s == '*' && !state.in_single && !state.in_double)
+		else if (!state.in_single && !state.in_double && 
+			(s == start || *(s - 1) == ' ' || *(s - 1) == '\t') &&
+			has_wildcard_ahead(s, &state))
 		{
 			len += calc_wildcard_len(&s);
 		}
@@ -365,16 +379,12 @@ static int	expand_wildcard(char **s, char **out, int *i)
 	while (**s && **s != ' ' && **s != '\t' && **s != '"' && **s != '\'')
 		(*s)++;
 	pattern_end = *s;
-	
-	// Check if pattern actually contains wildcards
 	if (!contains_wildcard(pattern_start, pattern_end))
 	{
-		// No wildcards, just copy literally
 		while (pattern_start < pattern_end)
 			(*out)[(*i)++] = *pattern_start++;
 		return (1);
 	}
-	
 	pattern = ft_substr(pattern_start, 0, pattern_end - pattern_start);
 	matches = get_matching_files(pattern);
 	if (!matches)
@@ -404,16 +414,15 @@ static int	copy_with_expansion(char *s, char *out, char **env)
 	init_quote_state(&state);
 	while (*s)
 	{
-		// Only strip quotes if they're actual delimiters, not literals
 		if (*s == '\'' && !state.in_double)
 		{
 			state.in_single = !state.in_single;
-			s++;  // Skip the quote (it's a delimiter)
+			s++;
 		}
 		else if (*s == '"' && !state.in_single)
 		{
 			state.in_double = !state.in_double;
-			s++;  // Skip the quote (it's a delimiter)
+			s++;
 		}
 		else if (*s == '~' && !state.in_single && !state.in_double
 			&& (s == start || *(s - 1) == ' '))
@@ -426,14 +435,15 @@ static int	copy_with_expansion(char *s, char *out, char **env)
 			if (!expand_variable(&s, &out, &i, env))
 				return (0);
 		}
-		else if (*s == '*' && !state.in_single && !state.in_double)
+		else if (!state.in_single && !state.in_double && 
+			(s == start || *(s - 1) == ' ' || *(s - 1) == '\t') &&
+			has_wildcard_ahead(s, &state))
 		{
 			if (!expand_wildcard(&s, &out, &i))
 				return (0);
 		}
 		else
 		{
-			// Copy everything else (including quotes that are literals)
 			out[i++] = *s++;
 		}
 	}
@@ -449,7 +459,6 @@ char	*expand_and_replace(char **s, t_shell *shell)
 
 	if (!s || !*s)
 		return (NULL);
-
 	original = *s;
 	len = calculate_expanded_len(original, shell->envp);
 	out = malloc(len + 1);
@@ -460,8 +469,7 @@ char	*expand_and_replace(char **s, t_shell *shell)
 		free(out);
 		return (NULL);
 	}
-	
-	free(original);  // Free the original
-	*s = out;        // Update caller's pointer
+	free(original);
+	*s = out;
 	return (out);
 }
