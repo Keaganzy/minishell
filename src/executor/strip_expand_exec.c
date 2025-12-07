@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   strip_expand_exec.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/03 14:32:06 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/07 15:46:51 by jotong           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 #include <dirent.h>
 #include "libft.h"
@@ -20,14 +8,6 @@ static void	init_quote_state(t_quote_state *state)
 	state->in_double = 0;
 	state->flag = 0;
 }
-
-// static void	update_quote_state(char c, t_quote_state *state)
-// {
-// 	if (c == '\'' && !state->in_double)
-// 		state->in_single = !state->in_single;
-// 	else if (c == '"' && !state->in_single)
-// 		state->in_double = !state->in_double;
-// }
 
 /* ************************************************************************** */
 /*                           VARIABLE EXPANSION                               */
@@ -208,6 +188,21 @@ static void	free_matches(char **matches)
 }
 
 /* ************************************************************************** */
+/*                      WILDCARD PATTERN DETECTION                            */
+/* ************************************************************************** */
+
+static int	contains_wildcard(char *s, char *end)
+{
+	while (s < end)
+	{
+		if (*s == '*' || *s == '?')
+			return (1);
+		s++;
+	}
+	return (0);
+}
+
+/* ************************************************************************** */
 /*                           LENGTH CALCULATION                               */
 /* ************************************************************************** */
 
@@ -253,6 +248,11 @@ static size_t	calc_wildcard_len(char **s)
 	while (**s && **s != ' ' && **s != '\t' && **s != '"' && **s != '\'')
 		(*s)++;
 	pattern_end = *s;
+	
+	// Check if pattern actually contains wildcards
+	if (!contains_wildcard(pattern_start, pattern_end))
+		return (pattern_end - pattern_start);
+	
 	pattern = ft_substr(pattern_start, 0, pattern_end - pattern_start);
 	matches = get_matching_files(pattern);
 	free(pattern);
@@ -365,6 +365,16 @@ static int	expand_wildcard(char **s, char **out, int *i)
 	while (**s && **s != ' ' && **s != '\t' && **s != '"' && **s != '\'')
 		(*s)++;
 	pattern_end = *s;
+	
+	// Check if pattern actually contains wildcards
+	if (!contains_wildcard(pattern_start, pattern_end))
+	{
+		// No wildcards, just copy literally
+		while (pattern_start < pattern_end)
+			(*out)[(*i)++] = *pattern_start++;
+		return (1);
+	}
+	
 	pattern = ft_substr(pattern_start, 0, pattern_end - pattern_start);
 	matches = get_matching_files(pattern);
 	if (!matches)
@@ -415,11 +425,6 @@ static int	copy_with_expansion(char *s, char *out, char **env)
 		{
 			if (!expand_variable(&s, &out, &i, env))
 				return (0);
-			// if (*s == '*')
-			// {
-			// 	if (!expand_wildcard(&s, &out, &i))
-			// 		return (0);
-			// }
 		}
 		else if (*s == '*' && !state.in_single && !state.in_double)
 		{

@@ -6,16 +6,40 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 10:26:20 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/01 23:28:49 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/07 16:25:40 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
+
+static char	*strip_outer_quotes(char *str)
+{
+	size_t	len;
+	char	*result;
+
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	
+	// Check if string is wrapped in matching quotes
+	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"') ||
+		(str[0] == '\'' && str[len - 1] == '\'')))
+	{
+		// Return substring without first and last character
+		result = ft_substr(str, 1, len - 2);
+		return (result);
+	}
+	
+	// No outer quotes, return duplicate
+	return (ft_strdup(str));
+}
+
 int	add_update_env_vars(t_shell *shell, char *av)
 {
 	char	*val;
+	char	*val_stripped;
 	char	*key;
 	int		i;
 	int		status;
@@ -26,10 +50,16 @@ int	add_update_env_vars(t_shell *shell, char *av)
 		i++;
 	key = ft_strndup(av, i);
 	val = ft_strdup(&av[i + 1]);
-	if (setenv_value(&shell->envp, key, val) != 0)
-		status = 1;
-	free(key);
+	
+	// Strip outer quotes from the value
+	val_stripped = strip_outer_quotes(val);
 	free(val);
+	
+	if (setenv_value(&shell->envp, key, val_stripped) != 0)
+		status = 1;
+	
+	free(key);
+	free(val_stripped);
 	return (status);
 }
 
