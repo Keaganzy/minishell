@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_expand_exec.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 14:32:06 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/03 19:02:35 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/07 13:18:17 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,7 +295,7 @@ static int	expand_variable(char **s, char **out, int *i, char **env)
 	if (!var_name)
 		return (0);
 	var_value = get_env_value(var_name, env);
-	if (var_value)
+	if (var_value != NULL)
 	{
 		ft_strlcpy(*out + *i, var_value, ft_strlen(var_value) + 1);
 		*i += ft_strlen(var_value);
