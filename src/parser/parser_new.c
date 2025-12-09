@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_new.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:20:42 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/09 18:00:33 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 21:39:03 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ static t_ast *parse_redirection(t_parser *p, t_shell *shell)
                 return (NULL);
         }
     }
-    else if (cmd)
+    else if (!cmd)
     {
         // We have redirections but no command - ERROR!
         free_ast(cmd);
