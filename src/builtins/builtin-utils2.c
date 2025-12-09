@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 10:26:20 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/07 16:25:40 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 15:42:08 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static char	*strip_outer_quotes(char *str)
 	if (!str)
 		return (NULL);
 	len = ft_strlen(str);
-	
+
 	// Check if string is wrapped in matching quotes
 	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"') ||
 		(str[0] == '\'' && str[len - 1] == '\'')))
@@ -31,12 +31,12 @@ static char	*strip_outer_quotes(char *str)
 		result = ft_substr(str, 1, len - 2);
 		return (result);
 	}
-	
+
 	// No outer quotes, return duplicate
 	return (ft_strdup(str));
 }
 
-int	add_update_env_vars(t_shell *shell, char *av)
+int	add_update_env_vars(t_shell *shell, const char *av)
 {
 	char	*val;
 	char	*val_stripped;
@@ -50,14 +50,14 @@ int	add_update_env_vars(t_shell *shell, char *av)
 		i++;
 	key = ft_strndup(av, i);
 	val = ft_strdup(&av[i + 1]);
-	
+
 	// Strip outer quotes from the value
 	val_stripped = strip_outer_quotes(val);
 	free(val);
-	
+
 	if (setenv_value(&shell->envp, key, val_stripped) != 0)
 		status = 1;
-	
+
 	free(key);
 	free(val_stripped);
 	return (status);
@@ -83,7 +83,7 @@ static size_t	expand_variable(char *chunk, size_t k, char **s_final, t_shell *sh
     char	*val;
     char	*v_name;
     int		v_len;
-    
+
     k++;
     if (chunk[k] == '?')
     {
@@ -115,7 +115,7 @@ char	*handle_dollars_tilde(char *chunk, t_shell *shell)
     size_t	k;
     char	*s_final;
     char	*val;
-    
+
     k = 0;
     s_final = NULL;
     while (chunk[k])
@@ -125,9 +125,9 @@ char	*handle_dollars_tilde(char *chunk, t_shell *shell)
             val = getenv_value(shell->envp, "HOME");
             if (val)
                 s_final = ft_strjoin_and_free(&s_final, val, 1);
-            k++; 
+            k++;
             if (chunk[k] == '/')
-                k++; 
+                k++;
             continue;
         }
         if (chunk[k] == '$')
@@ -135,7 +135,7 @@ char	*handle_dollars_tilde(char *chunk, t_shell *shell)
             k = expand_variable(chunk, k, &s_final, shell);
             continue;
         }
-        
+
         s_final = ft_strjoin_char_and_free(&s_final, chunk[k], 1);
         k++;
     }
