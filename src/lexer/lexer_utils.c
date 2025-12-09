@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:16:53 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 13:43:40 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 21:32:20 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*extract_word(const char *s, size_t *i)
 	start = *i;
 	while (s[*i] && !is_space((unsigned char)s[*i]) && s[*i] != '|'
 		&& s[*i] != '<' && s[*i] != '>' && s[*i] != '(' && s[*i] != ')'
-		&& s[*i] != '"' && s[*i] != '\'')
+		&& s[*i] != '"' && s[*i] != '\'' && s[*i] != '&')
 	{
 		(*i)++;
 	}

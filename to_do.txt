@@ -60,6 +60,10 @@ need to stop parsing for variable (and create a new token) when i stop seeing al
 
 cd " " should return an error
 
+echo a&&echo b should print:
+a
+b
+
 
 EXPECTED BEHAVIOUR
 - HEREDOC DOESNT EXPAND ' ' VAR
