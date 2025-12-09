@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_expand_exec.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/07 16:39:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 10:56:49 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ static int	should_skip_dotdir(char *name, char *pattern)
 	if (pattern[0] == '.')
 		return (0);
 	if (ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0)
+		return (1);
+	if (name[0] == '.' && pattern[0] != '.')  // Skip hidden files
 		return (1);
 	return (0);
 }

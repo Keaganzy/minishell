@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/07 15:46:28 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 11:09:34 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,24 +75,17 @@ int	ft_echo(char **av, t_shell *shell)
 	i = 1;
 	n_flag = 0;
 	output = NULL;
-
-	// skip -n flags
 	while (av[i] && av[i][0] == '-' && is_flag_n(av[i]))
 	{
 		n_flag = 1;
 		i++;
 	}
-	// loop over remaining arguments
 	while (av[i])
 	{
-		char *expanded = ft_strdup(av[i]); // copy original argument
+		char *expanded = ft_strdup(av[i]);
 		if (!expanded)
-			return (1); // malloc failure
-
-		// expand $VAR, ~, and wildcard patterns in-place
+			return (1);
 		parse_and_echo_substrs(&expanded, shell);
-
-		// append to output string
 		if (output)
 		{
 			char *tmp = output;
@@ -112,22 +105,16 @@ int	ft_echo(char **av, t_shell *shell)
 		free(expanded);
 		i++;
 	}
-
 	if (!output)
-		output = ft_strdup(""); // nothing to print
-
-	// add newline if no -n
+		output = ft_strdup("");
 	if (!n_flag)
 	{
 		char *tmp = output;
 		output = ft_strjoin(output, "\n");
 		free(tmp);
 	}
-	// print the final output
 	write(1, output, ft_strlen(output));
-	// write(1, av[1], ft_strlen(av[1]));
 	free(output);
-
 	return (0);
 }
 
