@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_redirect_new.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/03 18:18:38 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/09 18:36:56 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,14 @@ t_ast *parser_word(t_parser *p)
 	return (node);
 }
 
-t_ast	*parse_command(t_parser *p)
+t_ast	*parse_command(t_parser *p, t_shell *shell)
 {
 	t_ast	*node;
 
 	if (match(p, T_OPEN_BRACKET))
 	{
 		advance(p);
-		node = parse_and(p);
+		node = parse_and(p, shell);
 		if (!node)
 			return (NULL);
 		if (!expect(p, T_CLOSE_BRACKET))
@@ -67,13 +67,46 @@ t_ast	*parse_command(t_parser *p)
 
 //parse_redir
 
-t_ast *parse_one_redir(t_parser *p, t_ast *cmd)
+char	*strip_quotes(const char *str, int *flag)
+{
+	char	*result;
+	int		i;
+	int		j;
+	char	quote;
+
+	i = 0;
+	j = 0;
+	result = malloc(strlen(str) + 1);
+	if (!result)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == '"' || str[i] == '\'')
+		{
+			quote = str[i];
+			*flag = 1;
+			i++;
+			while (str[i] && str[i] != quote)
+				result[j++] = str[i++];
+			if (str[i] == quote)
+				i++;
+		}
+		else
+			result[j++] = str[i++];
+	}
+	result[j] = '\0';
+	return (result);
+}
+
+t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 {
 	t_token		*redir_token;
 	t_token		*file_token;
 	t_node_type redir_type;
 	t_ast		*node;
+	int flag;
 
+	flag = 0;
 	redir_token = advance(p);
 	redir_type = get_redir_type(redir_token->type);
 	file_token = expect(p, T_WORD);
@@ -84,9 +117,14 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd)
 	}
 	if (redir_type == N_HEREDOC)
 	{
+		file_token->value = strip_quotes(file_token->value, &flag);
 		node = create_redir_node(redir_type, file_token->value, cmd);
 		if (node)
+		{
 			node->heredoc_content = read_heredoc_content(file_token->value);
+			if (!flag)
+				node->heredoc_content = expand_and_replace(&(node->heredoc_content), shell);
+		}
 		return (node);
 	}
 	return (create_redir_node(redir_type, file_token->value, cmd));

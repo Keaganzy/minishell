@@ -1,0 +1,24 @@
+make wildcard look for UNcasesensitive.
+handle echo $? in parser to expand to last command
+export 1VAR=test (cant take number before)
+export doesnt take trailing UNDERSCORE
+
+[exit case to print 
+jotong@c2r4s2:~/minishell$ exit abc
+exit
+bash: exit: abc: numeric argument required 
+SET EXIT CODE]
+
+[print error of 
+jotong@c2r4s2 ~/minishell % | cat
+zsh: parse error near `|']
+
+ls 2>err.txt >out.txt (NEED TO FIX SO REDIR TAKES FROM CORRECT OUT)
+
+
+
+
+
+
+EXPECTED BEHAVIOUR
+- HEREDOC DOESNT EXPAND ' ' VAR

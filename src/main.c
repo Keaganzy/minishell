@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 16:17:55 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 17:53:03 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,11 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 		history_add(line);
+		printf("before lex input\n");
 		tokens = lex_input(line);
+		printf("after lex input\n");
 		print_token_stream_colored(tokens);
-		ast = parse(tokens);
+		ast = parse(tokens, shell);
 		print_ast(ast);
 		if (ast)
 			execute_ast(ast, shell);

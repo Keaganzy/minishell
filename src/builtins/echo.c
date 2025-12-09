@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 14:50:31 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/09 17:15:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ int	ft_echo(char **av, t_shell *shell)
 		char *expanded = ft_strdup(av[i]);
 		if (!expanded)
 			return (1);
-		parse_and_echo_substrs(&expanded, shell);
+		// parse_and_echo_substrs(&expanded, shell);
 		if (output)
 		{
 			char *tmp = output;

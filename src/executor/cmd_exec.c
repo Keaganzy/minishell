@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/09 16:00:37 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/09 16:11:40 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,7 +136,7 @@ int execute_cmd(t_ast *node, t_shell *shell)
 		{
 			//jtfunction(node->argv[i]);
 			expand_and_replace(&(node->argv[i]), shell);
-			printf("---->%s\n",node->argv[i]);
+			// printf("---->%s\n",node->argv[i]);
 			i++;
 		}
 	}

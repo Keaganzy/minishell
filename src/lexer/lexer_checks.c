@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/03 16:17:06 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/09 16:23:00 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ static int	syntax_err(char *msg)
 
 int	check_syntax(char *s)
 {
-	if (!s)
-		return (1);
+	if (!s || !*s || (ft_strlen(s) == 1 && *s == ' '))
+		return (0);
 	if (check_has_equals(s) == 0)
 		return (0);
 	if (check_commas_closed(s) == 0)

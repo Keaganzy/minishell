@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 15:41:32 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/09 17:59:37 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,10 +150,10 @@ int	execute_builtin(t_ast *ast, t_shell *shell);
 char	**get_paths_from_env(char **envp);
 int execute_pipe(t_ast *node, t_shell *shell);
 int	execute_redir(t_ast *node, t_shell *shell);
-int	setup_redir_in(char *filename);
-int	setup_redir_out(char *filename);
-int	setup_redir_append(char *filename);
-int	setup_heredoc(t_ast *node);
+int	setup_redir_in(char *filename, t_shell *shell);
+int	setup_redir_out(char *filename, t_shell *shell);
+int	setup_redir_append(char *filename, t_shell *shell);
+int	setup_heredoc(t_ast *node, t_shell *shell);
 int	execute_logical(t_ast *node, t_shell *shell);
 int	setup_redirections(t_ast *node, t_shell *shell);
 
@@ -183,10 +183,10 @@ char	**setup_args_arr(char **new_av, int *i, int *n_flag);
 void	print_ast(t_ast *node);
 
 // parser module
-t_ast *parse(t_token *tokens);
-t_ast	*parse_and(t_parser *p);
-t_ast	*parse_command(t_parser *p);
-t_ast *parse_one_redir(t_parser *p, t_ast *cmd);
+t_ast *parse(t_token *tokens, t_shell *shell);
+t_ast	*parse_and(t_parser *p, t_shell *shell);
+t_ast	*parse_command(t_parser *p, t_shell *shell);
+t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell);
 void skip_spaces(t_parser *p);
 t_token	*peek(t_parser *p);
 t_token	*advance(t_parser *p);

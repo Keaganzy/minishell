@@ -987,7 +987,7 @@ char	*expand_and_replace(char **s, t_shell *shell)
 	free(quote_map);
 	if (!step2_result)
 		return (NULL);
-	free(original);
+	//free(original);
 	*s = step2_result;
 	return (step2_result);
 }

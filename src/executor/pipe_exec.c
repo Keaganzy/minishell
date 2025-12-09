@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:39:15 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/18 22:32:13 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/09 19:16:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
 	if (WIFEXITED(status2))
-		final_status = WIFEXITED(status2);
+		final_status = WEXITSTATUS(status2);
 	else
 		final_status = 1;
 	return (final_status);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/11/18 15:04:13 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/09 16:52:30 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,33 +87,40 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 	return (0);
 }
 
-int	unsetenv_value(char ***envp, const char *key)
+int unsetenv_value(char ***envp, const char *key)
 {
-	int		i;
-	int		freed;
-	size_t	k_len;
+    int     i;
+    int     j;
+    size_t  k_len;
 
-	i = 0;
-	freed = -1;
-	k_len = ft_strlen(key);
-	while ((*envp)[i])
-	{
-		if (ft_strncmp((*envp)[i], key, k_len) == 0
-			&& (*envp)[i][k_len] == '=')
-		{
-			free((*envp)[i]);
-			freed = i;
-		}
-		if (freed != -1 && i >= freed)
-		{
-			if ((*envp)[i+1])
-				(*envp)[i] = (*envp)[i+1];
-			else
-				(*envp)[i] = NULL;
-		}
-		i++;
-	}
-	(*envp) = realloc((*envp), (i - 1) * sizeof(char *));
-	return (0);
+    i = 0;
+    j = 0;  // New index for compacted array
+    k_len = ft_strlen(key);
+    
+    // Compact the array by skipping matching entries
+    while ((*envp)[i])
+    {
+        if (ft_strncmp((*envp)[i], key, k_len) == 0
+            && (*envp)[i][k_len] == '=')
+        {
+            // Found a match - free it and skip
+            free((*envp)[i]);
+        }
+        else
+        {
+            // Keep this entry - move it to position j
+            (*envp)[j] = (*envp)[i];
+            j++;
+        }
+        i++;
+    }
+    
+    // Null-terminate at the new end
+    (*envp)[j] = NULL;
+    
+    // Realloc to the correct size (j elements + 1 for NULL)
+    *envp = realloc(*envp, (j + 1) * sizeof(char *));
+    
+    return (0);
 }
 
