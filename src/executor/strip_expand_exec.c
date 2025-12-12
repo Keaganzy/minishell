@@ -103,7 +103,7 @@
 // static int	should_skip_entry(char *name, char *pattern)
 // {
 // 	if (ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0)
-// 		return (1);
+// 		return (1);/
 // 	if (name[0] == '.' && pattern[0] != '.')
 // 		return (1);
 // 	return (0);
@@ -252,7 +252,7 @@
 // 	size_t	len;
 
 // 	pattern_start = *s;
-// 	while (**s && **s != ' ' && **s != '\t' && **s != '"' && **s != '\'')
+// 	while (**s && **s != ' '/ && **s != '\t' && **s != '"' && **s != '\'')
 // 		(*s)++;
 // 	pattern_end = *s;
 // 	if (!contains_wildcard(pattern_start, pattern_end))

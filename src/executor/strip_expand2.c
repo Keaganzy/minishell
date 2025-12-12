@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/12 19:15:35 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/12 19:40:58 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,34 +30,41 @@ static size_t	get_var_len(char *s)
 	size_t	len;
 
 	len = 0;
+	if (s[len] == '?')
+	{
+		len++;
+		return (len);
+	}
 	while (s[len] && (ft_isalnum(s[len]) || s[len] == '_'))
 		len++;
 	return (len);
 }
 
-static char	*get_env_value(char *var_name, char **env)
+static char	*get_env_value(char *var_name, t_shell *shell)
 {
 	int		i;
 	size_t	len;
 
-	if (!var_name || !env)
+	if (!var_name || !shell->envp)
 		return (NULL);
 	len = ft_strlen(var_name);
 	i = 0;
-	while (env[i])
+	if (len == 1 && *var_name == '?')
+		return (ft_itoa(shell->last_exit_status));
+	while (shell->envp[i])
 	{
-		if (ft_strncmp(env[i], var_name, len) == 0 && env[i][len] == '=')
-			return (env[i] + len + 1);
+		if (ft_strncmp(shell->envp[i], var_name, len) == 0 && shell->envp[i][len] == '=')
+			return (shell->envp[i] + len + 1);
 		i++;
 	}
 	return (NULL);
 }
 
-static char	*get_home_dir(char **env)
+static char	*get_home_dir(t_shell *shell)
 {
 	char	*home;
 
-	home = get_env_value("HOME", env);
+	home = get_env_value("HOME", shell);
 	if (!home)
 		return ("/tmp");
 	return (home);
@@ -184,11 +191,12 @@ static char	*join_matches(char **matches)
 /*                      STEP 1: LENGTH CALCULATION                            */
 /* ************************************************************************** */
 
-static size_t	calc_var_len(char *s, char **env)
+static size_t	calc_var_len(char *s, t_shell *shell)
 {
 	size_t	len;
 	char	*name;
 	char	*value;
+	int		v_len;
 
 	len = get_var_len(s);
 	if (len == 0)
@@ -196,8 +204,14 @@ static size_t	calc_var_len(char *s, char **env)
 	name = ft_substr(s, 0, len);
 	if (!name)
 		return (0);
-	value = get_env_value(name, env);
+	value = get_env_value(name, shell);
 	free(name);
+	if (len == 1 && value && *value == '?')
+	{
+		v_len = ft_strlen(value);
+		free(value);
+		return (v_len);
+	}
 	return (value ? ft_strlen(value) : 0);
 }
 
@@ -209,7 +223,7 @@ static void	update_quotes(char c, t_quote_state *state)
 		state->in_double = !state->in_double;
 }
 
-static size_t	calc_len(char *s, char **env)
+static size_t	calc_len(char *s, t_shell *shell)
 {
 	size_t			len;
 	t_quote_state	state;
@@ -223,13 +237,13 @@ static size_t	calc_len(char *s, char **env)
 		else if (*s == '~' && !state.in_single && !state.in_double
 			&& (*(s - 1) == ' '))
 		{
-			len += ft_strlen(get_home_dir(env));
+			len += ft_strlen(get_home_dir(shell));
 			s++;
 		}
 		else if (*s == '$' && !state.in_single && *(s + 1))
 		{
 			s++;
-			len += calc_var_len(s, env);
+			len += calc_var_len(s, shell);
 			s += get_var_len(s);
 		}
 		else
@@ -253,13 +267,13 @@ typedef struct s_exp
 	t_quote_state	state;
 }	t_exp;
 
-static int	exp_tilde(char **s, t_exp *e, char **env)
+static int	exp_tilde(char **s, t_exp *e, t_shell *shell)
 {
 	char	*home;
 	int		is_quoted;
 	size_t	j;
 
-	home = get_home_dir(env);
+	home = get_home_dir(shell);
 	is_quoted = (e->state.in_single || e->state.in_double);
 	j = 0;
 	while (home[j])
@@ -271,7 +285,7 @@ static int	exp_tilde(char **s, t_exp *e, char **env)
 	return (1);
 }
 
-static int	exp_var(char **s, t_exp *e, char **env)
+static int	exp_var(char **s, t_exp *e, t_shell *shell)
 {
 	char	*name;
 	char	*value;
@@ -286,7 +300,7 @@ static int	exp_var(char **s, t_exp *e, char **env)
 	name = ft_substr(*s, 0, len);
 	if (!name)
 		return (0);
-	value = get_env_value(name, env);
+	value = get_env_value(name, shell);
 	j = 0;
 	if (value)
 		while (value[j])
@@ -299,27 +313,27 @@ static int	exp_var(char **s, t_exp *e, char **env)
 	return (1);
 }
 
-static int	process_char(char **s, t_exp *e, char **env)
+static int	process_char(char **s, t_exp *e, t_shell *shell)
 {
 	if (**s == '\'' && !e->state.in_double)
 		return (e->state.in_single = !e->state.in_single, (*s)++, 1);
 	else if (**s == '"' && !e->state.in_single)
 		return (e->state.in_double = !e->state.in_double, (*s)++, 1);
 	else if (**s == '~' && !e->state.in_single && !e->state.in_double)
-		return (exp_tilde(s, e, env));
+		return (exp_tilde(s, e, shell));
 	else if (**s == '$' && !e->state.in_single && *(*s + 1))
-		return (exp_var(s, e, env));
+		return (exp_var(s, e, shell));
 	else
 		return (e->out[e->i] = **s, e->map[e->i++] = (e->state.in_single
 				|| e->state.in_double), (*s)++, 1);
 }
 
-static char	*expand_strip(char *s, char **env, char **map_out)
+static char	*expand_strip(char *s, t_shell *shell, char **map_out)
 {
 	t_exp	e;
 	size_t	len;
 
-	len = calc_len(s, env);
+	len = calc_len(s, shell);
 	e.out = malloc(len + 1);
 	e.map = malloc(len + 1);
 	if (!e.out || !e.map)
@@ -327,7 +341,7 @@ static char	*expand_strip(char *s, char **env, char **map_out)
 	e.i = 0;
 	init_quote_state(&e.state);
 	while (*s)
-		if (!process_char(&s, &e, env))
+		if (!process_char(&s, &e, shell))
 			return (free(e.out), free(e.map), NULL);
 	e.out[e.i] = '\0';
 	e.map[e.i] = '\0';
@@ -501,7 +515,7 @@ char	*expand_and_replace(char **s, t_shell *shell)
 	if (!s || !*s)
 		return (NULL);
 	orig = *s;
-	step1 = expand_strip(orig, shell->envp, &map);
+	step1 = expand_strip(orig, shell, &map);
 	if (!step1)
 		return (NULL);
 	step2 = expand_wild(step1, map);

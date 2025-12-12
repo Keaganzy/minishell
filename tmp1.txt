@@ -1,9 +1,0 @@
-a
-ab
-clean_logs.sh
-Makefile
-Minishell AST Visual Examples.pdf
-minishell_valgrind.supp
-Parser Precedence Visual Guide.pdf
-remake_minishell_valgrind_logs.sh
-shell_ast_implementation.txt
