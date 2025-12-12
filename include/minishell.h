@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/12 18:33:25 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/12 20:38:25 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
+	int fd;
 	struct s_token	*next;
 }	t_token;
 
@@ -81,6 +82,7 @@ typedef struct	s_ast // abstract syntax tree
 	char			*heredoc_content; // for heredoc content
 	struct s_ast	*left;		// left side of a pipe
 	struct s_ast	*right;		// right side of a pipe
+	int fd;
 }	t_ast;
 
 typedef struct s_parser
@@ -125,7 +127,7 @@ void			free_tokens(t_token *tokens);
 char			*extract_word(const char *s, size_t *i);
 t_token 		*lex_input(const char *s);
 int				check_syntax(char *s);
-t_token			*token_new(t_token_type type, const char *value);
+t_token			*token_new(t_token_type type, const char *value, int fd);
 void			add_token_back(t_token **lst, t_token *new);
 void			token_free(t_token *tok);
 void			token_free_all(t_token **lst);
@@ -198,7 +200,7 @@ int	count_words(t_parser *p);
 char	*read_heredoc_content(char *delimiter);
 t_ast	*create_node(t_node_type type);
 t_ast	*create_binary_node(t_node_type type, t_ast *left, t_ast *right);
-t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd);
+t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd, int fd);
 t_ast	*new_ast(t_node_type type);
 void free_ast(t_ast *node);
 t_ast *parser_word(t_parser *p);

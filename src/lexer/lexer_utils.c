@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:16:53 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 21:32:20 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/12 20:17:40 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,30 @@ char	*extract_till_next_inv_comma(const char *s, size_t *i)
 	return (ft_strndup(s + start, *i - start - 1));
 }
 
+static int	extract_fd(const char *s, size_t *i)
+{
+	size_t	start;
+	int		fd;
+
+	start = *i;
+	while (ft_isdigit(s[*i]))
+		(*i)++;
+	if (*i == start)
+		return (-1);
+	if (s[*i] != '<' && s[*i] != '>')
+	{
+		*i = start;
+		return (-1);
+	}
+	fd = ft_atoi(s + start);
+	return (fd);
+}
+
 t_token_type	get_op_type(const char *s, size_t *i)
 {
+	int	fd;
+
+	fd = extract_fd(s, i);
 	if (s[*i] == '<')
 	{
 		if (s[*i + 1] == '<')

@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 17:39:56 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/14 19:59:56 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/12 20:44:18 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_ast	*create_node(t_node_type type)
 	node->heredoc_content = NULL;
 	node->left = NULL;
 	node->right = NULL;
+	node->fd = -1;
 	return (node);
 }
 
@@ -41,7 +42,7 @@ t_ast	*create_binary_node(t_node_type type, t_ast *left, t_ast *right)
 	return (node);
 }
 
-t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd)
+t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd, int fd)
 {
 	t_ast	*node;
 
@@ -55,6 +56,15 @@ t_ast	*create_redir_node(t_node_type type, char *filename, t_ast *cmd)
 		return (NULL);
 	}
 	node->left = cmd;
+	if (fd == -1)
+	{
+		if (type == N_REDIR_IN || type == N_HEREDOC)
+			node->fd = 0;
+		else
+			node->fd = 1;
+	}
+	else
+		node->fd = fd;
 	return (node);
 }
 

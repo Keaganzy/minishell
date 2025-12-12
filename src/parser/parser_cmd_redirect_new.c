@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_redirect_new.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/09 18:36:56 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/12 20:33:53 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,10 +105,12 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 	t_node_type redir_type;
 	t_ast		*node;
 	int flag;
+	int fd;
 
 	flag = 0;
 	redir_token = advance(p);
 	redir_type = get_redir_type(redir_token->type);
+	fd = redir_token->fd;
 	file_token = expect(p, T_WORD);
 	if (!file_token)
 	{
@@ -118,7 +120,7 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 	if (redir_type == N_HEREDOC)
 	{
 		file_token->value = strip_quotes(file_token->value, &flag);
-		node = create_redir_node(redir_type, file_token->value, cmd);
+		node = create_redir_node(redir_type, file_token->value, cmd, fd);
 		if (node)
 		{
 			node->heredoc_content = read_heredoc_content(file_token->value);
@@ -127,5 +129,5 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 		}
 		return (node);
 	}
-	return (create_redir_node(redir_type, file_token->value, cmd));
+	return (create_redir_node(redir_type, file_token->value, cmd, fd));
 }

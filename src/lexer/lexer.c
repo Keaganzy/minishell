@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/12 16:00:14 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/12 20:41:21 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 		*word = extract_word_with_inv_commas(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 		return (1);
-	add_token_back(tokens, token_new(T_WORD, *word));
+	add_token_back(tokens, token_new(T_WORD, *word, -1));
 	*word = NULL;
 	return (1);
 }
@@ -85,17 +85,42 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] == ' ' || s[*i] == '\0' || s[*i] == '<' || s[*i] == '>'
 		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&' || s[*i] == '|')
 	{
-		add_token_back(tokens, token_new(T_WORD, *word));
+		add_token_back(tokens, token_new(T_WORD, *word, -1));
 		*word = NULL;
 	}
 	return (1);
+}
+
+static int	extract_fd_for_lexer(const char *s, size_t *i)
+{
+	size_t	start;
+	int		fd;
+
+	start = *i;
+	while (ft_isdigit(s[*i]))
+		(*i)++;
+	fd = ft_atoi(s + start);
+	return (fd);
+}
+
+static int	is_fd_redir(const char *s, size_t i)
+{
+	if (!ft_isdigit(s[i]))
+		return (0);
+	while (ft_isdigit(s[i]))
+		i++;
+	if (s[i] == '<' || s[i] == '>')
+		return (1);
+	return (0);
 }
 
 t_token	*lex_input(const char *s)
 {
 	size_t			i;
 	t_token			*tokens;
-	char			*word;	
+	char			*word;
+	int				fd;
+	t_token_type	type;
 
 	i = 0;
 	tokens = NULL;
@@ -105,13 +130,20 @@ t_token	*lex_input(const char *s)
 	while (s[i])
 	{
 		if (is_space((unsigned char)s[i]))
-			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL));
+			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL, -1));
 		else if (parse_quotes(&word, (char *)s, &tokens, &i))
 			continue ;
+		else if (is_fd_redir(s, i))
+		{
+			fd = extract_fd_for_lexer(s, &i);
+			type = get_op_type(s, &i);
+			add_token_back(&tokens, token_new(type, NULL, fd));
+			word = NULL;
+		}
 		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '('
 			|| s[i] == ')' || s[i] == '&')
 		{
-			add_token_back (&tokens, token_new(get_op_type(s, &i), NULL));
+			add_token_back (&tokens, token_new(get_op_type(s, &i), NULL, -1));
 			word = NULL;
 		}
 		else if (parse_word(&word, (char *)s, &tokens, &i))
