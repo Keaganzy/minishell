@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/19 22:10:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 21:31:43 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/12 16:00:14 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,6 @@ char	*ft_strjoin_and_free(char **new_s, char *substr, int to_free)
 
 static int	parse_quotes(char **word, char *s, t_token **tokens, size_t *i)
 {
-	int	q;
-
-	q = 0;
 	if (s[*i] != '"' && s[*i] != '\'')
 		return (0);
 	if (*word)
