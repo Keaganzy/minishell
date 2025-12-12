@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/09 16:11:40 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/12 19:07:25 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,16 +130,16 @@ int execute_cmd(t_ast *node, t_shell *shell)
 	if (!node->argv || !node->argv[0])
 		return (0);
 	//send arguements to function $ EXPANDER
-	if (is_builtin(node))
+	// if (is_builtin(node))
+	// {
+	while (node->argv[i])
 	{
-		while (node->argv[i])
-		{
-			//jtfunction(node->argv[i]);
-			expand_and_replace(&(node->argv[i]), shell);
-			// printf("---->%s\n",node->argv[i]);
-			i++;
-		}
+		//jtfunction(node->argv[i]);
+		expand_and_replace(&(node->argv[i]), shell);
+		// printf("---->%s\n",node->argv[i]);
+		i++;
 	}
+	// }
 
 	if (is_builtin(node))
 		status = execute_builtin(node, shell);

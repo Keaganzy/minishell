@@ -3,13 +3,13 @@ handle echo $? in parser to expand to last command
 export 1VAR=test (cant take number before)
 export doesnt take trailing UNDERSCORE
 
-[exit case to print 
+[exit case to print
 jotong@c2r4s2:~/minishell$ exit abc
 exit
-bash: exit: abc: numeric argument required 
+bash: exit: abc: numeric argument required
 SET EXIT CODE]
 
-[print error of 
+[print error of
 jotong@c2r4s2 ~/minishell % | cat
 zsh: parse error near `|']
 
@@ -28,7 +28,7 @@ cd without arguments goes to $HOME
 This should work because it's an absolute path resolution)
 
 
-the following commands can 
+the following commands can
 ls ./
 ls ../
 cat ./somefile.txt
@@ -40,7 +40,7 @@ in the case of unsuccessful cd, the pwd should not be updated.
 when echo $R (when R="      test      ")   <-- do inside echo function
 need to remove the spaces before
 but echo test$R returns:
-test   test 
+test   test
 
 
 Either of the following cases currently dont return any output:
@@ -64,9 +64,16 @@ echo a&&echo b should print:
 a
 b
 
+HEREDOC needs a separate expansion logic to fit:
+- tilde
+- double quotes
+- single quotes
+- *
+- " SINGLE DOUBLE QUOTES PRINT OUT.
+
+rechaining FDS are causing errors when first redirect is invalid
 
 EXPECTED BEHAVIOUR
-- HEREDOC DOESNT EXPAND ' ' VAR
 - echo $_ currently prints the pwd and program names
 - echo $# current prints $#
 - echo ${} or echo ${ } prints out the explicit statement

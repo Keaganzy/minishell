@@ -1,2 +1,4 @@
 execute builtin called
 hello
+
+MS$ cat<input.tx
