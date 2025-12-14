@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 22:19:35 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/14 21:02:25 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #ifdef __linux__
 # include <limits.h>
 #endif
+
 
 static void	extract_and_update_vars(char **av, t_shell *shell, int *status)
 {
@@ -88,8 +89,13 @@ int	ft_unset(char **av, t_shell *shell)
 
 int	ft_exit(char **av, t_shell *shell)
 {
-	(void)av;
 	(void)shell;
+
+	if (av[1] != NULL && !ft_atoi(av[1]))
+	{
+		printf("exit: numeric argument required.\n");
+		return (1);
+	}
 	printf("exit\n");
 	cleanup_shell(shell);
 	exit(0);
