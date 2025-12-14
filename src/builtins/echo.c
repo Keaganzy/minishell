@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 17:15:11 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/14 21:01:30 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,45 @@ void parse_and_echo_substrs(char **s, t_shell *shell)
     *s = s_final;
 }
 
+static char	*manipulate_echo_arg(char **av, int i, char *output)
+{
+	char	*expanded;
+	char	*tmp;
+
+	while (av[i])
+	{
+		expanded = ft_strdup(av[i]);
+		if (!expanded)
+			return (NULL);
+		if (output)
+		{
+			tmp = output;
+			output = ft_strjoin(output, " ");
+			free(tmp);
+			tmp = output;
+			output = ft_strjoin(output, expanded);
+			free(tmp);
+		}
+		else if (expanded)
+			output = ft_strdup(expanded);
+		else
+			output = NULL;
+		free(expanded);
+		i++;
+	}
+	return (output);
+}
+
+static char	*add_newline(char *output)
+{
+	char	*tmp;
+
+	tmp = output;
+	output = ft_strjoin(output, "\n");
+	free(tmp);
+	return (output);
+}
+
 int	ft_echo(char **av, t_shell *shell)
 {
 	int		i;
@@ -80,41 +119,11 @@ int	ft_echo(char **av, t_shell *shell)
 		n_flag = 1;
 		i++;
 	}
-	while (av[i])
-	{
-		char *expanded = ft_strdup(av[i]);
-		if (!expanded)
-			return (1);
-		// parse_and_echo_substrs(&expanded, shell);
-		if (output)
-		{
-			char *tmp = output;
-			output = ft_strjoin(output, " ");
-			free(tmp);
-			tmp = output;
-			output = ft_strjoin(output, expanded);
-			free(tmp);
-		}
-		else if (expanded)
-		{
-			output = ft_strdup(expanded);
-		}
-		else
-			output = NULL;
-
-		free(expanded);
-		i++;
-	}
+	output = manipulate_echo_arg(av, i, output);
 	if (!output)
 		output = ft_strdup("");
 	if (!n_flag)
-	{
-		char *tmp = output;
-		output = ft_strjoin(output, "\n");
-		free(tmp);
-	}
+		output = add_newline(output);
 	write(1, output, ft_strlen(output));
-	free(output);
-	return (0);
+	return (free(output), 0);
 }
-
