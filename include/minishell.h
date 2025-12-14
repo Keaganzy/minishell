@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/12 20:38:25 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/14 23:01:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -180,6 +180,7 @@ int		unsetenv_value(char ***envp, const char *key);
 char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free);
 int 	wildcard_match(char *pattern, char *str);
 char	**setup_args_arr(char **new_av, int *i, int *n_flag);
+int 	var_check(char *var);
 
 // void	print_ast(t_ast *node, int level);
 void	print_ast(t_ast *node);
