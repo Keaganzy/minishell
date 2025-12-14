@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/21 10:26:20 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 15:42:08 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/14 22:58:12 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,17 +49,22 @@ int	add_update_env_vars(t_shell *shell, const char *av)
 	while (av[i] && av[i] != '=')
 		i++;
 	key = ft_strndup(av, i);
-	val = ft_strdup(&av[i + 1]);
-
-	// Strip outer quotes from the value
-	val_stripped = strip_outer_quotes(val);
-	free(val);
-
-	if (setenv_value(&shell->envp, key, val_stripped) != 0)
+	if (var_check(key) != 0)
+	{
 		status = 1;
-
+		printf("export: `%s': not a valid identifier\n", key);
+	}
+	if (status == 0)
+	{
+		val = ft_strdup(&av[i + 1]);
+		// Strip outer quotes from the value
+		val_stripped = strip_outer_quotes(val);
+		free(val);
+		if (setenv_value(&shell->envp, key, val_stripped) != 0)
+			status = 1;
+		free(val_stripped);
+	}
 	free(key);
-	free(val_stripped);
 	return (status);
 }
 

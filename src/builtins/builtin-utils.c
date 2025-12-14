@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/21 23:07:01 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 16:10:15 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/14 22:58:19 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,3 +54,20 @@ char *handle_asterisk(char *substr)
     return result;
 }
 
+int var_check(char *var)
+{
+    int	i;
+
+    if (!var || !var[0])
+        return (1);
+    if (!(var[0] == '_' || ft_isalpha(var[0])))
+        return (1);
+    i = 0;
+    while (var[i])
+    {
+        if (!ft_isalnum(var[i]) && var[i] != '_')
+            return (1);
+        i++;
+    }
+    return (0);     
+}
