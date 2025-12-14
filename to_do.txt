@@ -8,7 +8,8 @@ jotong@c2r4s2:~/minishell$ exit abc
 exit
 bash: exit: abc: numeric argument required
 SET EXIT CODE]
-
+[DONE 14 dec]
+ 
 [print error of
 jotong@c2r4s2 ~/minishell % | cat
 zsh: parse error near `|']
@@ -19,6 +20,7 @@ cannot do ctrl + C inside heredoc, it should exit out of heredoc
 
 echo -xxxn whatever flag that contain n should flip the n flag, print the rest like text
 throw error if other flags are provided.
+[update 14 dec: double checked on my bash, any flags that contain other flags than n just ends up printing it as a string -- no change needed.]
 
 all other builtins: handle without flags. throw an error
 
