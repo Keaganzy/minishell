@@ -37,7 +37,7 @@ cat ./somefile.txt
 
 pwd not updated after cd into folder
 in the case of unsuccessful cd, the pwd should not be updated.
-
+[update 17 dec: fixed]
 
 when echo $R (when R="      test      ")   <-- do inside echo function
 need to remove the spaces before
@@ -52,6 +52,7 @@ ls|grep test|wc -l      <-- if "test" exists in the file, it will return 1, othe
 
 echo $USER|cat  (no spaces)                     <-- tokeniser error
 the above should return the name of the user
+[fixed]
 
 echo &&& : curently hangs (program doesnt exit). expected error:
 bash: syntax error near unexpected token `&'
@@ -66,6 +67,7 @@ cd " " should return an error
 echo a&&echo b should print:
 a
 b
+[fixed]
 
 HEREDOC needs a separate expansion logic to fit:
 - tilde
