@@ -1,7 +1,7 @@
 make wildcard look for UNcasesensitive.
 handle echo $? in parser to expand to last command
 export 1VAR=test (cant take number before)
-export doesnt take trailing UNDERSCORE
+export doesnt take trailing UNDERSCORE (tested in bash in mac, this seems to be accepted.)
 
 [exit case to print
 jotong@c2r4s2:~/minishell$ exit abc
@@ -28,7 +28,7 @@ cd .. should fail after removing the parent folder
 (note:
 cd without arguments goes to $HOME
 This should work because it's an absolute path resolution)
-
+[update 17 Dec: fixed]
 
 the following commands can
 ls ./
@@ -53,16 +53,15 @@ ls|grep test|wc -l      <-- if "test" exists in the file, it will return 1, othe
 echo $USER|cat  (no spaces)                     <-- tokeniser error
 the above should return the name of the user
 
-[echo &&& : curently hangs (program doesnt exit). expected error:
+echo &&& : curently hangs (program doesnt exit). expected error:
 bash: syntax error near unexpected token `&'
-echo && & also hangs
-]
 
 echo $USER&&echo test
 need to stop parsing for variable (and create a new token) when i stop seeing alphanumeric or _
 
 
 cd " " should return an error
+[14 dec: this was already handled.]
 
 echo a&&echo b should print:
 a
