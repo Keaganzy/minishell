@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+         #
+#    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/12/12 15:52:38 by ksng             ###   ########.fr        #
+#    Updated: 2025/12/20 23:37:09 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_checks2.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_utils.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_utils2.c \
+					$(SRC_DIR)/$(LEXER_DIR)/lexer_for_heredoc.c \
 					$(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
 BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/echo.c \

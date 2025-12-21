@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_redirect_new.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/12 20:33:53 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/22 00:09:33 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,8 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 		{
 			node->heredoc_content = read_heredoc_content(file_token->value);
 			if (!flag)
-				node->heredoc_content = expand_and_replace(&(node->heredoc_content), shell);
+				node->heredoc_content = expand_heredoc_line(node->heredoc_content, shell);
+				// node->heredoc_content = expand_and_replace(&(node->heredoc_content), shell);
 		}
 		return (node);
 	}

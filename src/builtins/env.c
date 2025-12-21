@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/14 21:02:25 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/21 21:32:07 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #ifdef __linux__
 # include <limits.h>
 #endif
-
 
 static void	extract_and_update_vars(char **av, t_shell *shell, int *status)
 {

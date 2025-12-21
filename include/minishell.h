@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/14 23:01:21 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/22 00:08:16 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,13 @@ typedef struct s_expand_ctx
 	int				j;
 }	t_expand_ctx;
 
+typedef struct s_exp
+{
+	char			*out;
+	char			*map;
+	int				i;
+	t_quote_state	state;
+}	t_exp;
 
 // void	start_shell(t_shell *shell);
 void	set_signals(void);
@@ -136,6 +143,8 @@ void			print_token_stream_colored(t_token *tokens);
 char			*extract_till_next_inv_comma(const char *s, size_t *i);
 char			*extract_word_with_inv_commas(const char *s, size_t *i);
 int				check_has_equals(char *s);
+char			*process_heredoc(char *delimiter, int is_quoted, t_shell *shell);
+char 			*expand_heredoc_line(char *line, t_shell *shell);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"
@@ -167,7 +176,7 @@ char 	*handle_asterisk(char *substr);
 int 	add_update_env_vars(t_shell *shell, const char *av);
 // int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final);
 char	*handle_dollars_tilde(char *chunk, t_shell *shell);
-void 	parse_and_echo_substrs(char **s, t_shell *shell);
+// void 	parse_and_echo_substrs(char **s, t_shell *shell);
 int		validate_identifiers(char **av);
 int		ft_echo(char **av, t_shell *shell);
 int		builtin_cd(char **av, t_shell *shell);

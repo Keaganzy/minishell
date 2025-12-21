@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/14 22:22:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/21 22:39:43 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int	main(int argc, char **argv, char **envp)
 		free_ast(ast); // call all these in another function (norm)
 		token_free_all(&tokens); // call all these in another function (norm)
 		free(line); // call all these in another function (norm)
-	} // lines saved 3 + 2 prints + 2 frees just nice 25.
+	}
 	rl_clear_history();
 	cleanup_shell(shell);
 	return (shell->last_exit_status);

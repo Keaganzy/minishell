@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 13:23:41 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/14 22:23:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/21 21:32:27 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@
 // static int	syntax_err(char *msg)
 // {
 // 	printf("%s\n", msg);
-// 	return (0);
+// 	return (1);
 // }
 
 int	check_syntax(char *s)

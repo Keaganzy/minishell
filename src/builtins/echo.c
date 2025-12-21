@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/14 21:01:30 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/21 21:31:49 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,45 +25,45 @@ static int	is_flag_n(char *arg)
 	return (arg[i] == '\0');
 }
 
-void parse_and_echo_substrs(char **s, t_shell *shell)
-{
-    size_t j;
-    char **substr;
-    char *s_final;
-    char *expanded;
+// void parse_and_echo_substrs(char **s, t_shell *shell)
+// {
+//     size_t j;
+//     char **substr;
+//     char *s_final;
+//     char *expanded;
 
-	(void)shell;
-    j = 0;
-    s_final = NULL;
-    substr = ft_split(*s, ' ');
-    if (!substr)
-        return;
+// 	(void)shell;
+//     j = 0;
+//     s_final = NULL;
+//     substr = ft_split(*s, ' ');
+//     if (!substr)
+//         return;
 
-    while (substr[j])
-    {
-		expanded = handle_dollars_tilde(substr[j], shell);
-        expanded = handle_asterisk(expanded);
-        if (s_final)
-        {
-            char *tmp = s_final;
-            s_final = ft_strjoin(s_final, " ");
-            free(tmp);
+//     while (substr[j])
+//     {
+// 		expanded = handle_dollars_tilde(substr[j], shell);
+//         expanded = handle_asterisk(expanded);
+//         if (s_final)
+//         {
+//             char *tmp = s_final;
+//             s_final = ft_strjoin(s_final, " ");
+//             free(tmp);
 
-            tmp = s_final;
-            s_final = ft_strjoin(s_final, expanded);
-            free(tmp);
-        }
-        else
-        {
-            s_final = ft_strdup(expanded);
-        }
-        free(expanded);
-        j++;
-    }
-    free_substr(substr);
-    // free(*s);
-    *s = s_final;
-}
+//             tmp = s_final;
+//             s_final = ft_strjoin(s_final, expanded);
+//             free(tmp);
+//         }
+//         else
+//         {
+//             s_final = ft_strdup(expanded);
+//         }
+//         free(expanded);
+//         j++;
+//     }
+//     free_substr(substr);
+//     // free(*s);
+//     *s = s_final;
+// }
 
 static char	*manipulate_echo_arg(char **av, int i, char *output)
 {
@@ -104,6 +104,21 @@ static char	*add_newline(char *output)
 	return (output);
 }
 
+// static int	check_invalid_chars(char **av)
+// {
+// 	int	i;
+	
+// 	i = 0;
+// 	while (av[i])
+// 	{
+// 		printf("(check_invalid_chars) comparing %s\n", av[i]);
+// 		if (ft_strcmp(av[i], "&&&") == 0)
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
 int	ft_echo(char **av, t_shell *shell)
 {
 	int		i;
@@ -119,6 +134,11 @@ int	ft_echo(char **av, t_shell *shell)
 		n_flag = 1;
 		i++;
 	}
+	// if (check_invalid_chars(av))
+	// {
+	// 	printf("echo: invalid characters in arguments\n");
+	// 	return (1);
+	// }
 	output = manipulate_echo_arg(av, i, output);
 	if (!output)
 		output = ft_strdup("");
