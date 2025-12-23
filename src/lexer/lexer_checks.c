@@ -85,7 +85,7 @@ int	check_has_equals(char *s)
 		substr = ft_split(s, s[0]);
 	else
 		substr = ft_split(s, ' ');
-	if (!substr)
+	if (!substr || !(substr[0]))
 		return (0);
 	if (ft_strnstr(substr[0], "=", ft_strlen(substr[0])) != NULL)
 		return (printf("command \'%s\' not found.\n", substr[0]), 0);
