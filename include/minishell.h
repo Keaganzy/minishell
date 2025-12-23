@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 16:14:43 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 17:39:51 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,6 +147,7 @@ char			*process_heredoc(char *delimiter, int is_quoted, t_shell *shell);
 char 			*expand_heredoc_line(char *line, t_shell *shell);
 int				is_fd_redir(const char *s, size_t i);
 int				extract_fd_for_lexer(const char *s, size_t *i);
+int				check_valid_ampersand(char *s);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"

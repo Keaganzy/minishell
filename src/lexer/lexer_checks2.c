@@ -74,25 +74,29 @@ int	check_invalid_pipes(char *s)
 	return (1);
 }
 
-// int	check_valid_ampersand(char *s)
-// {
-// 	int	i;
+int	check_valid_ampersand(char *s)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		if (s[i] != '&')
-// 			i++;
-// 		else
-// 		{
-// 			if (s[i + 1] && s[i + i] == '&')
-// 			{
-// 				if (s[i + 2] && s[i + 2] == '&')
-// 				{
-// 					return 
-// 				}
-// 			}
-// 		}
-// 	}
-// 	return (1);
-// }
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '&')
+		{
+			if (!s[i + 1])         // single '&' at end
+				return (0);
+			else if (s[i + 1] == '&')
+			{
+				if (s[i + 2] == '&') // triple '&&&'
+					return (0);
+				i += 2;               // skip valid '&&'
+				continue;
+			}
+			else                    // single '&' in the middle
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+

@@ -72,6 +72,8 @@ int	check_syntax(char *s)
 		return (0);
 	if (check_commas_closed(s) == 0)
 		return (printf("Unclosed inv commas.\n"), 0);
+	if (check_valid_ampersand(s) == 0)
+		return (printf("Syntax error near unexpected token '&'\n"),0);
 	return (1);
 }
 
