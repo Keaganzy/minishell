@@ -27,7 +27,7 @@ static void	handle_inv_comma_count(char c, int *inv_comma, int *d_inv_comma)
 	else if (c == '\'')
 	{
 		if (*d_inv_comma == 1)
-			return;
+			return ;
 		else if (*inv_comma == 1)
 			(*inv_comma)--;
 		else
@@ -73,3 +73,26 @@ int	check_invalid_pipes(char *s)
 		return (0);
 	return (1);
 }
+
+// int	check_valid_ampersand(char *s)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] != '&')
+// 			i++;
+// 		else
+// 		{
+// 			if (s[i + 1] && s[i + i] == '&')
+// 			{
+// 				if (s[i + 2] && s[i + 2] == '&')
+// 				{
+// 					return 
+// 				}
+// 			}
+// 		}
+// 	}
+// 	return (1);
+// }

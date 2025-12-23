@@ -13,7 +13,7 @@
 #include "minishell.h"
 #include "libft.h"
 
-static char *append_exit_status(char *expanded, t_shell *shell, int *i)
+static char	*append_exit_status(char *expanded, t_shell *shell, int *i)
 {
 	char	*status_str;
 	char	*new_str;
@@ -22,16 +22,13 @@ static char *append_exit_status(char *expanded, t_shell *shell, int *i)
 	if (!status_str)
 		return (expanded);
 	new_str = ft_strjoin(expanded, status_str);
-
-    printf("expanded: %s\n", expanded);
-    printf("status_str: %s\n", status_str);
-    *i += 2;
+	*i += 2;
 	free(expanded);
 	free(status_str);
 	return (new_str);
 }
 
-static char *append_char(char *expanded, char c)
+static char	*append_char(char *expanded, char c)
 {
 	char	buf[2];
 	char	*new_str;
@@ -43,17 +40,17 @@ static char *append_char(char *expanded, char c)
 	return (new_str);
 }
 
-static char *append_env_var(char *expanded, char **line, int *i, t_shell *shell)
+static char	*append_env_var(char *expanded, char **line, int *i, t_shell *shell)
 {
 	char	*var_name;
 	char	*var_value;
 	char	*new_str;
-	size_t  len;
+	size_t	len;
 
 	(*i)++;
 	len = 0;
-	// Identify the length of the variable name
-	while ((*line)[*i + len] && (ft_isalnum((*line)[*i + len]) || (*line)[*i + len] == '_'))
+	while ((*line)[*i + len] && (ft_isalnum((*line)[*i + len])
+		|| (*line)[*i + len] == '_'))
 		len++;
 	if (len == 0)
 		return (append_char(expanded, '$'));
@@ -68,10 +65,10 @@ static char *append_env_var(char *expanded, char **line, int *i, t_shell *shell)
 	return (free(var_name), new_str);
 }
 
-char *expand_heredoc_line(char *line, t_shell *shell)
+char	*expand_heredoc_line(char *line, t_shell *shell)
 {
-	int i;
-	char *expanded;
+	int		i;
+	char	*expanded;
 
 	i = 0;
 	expanded = ft_strdup("");

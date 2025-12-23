@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 17:16:53 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/21 21:32:53 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 16:10:45 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,6 @@ char	*extract_till_next_inv_comma(const char *s, size_t *i)
 
 t_token_type	get_op_type(const char *s, size_t *i)
 {
-	// int	fd;
-
-	// fd = extract_fd(s, i);
 	if (s[*i] == '<')
 	{
 		if (s[*i + 1] == '<')

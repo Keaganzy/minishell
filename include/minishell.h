@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/22 00:08:16 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 16:14:43 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,8 @@ char			*extract_word_with_inv_commas(const char *s, size_t *i);
 int				check_has_equals(char *s);
 char			*process_heredoc(char *delimiter, int is_quoted, t_shell *shell);
 char 			*expand_heredoc_line(char *line, t_shell *shell);
+int				is_fd_redir(const char *s, size_t i);
+int				extract_fd_for_lexer(const char *s, size_t *i);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"
@@ -190,6 +192,9 @@ char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free);
 int 	wildcard_match(char *pattern, char *str);
 char	**setup_args_arr(char **new_av, int *i, int *n_flag);
 int 	var_check(char *var);
+int		match_last(char *str, char **chunks, int n, int end_star);
+int		match_middle(char *str, char **chunks, int n, int *pos);
+int		match_first(char *str, char **chunks, int *pos, int start_star);
 
 // void	print_ast(t_ast *node, int level);
 void	print_ast(t_ast *node);
