@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/23 16:27:15 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 16:30:03 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 18:41:05 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,5 +74,23 @@ int	match_first(char *str, char **chunks, int *pos, int start_star)
 	if (ft_strncmp(str, chunks[0], len) != 0)
 		return (1);
 	*pos = len;
+	return (0);
+}
+
+int	var_check(char *var)
+{
+	int	i;
+
+	if (!var || !var[0])
+		return (1);
+	if (!(var[0] == '_' || ft_isalpha(var[0])))
+		return (1);
+	i = 0;
+	while (var[i])
+	{
+		if (!ft_isalnum(var[i]) && var[i] != '_')
+			return (1);
+		i++;
+	}
 	return (0);
 }

@@ -68,20 +68,3 @@ char	*handle_asterisk(char *substr)
 	return (result);
 }
 
-int	var_check(char *var)
-{
-	int	i;
-
-	if (!var || !var[0])
-		return (1);
-	if (!(var[0] == '_' || ft_isalpha(var[0])))
-		return (1);
-	i = 0;
-	while (var[i])
-	{
-		if (!ft_isalnum(var[i]) && var[i] != '_')
-			return (1);
-		i++;
-	}
-	return (0);
-}

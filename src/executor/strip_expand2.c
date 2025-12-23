@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_expand2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 17:33:55 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/23 20:17:28 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,27 @@ static int	add_match(char **matches, int *count, char *name)
 	return (1);
 }
 
+static int	add_dir_match(char **matches, int *count, char *dname, char *name)
+{
+	char	*full_fname;
+	char	*tmp;
+	
+	if (*count >= 1023)
+		return (0);
+	tmp = ft_strjoin(dname, "/");
+	if (!tmp)
+		return (0);
+	full_fname = ft_strjoin(tmp, name);
+	free(tmp);
+	if (!full_fname)
+		return (0);
+	matches[*count] = ft_strdup(full_fname);
+	if (!matches[*count])
+		return (0);
+	(*count)++;
+	return (1);
+}
+
 static char	**get_matches(char *pattern)
 {
 	DIR				*dir;
@@ -137,6 +158,37 @@ static char	**get_matches(char *pattern)
 			&& !(entry->d_name[0] == '.' && pattern[0] != '.')
 			&& match_pattern(entry->d_name, pattern))
 			add_match(matches, &count, entry->d_name);
+		entry = readdir(dir);
+	}
+	matches[count] = NULL;
+	closedir(dir);
+	if (count == 0)
+		return (free(matches), NULL);
+	return (matches);
+}
+
+static char	**get_matches_in_dir(char *dname, char *pattern)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	char			**matches;
+	int				count;
+
+	dir = opendir(dname);
+	if (!dir)
+		return (NULL);
+	matches = malloc(sizeof(char *) * 1024);
+	if (!matches)
+		return (closedir(dir), NULL);
+	count = 0;
+	entry = readdir(dir);
+	while (entry)
+	{
+		if (ft_strcmp(entry->d_name, ".") != 0
+			&& ft_strcmp(entry->d_name, "..") != 0
+			&& !(entry->d_name[0] == '.' && pattern[0] != '.')
+			&& match_pattern(entry->d_name, pattern))
+			add_dir_match(matches, &count, dname, entry->d_name);
 		entry = readdir(dir);
 	}
 	matches[count] = NULL;
@@ -468,11 +520,18 @@ static char	*expand_pattern(char *pattern)
 	char	**matches;
 	char	*result;
 	char	*trimmed;
+	char	*dir_name;
 
 	trimmed = trim_pattern(pattern);
 	if (!trimmed || !*trimmed)
 		return (free(trimmed), ft_strdup(pattern));
-	matches = get_matches(trimmed);
+	if (!ft_strnstr(pattern, "/", ft_strlen(pattern)))
+		matches = get_matches(trimmed);
+	else
+	{
+		dir_name = ft_strndup(pattern, ft_strnstr(pattern, "/", ft_strlen(pattern)) - pattern);
+		matches = get_matches_in_dir(dir_name, trimmed + ft_strlen(dir_name) + 1);
+	}
 	free(trimmed);
 	if (!matches)
 		return (ft_strdup(pattern));
