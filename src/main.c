@@ -6,11 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-<<<<<<< Updated upstream
-/*   Updated: 2025/12/23 20:32:01 by jotong           ###   ########.fr       */
-=======
-/*   Updated: 2025/12/23 20:26:01 by ksng             ###   ########.fr       */
->>>>>>> Stashed changes
+/*   Updated: 2025/12/23 22:12:54 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +86,7 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		print_token_stream_colored(tokens);
+		// print_token_stream_colored(tokens);
 		ast = parse(tokens, shell);
 		print_ast(ast);
 		if (ast)

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 20:17:28 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 22:55:12 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ static char	**get_matches(char *pattern)
 			&& ft_strcmp(entry->d_name, "..") != 0
 			&& !(entry->d_name[0] == '.' && pattern[0] != '.')
 			&& match_pattern(entry->d_name, pattern))
-			add_match(matches, &count, entry->d_name);
+				add_match(matches, &count, entry->d_name);
 		entry = readdir(dir);
 	}
 	matches[count] = NULL;
@@ -174,6 +174,7 @@ static char	**get_matches_in_dir(char *dname, char *pattern)
 	char			**matches;
 	int				count;
 
+	printf("found some directory\n");
 	dir = opendir(dname);
 	if (!dir)
 		return (NULL);
@@ -434,6 +435,7 @@ static size_t	calc_split_len(char *s, char *map)
 	}
 	if (prev_was_space && len > 0)
 		len--;
+
 	return (len);
 }
 
@@ -454,6 +456,7 @@ static char	*split_words(char *s, char *map)
 	prev_was_sep = 1;
 	while (s[i])
 	{
+		
 		if (is_space(s[i]) && map[i] == 0)
 		{
 			if (!prev_was_sep && j > 0)
@@ -469,8 +472,8 @@ static char	*split_words(char *s, char *map)
 		}
 		i++;
 	}
-	if (j > 0 && result[j - 1] == ' ')
-		j--;
+	// if (j > 0 && result[j - 1] == ' ')
+	// 	j--;
 	result[j] = '\0';
 	return (result);
 }
@@ -526,7 +529,10 @@ static char	*expand_pattern(char *pattern)
 	if (!trimmed || !*trimmed)
 		return (free(trimmed), ft_strdup(pattern));
 	if (!ft_strnstr(pattern, "/", ft_strlen(pattern)))
+	{
 		matches = get_matches(trimmed);
+		
+	}
 	else
 	{
 		dir_name = ft_strndup(pattern, ft_strnstr(pattern, "/", ft_strlen(pattern)) - pattern);
