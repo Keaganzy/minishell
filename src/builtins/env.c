@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/21 21:32:07 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 18:05:20 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,16 +88,24 @@ int	ft_unset(char **av, t_shell *shell)
 
 int	ft_exit(char **av, t_shell *shell)
 {
-	(void)shell;
+	int	i;
 
-	if (av[1] != NULL && !ft_atoi(av[1]))
+	(void)shell;
+	i = 0;
+	while (av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9') || 
+            (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
+		i++;
+	if (av[1][i] != '\0')
 	{
 		printf("exit: numeric argument required.\n");
 		return (1);
 	}
 	printf("exit\n");
 	cleanup_shell(shell);
-	exit(0);
+	if (av[1])
+		exit(ft_atoi(av[1]));
+	else
+		exit(0);
 }
 
 int	ft_pwd(char **av, t_shell *shell)
