@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 17:39:51 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 19:39:58 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,9 +164,9 @@ int	execute_builtin(t_ast *ast, t_shell *shell);
 char	**get_paths_from_env(char **envp);
 int execute_pipe(t_ast *node, t_shell *shell);
 int	execute_redir(t_ast *node, t_shell *shell);
-int	setup_redir_in(char *filename, t_shell *shell);
-int	setup_redir_out(char *filename, t_shell *shell);
-int	setup_redir_append(char *filename, t_shell *shell);
+int	setup_redir_in(t_ast *node, t_shell *shell);
+int	setup_redir_out(t_ast *node, t_shell *shell);
+int	setup_redir_append(t_ast *node, t_shell *shell);
 int	setup_heredoc(t_ast *node, t_shell *shell);
 int	execute_logical(t_ast *node, t_shell *shell);
 int	setup_redirections(t_ast *node, t_shell *shell);

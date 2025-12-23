@@ -1,22 +1,22 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
-/*   strip_expand2.c									:+:	  :+:	:+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: jotong <jotong@student.42.fr>			  +#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/12/07 16:38:28 by jotong			#+#	#+#			 */
-/*   Updated: 2025/12/22 00:02:53 by jotong		   ###   ########.fr	   */
-/*																			*/
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   strip_expand2.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
+/*   Updated: 2025/12/23 17:33:55 by ksng             ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <dirent.h>
 #include "libft.h"
 
-// /* ************************************************************************** */
-// /*						   UTILITY FUNCTIONS								*/
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                           UTILITY FUNCTIONS                                */
+/* ************************************************************************** */
 
 static void	init_quote_state(t_quote_state *state)
 {
@@ -31,10 +31,7 @@ static size_t	get_var_len(char *s)
 
 	len = 0;
 	if (s[len] == '?')
-	{
-		len++;
-		return (len);
-	}
+		return (1);
 	while (s[len] && (ft_isalnum(s[len]) || s[len] == '_'))
 		len++;
 	return (len);
@@ -48,12 +45,13 @@ static char	*get_env_value(char *var_name, t_shell *shell)
 	if (!var_name || !shell->envp)
 		return (NULL);
 	len = ft_strlen(var_name);
-	i = 0;
 	if (len == 1 && *var_name == '?')
 		return (ft_itoa(shell->last_exit_status));
+	i = 0;
 	while (shell->envp[i])
 	{
-		if (ft_strncmp(shell->envp[i], var_name, len) == 0 && shell->envp[i][len] == '=')
+		if (ft_strncmp(shell->envp[i], var_name, len) == 0
+			&& shell->envp[i][len] == '=')
 			return (shell->envp[i] + len + 1);
 		i++;
 	}
@@ -70,9 +68,9 @@ static char	*get_home_dir(t_shell *shell)
 	return (home);
 }
 
-// /* ************************************************************************** */
-// /*						   WILDCARD MATCHING								*/
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                           WILDCARD MATCHING                                */
+/* ************************************************************************** */
 
 static int	match_recursive(char *str, char *pat)
 {
@@ -134,10 +132,10 @@ static char	**get_matches(char *pattern)
 	entry = readdir(dir);
 	while (entry)
 	{
-		if (ft_strcmp(entry->d_name, ".") != 0 \
-			&& ft_strcmp(entry->d_name, "..") != 0 \
-			&& !(entry->d_name[0] == '.' && pattern[0] != '.') \
-			&& match_pattern(entry->d_name, pattern)) \
+		if (ft_strcmp(entry->d_name, ".") != 0
+			&& ft_strcmp(entry->d_name, "..") != 0
+			&& !(entry->d_name[0] == '.' && pattern[0] != '.')
+			&& match_pattern(entry->d_name, pattern))
 			add_match(matches, &count, entry->d_name);
 		entry = readdir(dir);
 	}
@@ -187,16 +185,15 @@ static char	*join_matches(char **matches)
 	return (result);
 }
 
-// /* ************************************************************************** */
-// /*					  STEP 1: LENGTH CALCULATION							*/
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                      STEP 1: LENGTH CALCULATION                            */
+/* ************************************************************************** */
 
-static size_t	calc_var_len(char *s, t_shell *shell)
+static size_t	calc_var_len_helper(char *s, t_shell *shell, int *need_free)
 {
 	size_t	len;
 	char	*name;
 	char	*value;
-	int		v_len;
 
 	len = get_var_len(s);
 	if (len == 0)
@@ -205,37 +202,43 @@ static size_t	calc_var_len(char *s, t_shell *shell)
 	if (!name)
 		return (0);
 	value = get_env_value(name, shell);
+	if (len == 1 && name[0] == '?')
+		*need_free = 1;
+	else
+		*need_free = 0;
 	free(name);
-	if (len == 1 && value && *value == '?')
-	{
-		v_len = ft_strlen(value);
+	if (!value)
+		return (0);
+	len = ft_strlen(value);
+	if (*need_free)
 		free(value);
-		return (v_len);
-	}
-	return (value ? ft_strlen(value) : 0);
-}
-
-static void	update_quotes(char c, t_quote_state *state)
-{
-	if (c == '\'' && !state->in_double)
-		state->in_single = !state->in_single;
-	else if (c == '"' && !state->in_single)
-		state->in_double = !state->in_double;
+	return (len);
 }
 
 static size_t	calc_len(char *s, t_shell *shell)
 {
 	size_t			len;
 	t_quote_state	state;
+	char			*start;
+	int				need_free;
 
+	start = s;
 	len = 0;
 	init_quote_state(&state);
 	while (*s)
 	{
-		if (*s == '\'' || *s == '"')
-			update_quotes(*s++, &state);
+		if (*s == '\'' && !state.in_double)
+		{
+			state.in_single = !state.in_single;
+			s++;
+		}
+		else if (*s == '"' && !state.in_single)
+		{
+			state.in_double = !state.in_double;
+			s++;
+		}
 		else if (*s == '~' && !state.in_single && !state.in_double
-			&& (*(s - 1) == ' '))
+			&& (s == start || *(s - 1) == ' '))
 		{
 			len += ft_strlen(get_home_dir(shell));
 			s++;
@@ -243,7 +246,7 @@ static size_t	calc_len(char *s, t_shell *shell)
 		else if (*s == '$' && !state.in_single && *(s + 1))
 		{
 			s++;
-			len += calc_var_len(s, shell);
+			len += calc_var_len_helper(s, shell, &need_free);
 			s += get_var_len(s);
 		}
 		else
@@ -255,9 +258,9 @@ static size_t	calc_len(char *s, t_shell *shell)
 	return (len);
 }
 
-// /* ************************************************************************** */
-// /*					  STEP 2: EXPAND AND STRIP QUOTES					   */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                      STEP 2: EXPAND AND STRIP QUOTES                       */
+/* ************************************************************************** */
 
 static int	exp_tilde(char **s, t_exp *e, t_shell *shell)
 {
@@ -283,6 +286,7 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 	char	*value;
 	size_t	len;
 	size_t	j;
+	int		need_free;
 
 	(*s)++;
 	len = get_var_len(*s);
@@ -293,14 +297,19 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 	if (!name)
 		return (0);
 	value = get_env_value(name, shell);
+	need_free = (len == 1 && name[0] == '?');
+	free(name);
 	j = 0;
 	if (value)
+	{
 		while (value[j])
 		{
 			e->out[e->i] = value[j++];
 			e->map[e->i++] = e->state.in_double;
 		}
-	free(name);
+		if (need_free)
+			free(value);
+	}
 	*s += len;
 	return (1);
 }
@@ -341,9 +350,82 @@ static char	*expand_strip(char *s, t_shell *shell, char **map_out)
 	return (e.out);
 }
 
-// /* ************************************************************************** */
-// /*					  STEP 3: WILDCARD EXPANSION							*/
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                      STEP 2.5: WORD SPLITTING                              */
+/* ************************************************************************** */
+
+static size_t	calc_split_len(char *s, char *map)
+{
+	size_t	len;
+	int		i;
+	int		prev_was_space;
+
+	len = 0;
+	prev_was_space = 1;
+	i = 0;
+	while (s[i])
+	{
+		if (is_space(s[i]) && map[i] == 0)
+		{
+			if (!prev_was_space)
+			{
+				len++;
+				prev_was_space = 1;
+			}
+		}
+		else
+		{
+			len++;
+			prev_was_space = 0;
+		}
+		i++;
+	}
+	if (prev_was_space && len > 0)
+		len--;
+	return (len);
+}
+
+static char	*split_words(char *s, char *map)
+{
+	char	*result;
+	size_t	len;
+	int		i;
+	int		j;
+	int		prev_was_sep;
+
+	len = calc_split_len(s, map);
+	result = malloc(len + 1);
+	if (!result)
+		return (NULL);
+	i = 0;
+	j = 0;
+	prev_was_sep = 1;
+	while (s[i])
+	{
+		if (is_space(s[i]) && map[i] == 0)
+		{
+			if (!prev_was_sep && j > 0)
+			{
+				result[j++] = ' ';
+				prev_was_sep = 1;
+			}
+		}
+		else
+		{
+			result[j++] = s[i];
+			prev_was_sep = 0;
+		}
+		i++;
+	}
+	if (j > 0 && result[j - 1] == ' ')
+		j--;
+	result[j] = '\0';
+	return (result);
+}
+
+/* ************************************************************************** */
+/*                      STEP 3: WILDCARD EXPANSION                            */
+/* ************************************************************************** */
 
 static int	has_wildcard(char *s, char *map, int start, int end)
 {
@@ -355,11 +437,6 @@ static int	has_wildcard(char *s, char *map, int start, int end)
 	}
 	return (0);
 }
-
-// static int	is_space(char c)
-// {
-// 	return (c == ' ' || c == '\t');
-// }
 
 static int	word_end(char *s, int i)
 {
@@ -493,145 +570,8 @@ static char	*expand_wild(char *s, char *map)
 	return (result);
 }
 
-// /* ************************************************************************** */
-// /*						   MAIN ENTRY POINT								 */
-// /* ************************************************************************** */
-
-// char	*expand_and_replace(char **s, t_shell *shell)
-// {
-// 	char	*step1;
-// 	char	*map;
-// 	char	*step2;
-// 	char	*orig;
-
-// 	if (!s || !*s)
-// 		return (NULL);
-// 	orig = *s;
-// 	step1 = expand_strip(orig, shell, &map);
-// 	if (!step1)
-// 		return (NULL);
-// 	step2 = expand_wild(step1, map);
-// 	free(step1);
-// 	free(map);
-// 	if (!step2)
-// 		return (NULL);
-// 	//free(orig);
-// 	*s = step2;
-// 	return (step2);
-// }
-
-
-
-
-
 /* ************************************************************************** */
-/*					  STEP 2.5: WORD SPLITTING							  */
-/* ************************************************************************** */
-
-// Add this helper function to count words for allocation
-// static int	count_split_words(char *s, char *map)
-// {
-// 	int	count;
-// 	int	in_word;
-// 	int	i;
-
-// 	count = 0;
-// 	in_word = 0;
-// 	i = 0;
-// 	while (s[i])
-// 	{
-// 		// If we hit a space AND it's not quoted (map[i] == 0), we're between words
-// 		if (is_space(s[i]) && map[i] == 0)
-// 			in_word = 0;
-// 		else if (!in_word)
-// 		{
-// 			in_word = 1;
-// 			count++;
-// 		}
-// 		i++;
-// 	}
-// 	return (count);
-// }
-
-// Calculate length needed for split result (with separators between words)
-static size_t	calc_split_len(char *s, char *map)
-{
-	size_t	len;
-	int		i;
-	int		prev_was_space;
-
-	len = 0;
-	prev_was_space = 1;  // Start as true to avoid leading separator
-	i = 0;
-	while (s[i])
-	{
-		if (is_space(s[i]) && map[i] == 0)
-		{
-			// Unquoted space - this is a word boundary
-			if (!prev_was_space)
-			{
-				len++;  // Add one space as separator
-				prev_was_space = 1;
-			}
-		}
-		else
-		{
-			// Regular character or quoted space - copy it
-			len++;
-			prev_was_space = 0;
-		}
-		i++;
-	}
-	// Remove trailing space if added
-	if (prev_was_space && len > 0)
-		len--;
-	return (len);
-}
-
-// Perform word splitting: convert unquoted spaces to single separators
-static char	*split_words(char *s, char *map)
-{
-	char	*result;
-	size_t	len;
-	int		i;
-	int		j;
-	int		prev_was_sep;
-
-	len = calc_split_len(s, map);
-	result = malloc(len + 1);
-	if (!result)
-		return (NULL);
-	i = 0;
-	j = 0;
-	prev_was_sep = 1;  // Start as true to skip leading spaces
-	while (s[i])
-	{
-		if (is_space(s[i]) && map[i] == 0)
-		{
-			// Unquoted space - word boundary
-			if (!prev_was_sep && j > 0)
-			{
-				result[j++] = ' ';  // Single space separator
-				prev_was_sep = 1;
-			}
-		}
-		else
-		{
-			// Regular character or quoted space
-			result[j++] = s[i];
-			prev_was_sep = 0;
-		}
-		i++;
-	}
-	// Remove trailing separator if present
-	if (j > 0 && result[j - 1] == ' ')
-		j--;
-	result[j] = '\0';
-	return (result);
-}
-
-/* ************************************************************************** */
-/*					UPDATED MAIN ENTRY POINT								*/
+/*                           MAIN ENTRY POINT                                 */
 /* ************************************************************************** */
 
 char	*expand_and_replace(char **s, t_shell *shell)
@@ -640,30 +580,21 @@ char	*expand_and_replace(char **s, t_shell *shell)
 	char	*map;
 	char	*step2;
 	char	*step3;
-	char	*orig;
 
 	if (!s || !*s)
 		return (NULL);
-	orig = *s;
-	
-	// Step 1: Expand variables and strip quotes, create map
-	step1 = expand_strip(orig, shell, &map);
+	step1 = expand_strip(*s, shell, &map);
 	if (!step1)
 		return (NULL);
-	
-	// Step 2: Word splitting based on map
 	step2 = split_words(step1, map);
 	free(step1);
 	if (!step2)
 		return (free(map), NULL);
-	
-	// Step 3: Wildcard expansion (now works on split words)
 	step3 = expand_wild(step2, map);
 	free(step2);
 	free(map);
 	if (!step3)
 		return (NULL);
-	
 	*s = step3;
 	return (step3);
 }

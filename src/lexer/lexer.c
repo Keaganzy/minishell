@@ -55,7 +55,7 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] == '\0')
 		return (0);
 	*word = ft_strjoin_and_free(word, extract_word(s, i), 0);
-	printf("word is %s\n", *word);
+	//printf("word is %s\n", *word);
 	if (s[*i] == ' ' || s[*i] == '\0' || s[*i] == '<' || s[*i] == '>'
 		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&' || s[*i] == '|')
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/20 22:47:46 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 18:03:27 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	execute_builtin(t_ast *ast, t_shell *shell)
 	char	*cmd;
 	int		arg_len;
 
-	printf("execute builtin called\n");
+	//printf("execute builtin called\n");
 	if (!ast || !ast->argv || !ast->argv[0])
 		return (1);
 	cmd = ast->argv[0];

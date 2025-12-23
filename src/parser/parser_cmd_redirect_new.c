@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_redirect_new.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/22 00:09:33 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 19:28:43 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 	redir_token = advance(p);
 	redir_type = get_redir_type(redir_token->type);
 	fd = redir_token->fd;
+	// printf("-->fd %i",fd);
 	file_token = expect(p, T_WORD);
 	if (!file_token)
 	{
