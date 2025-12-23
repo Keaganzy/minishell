@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   strip_expand2.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/22 00:02:53 by jotong           ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   strip_expand2.c									:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: jotong <jotong@student.42.fr>			  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/12/07 16:38:28 by jotong			#+#	#+#			 */
+/*   Updated: 2025/12/22 00:02:53 by jotong		   ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -15,7 +15,7 @@
 #include "libft.h"
 
 // /* ************************************************************************** */
-// /*                           UTILITY FUNCTIONS                                */
+// /*						   UTILITY FUNCTIONS								*/
 // /* ************************************************************************** */
 
 static void	init_quote_state(t_quote_state *state)
@@ -71,7 +71,7 @@ static char	*get_home_dir(t_shell *shell)
 }
 
 // /* ************************************************************************** */
-// /*                           WILDCARD MATCHING                                */
+// /*						   WILDCARD MATCHING								*/
 // /* ************************************************************************** */
 
 static int	match_recursive(char *str, char *pat)
@@ -188,7 +188,7 @@ static char	*join_matches(char **matches)
 }
 
 // /* ************************************************************************** */
-// /*                      STEP 1: LENGTH CALCULATION                            */
+// /*					  STEP 1: LENGTH CALCULATION							*/
 // /* ************************************************************************** */
 
 static size_t	calc_var_len(char *s, t_shell *shell)
@@ -256,7 +256,7 @@ static size_t	calc_len(char *s, t_shell *shell)
 }
 
 // /* ************************************************************************** */
-// /*                      STEP 2: EXPAND AND STRIP QUOTES                       */
+// /*					  STEP 2: EXPAND AND STRIP QUOTES					   */
 // /* ************************************************************************** */
 
 static int	exp_tilde(char **s, t_exp *e, t_shell *shell)
@@ -342,7 +342,7 @@ static char	*expand_strip(char *s, t_shell *shell, char **map_out)
 }
 
 // /* ************************************************************************** */
-// /*                      STEP 3: WILDCARD EXPANSION                            */
+// /*					  STEP 3: WILDCARD EXPANSION							*/
 // /* ************************************************************************** */
 
 static int	has_wildcard(char *s, char *map, int start, int end)
@@ -494,7 +494,7 @@ static char	*expand_wild(char *s, char *map)
 }
 
 // /* ************************************************************************** */
-// /*                           MAIN ENTRY POINT                                 */
+// /*						   MAIN ENTRY POINT								 */
 // /* ************************************************************************** */
 
 // char	*expand_and_replace(char **s, t_shell *shell)
@@ -525,7 +525,7 @@ static char	*expand_wild(char *s, char *map)
 
 
 /* ************************************************************************** */
-/*                      STEP 2.5: WORD SPLITTING                              */
+/*					  STEP 2.5: WORD SPLITTING							  */
 /* ************************************************************************** */
 
 // Add this helper function to count words for allocation
@@ -631,7 +631,7 @@ static char	*split_words(char *s, char *map)
 }
 
 /* ************************************************************************** */
-/*                    UPDATED MAIN ENTRY POINT                                */
+/*					UPDATED MAIN ENTRY POINT								*/
 /* ************************************************************************** */
 
 char	*expand_and_replace(char **s, t_shell *shell)

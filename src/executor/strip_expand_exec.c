@@ -1,13 +1,13 @@
 // /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   strip_expand_exec.c                                :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-// /*   Updated: 2025/12/09 15:21:37 by ksng             ###   ########.fr       */
-// /*                                                                            */
+// /*																			*/
+// /*														:::	  ::::::::   */
+// /*   strip_expand_exec.c								:+:	  :+:	:+:   */
+// /*													+:+ +:+		 +:+	 */
+// /*   By: ksng <ksng@student.42.fr>				  +#+  +:+	   +#+		*/
+// /*												+#+#+#+#+#+   +#+		   */
+// /*   Created: 2025/12/07 16:38:28 by jotong			#+#	#+#			 */
+// /*   Updated: 2025/12/09 15:21:37 by ksng			 ###   ########.fr	   */
+// /*																			*/
 // /* ************************************************************************** */
 
 // #include "minishell.h"
@@ -22,7 +22,7 @@
 // }
 
 // /* ************************************************************************** */
-// /*                           VARIABLE EXPANSION                               */
+// /*						   VARIABLE EXPANSION							   */
 // /* ************************************************************************** */
 
 // static size_t	get_var_len(char *s, int start)
@@ -65,7 +65,7 @@
 // }
 
 // /* ************************************************************************** */
-// /*                           WILDCARD EXPANSION                               */
+// /*						   WILDCARD EXPANSION							   */
 // /* ************************************************************************** */
 
 // static int	match_pattern_recursive(char *str, char *pattern)
@@ -182,7 +182,7 @@
 // }
 
 // /* ************************************************************************** */
-// /*                      WILDCARD PATTERN DETECTION                            */
+// /*					  WILDCARD PATTERN DETECTION							*/
 // /* ************************************************************************** */
 
 // static int	contains_wildcard(char *s, char *end)
@@ -211,7 +211,7 @@
 // }
 
 // /* ************************************************************************** */
-// /*                           LENGTH CALCULATION                               */
+// /*						   LENGTH CALCULATION							   */
 // /* ************************************************************************** */
 
 // static size_t	calc_tilde_len(char *s, char **env)
@@ -318,7 +318,7 @@
 // }
 
 // /* ************************************************************************** */
-// /*                           EXPANSION EXECUTION                              */
+// /*						   EXPANSION EXECUTION							  */
 // /* ************************************************************************** */
 
 // static int	expand_tilde(char **s, char **out, int *i, char **env)
@@ -467,15 +467,15 @@
 // }
 
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   strip_expand_exec.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 14:38:13 by ksng             ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   strip_expand_exec.c								:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: ksng <ksng@student.42.fr>				  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/12/07 16:38:28 by jotong			#+#	#+#			 */
+/*   Updated: 2025/12/09 14:38:13 by ksng			 ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -490,7 +490,7 @@ static void	init_quote_state(t_quote_state *state)
 }
 
 /* ************************************************************************** */
-/*                           HELPER FUNCTIONS                                 */
+/*						   HELPER FUNCTIONS								 */
 /* ************************************************************************** */
 
 static size_t	get_var_len(char *s, int start)
@@ -533,7 +533,7 @@ static char	*get_home_dir(char **env)
 }
 
 /* ************************************************************************** */
-/*                           WILDCARD MATCHING                                */
+/*						   WILDCARD MATCHING								*/
 /* ************************************************************************** */
 
 static int	match_pattern_recursive(char *str, char *pattern)
@@ -623,7 +623,7 @@ static void	free_matches(char **matches)
 }
 
 /* ************************************************************************** */
-/*                   STEP 1: CALCULATE LENGTH WITH EXPANSIONS                 */
+/*				   STEP 1: CALCULATE LENGTH WITH EXPANSIONS				 */
 /* ************************************************************************** */
 
 static size_t	calc_var_expansion_len(char *s, char **env)
@@ -688,7 +688,7 @@ static size_t	calculate_len_step1(char *s, char **env)
 }
 
 /* ************************************************************************** */
-/*        STEP 2: EXPAND VARIABLES/TILDE AND STRIP QUOTES WITH TRACKING      */
+/*		STEP 2: EXPAND VARIABLES/TILDE AND STRIP QUOTES WITH TRACKING	  */
 /* ************************************************************************** */
 
 typedef struct s_expand_state
@@ -702,63 +702,63 @@ typedef struct s_expand_state
 
 static int	expand_tilde_step2(char **s, t_expand_state *es, char **env)
 {
-	char    *home;
-    size_t  home_len;
-    size_t  j;
-    int     quoted;
+	char	*home;
+	size_t  home_len;
+	size_t  j;
+	int	 quoted;
 
-    home = get_home_dir(env);
-    home_len = ft_strlen(home);
-    quoted = (es->state.in_single || es->state.in_double) ? 1 : 0;
-    j = 0;
-    while (j < home_len)
-    {
-        es->out[es->i] = home[j];
-        es->quote_map[es->i] = quoted;
-        es->i++;
-        j++;
-    }
-    (*s)++;
-    return (1);
+	home = get_home_dir(env);
+	home_len = ft_strlen(home);
+	quoted = (es->state.in_single || es->state.in_double) ? 1 : 0;
+	j = 0;
+	while (j < home_len)
+	{
+		es->out[es->i] = home[j];
+		es->quote_map[es->i] = quoted;
+		es->i++;
+		j++;
+	}
+	(*s)++;
+	return (1);
 }
 
 static int	expand_var_step2(char **s, t_expand_state *es, char **env)
 {
 	size_t  var_len;
-    char    *var_name;
-    char    *var_value;
-    size_t  j;
-    int     quoted;
+	char	*var_name;
+	char	*var_value;
+	size_t  j;
+	int	 quoted;
 
-    (*s)++;
-    var_len = get_var_len(*s, 0);
-    if (var_len == 0)
-    {
-        /* put literal $ back */
-        es->out[es->i] = '$';
-        es->quote_map[es->i] = (es->state.in_single || es->state.in_double) ? 1 : 0;
-        es->i++;
-        return (1);
-    }
-    var_name = ft_substr(*s, 0, var_len);
-    if (!var_name)
-        return (0);
-    var_value = get_env_value(var_name, env);
-    quoted = (es->state.in_single || es->state.in_double) ? 1 : 0;
-    if (var_value)
-    {
-        j = 0;
-        while (var_value[j])
-        {
-            es->out[es->i] = var_value[j];
-            es->quote_map[es->i] = quoted;
-            es->i++;
-            j++;
-        }
-    }
-    free(var_name);
-    *s += var_len;
-    return (1);
+	(*s)++;
+	var_len = get_var_len(*s, 0);
+	if (var_len == 0)
+	{
+		/* put literal $ back */
+		es->out[es->i] = '$';
+		es->quote_map[es->i] = (es->state.in_single || es->state.in_double) ? 1 : 0;
+		es->i++;
+		return (1);
+	}
+	var_name = ft_substr(*s, 0, var_len);
+	if (!var_name)
+		return (0);
+	var_value = get_env_value(var_name, env);
+	quoted = (es->state.in_single || es->state.in_double) ? 1 : 0;
+	if (var_value)
+	{
+		j = 0;
+		while (var_value[j])
+		{
+			es->out[es->i] = var_value[j];
+			es->quote_map[es->i] = quoted;
+			es->i++;
+			j++;
+		}
+	}
+	free(var_name);
+	*s += var_len;
+	return (1);
 }
 
 static char	*expand_and_strip_quotes(char *s, char **env, char **quote_map_out)
@@ -824,7 +824,7 @@ static char	*expand_and_strip_quotes(char *s, char **env, char **quote_map_out)
 }
 
 /* ************************************************************************** */
-/*              STEP 3: EXPAND WILDCARDS (ONLY UNQUOTED)                     */
+/*			  STEP 3: EXPAND WILDCARDS (ONLY UNQUOTED)					 */
 /* ************************************************************************** */
 
 static int	has_unquoted_wildcard(char *s, char *quote_map, int start, int end)
@@ -966,7 +966,7 @@ static char	*expand_wildcards(char *s, char *quote_map)
 }
 
 /* ************************************************************************** */
-/*                           MAIN ENTRY POINT                                 */
+/*						   MAIN ENTRY POINT								 */
 /* ************************************************************************** */
 
 char	*expand_and_replace(char **s, t_shell *shell)
