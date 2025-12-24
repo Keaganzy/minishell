@@ -1,0 +1,9 @@
+execute node
+found a cmd node
+ afterw hile loopooooopopop
+in exec ext
+execute node
+found a cmd node
+ afterw hile loopooooopopop
+execute builtin called
+test

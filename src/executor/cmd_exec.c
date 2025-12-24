@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/20 22:47:46 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/25 00:33:28 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	execute_builtin(t_ast *ast, t_shell *shell)
 	char	*cmd;
 	int		arg_len;
 
-	printf("execute builtin called\n");
 	if (!ast || !ast->argv || !ast->argv[0])
 		return (1);
 	cmd = ast->argv[0];
@@ -96,6 +95,7 @@ static int execute_external(t_ast *ast, t_shell *shell)
 	pid_t	pid;
 	int		status;
 	char	*cmd_path;
+	int		exec_status;
 
 	pid = fork();
 	if (pid == -1)
@@ -107,11 +107,15 @@ static int execute_external(t_ast *ast, t_shell *shell)
 		{
 			ft_putstr_fd(ast->argv[0], 2);
 			ft_putstr_fd(": command not found\n", 2);
+			cleanup_shell(shell);
 			exit(127);
 		}
-		execve(cmd_path, ast->argv, shell->envp);
+		
+		exec_status = execve(cmd_path, ast->argv, shell->envp);
+		shell->last_exit_status = exec_status;
 		perror(cmd_path);
 		free(cmd_path);
+		cleanup_shell(shell);
 		exit(126);
 	}
 	waitpid(pid, &status, 0);
@@ -120,27 +124,27 @@ static int execute_external(t_ast *ast, t_shell *shell)
 	return (1);
 }
 
-
 int execute_cmd(t_ast *node, t_shell *shell)
 {
-	int status;
-	int i;
+	int 	status;
+	int 	i;
 
 	i = 0;
+	
+	fflush(stdout);
 	if (!node->argv || !node->argv[0])
 		return (0);
 	//send arguements to function $ EXPANDER
-	// if (is_builtin(node))
-	// {
-	while (node->argv[i])
+	if (is_builtin(node))
 	{
-		//jtfunction(node->argv[i]);
-		expand_and_replace(&(node->argv[i]), shell);
-		// printf("---->%s\n",node->argv[i]);
-		i++;
+		while (node->argv[i])
+		{
+			//jtfunction(node->argv[i]);
+			expand_and_replace(&(node->argv[i]), shell);
+			// printf("---->%s\n",node->argv[i]);
+			i++;
+		}
 	}
-	// }
-
 	if (is_builtin(node))
 		status = execute_builtin(node, shell);
 	else

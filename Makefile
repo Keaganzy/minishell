@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
+#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/12/20 23:37:09 by jotong           ###   ########.fr        #
+#    Updated: 2025/12/23 16:28:08 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,7 +44,8 @@ BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env2.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils2.c \
-					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils3.c
+					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils3.c \
+					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils4.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
 EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \

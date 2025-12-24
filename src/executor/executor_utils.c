@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/19 23:15:23 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/09 18:18:34 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 19:18:10 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,53 +31,53 @@ char	**get_paths_from_env(char **envp)
 	return (NULL);
 }
 
-int	setup_redir_in(char *filename, t_shell *shell)
+int	setup_redir_in(t_ast *node, t_shell *shell)
 {
 	int fd;
-	
+
 	//jtfunction(filename);//
-	filename = expand_and_replace(&filename, shell);
-	fd = open(filename, O_RDONLY);
+	node->filename = expand_and_replace(&node->filename, shell);
+	fd = open(node->filename, O_RDONLY);
 	if (fd == -1)
 	{
-		perror(filename);
+		perror(node->filename);
 		return(1);
 	}
-	dup2(fd, STDIN_FILENO);
+	dup2(fd, node->fd);
 	close(fd);
 	return (0);
 }
 
-int	setup_redir_out(char *filename, t_shell *shell)
+int	setup_redir_out(t_ast *node, t_shell *shell)
 {
 	int fd;
 
 	//jtfunction(filename);//
-	filename = expand_and_replace(&filename, shell);
-	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	node->filename = expand_and_replace(&node->filename, shell);
+	fd = open(node->filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (fd == -1)
 	{
-		perror(filename);
+		perror(node->filename);
 		return (1);
 	}
-	dup2(fd,STDOUT_FILENO);
+	dup2(fd, node->fd);
 	close(fd);
 	return(0);
 }
 
-int	setup_redir_append(char *filename, t_shell *shell)
+int	setup_redir_append(t_ast *node, t_shell *shell)
 {
 	int fd;
 
 	//jtfunction(filename);//
-	filename = expand_and_replace(&filename, shell);
-	fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	node->filename = expand_and_replace(&node->filename, shell);
+	fd = open(node->filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd == -1)
 	{
-		perror(filename);
+		perror(node->filename);
 		return (1);
 	}
-	dup2(fd, STDOUT_FILENO);
+	dup2(fd, node->fd);
 	close(fd);
 	return (0);
 }

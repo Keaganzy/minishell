@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/22 00:09:33 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/25 01:13:47 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ t_ast *parser_word(t_parser *p)
 	i = 0;
 	while (i < word_count)
 	{
-		node->argv[i] = ft_strdup(p->current->value);
+		node->argv[i] = p->current->value; // node->argv[i] = ft_strdup(p->current->value);
+		p->current->value = NULL;
 		if (!node->argv[i])
 			return (free_ast(node), NULL);
 		advance(p);
@@ -111,6 +112,7 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 	redir_token = advance(p);
 	redir_type = get_redir_type(redir_token->type);
 	fd = redir_token->fd;
+	// printf("-->fd %i",fd);
 	file_token = expect(p, T_WORD);
 	if (!file_token)
 	{

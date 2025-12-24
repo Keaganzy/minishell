@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 15:20:42 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/09 21:39:03 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/23 18:50:46 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,12 +102,12 @@ static t_ast *parse_redirection(t_parser *p, t_shell *shell)
 {
 	// t_ast *cmd;
 
-	// cmd = parse_command(p);
+	// cmd = parse_command(p, shell);
 	// if (!cmd)
 	// 	return (NULL);
 	// while (peek(p) && is_redirection(peek(p)->type))
 	// {
-	// 	cmd = parse_one_redir(p, cmd);
+	// 	cmd = parse_one_redir(p, cmd, shell);
 	// 	if (!cmd)
 	// 		return (NULL);
 	// }

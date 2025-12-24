@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   lexer_checks2.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/19 15:54:50 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/21 21:32:34 by jotong           ###   ########.fr       */
-/*                                                                            */
+/*																			*/
+/*														:::	  ::::::::   */
+/*   lexer_checks2.c									:+:	  :+:	:+:   */
+/*													+:+ +:+		 +:+	 */
+/*   By: jotong <jotong@student.42.fr>			  +#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/11/19 15:54:50 by jotong			#+#	#+#			 */
+/*   Updated: 2025/12/21 21:32:34 by jotong		   ###   ########.fr	   */
+/*																			*/
 /* ************************************************************************** */
 
 #include "minishell.h"
@@ -27,7 +27,7 @@ static void	handle_inv_comma_count(char c, int *inv_comma, int *d_inv_comma)
 	else if (c == '\'')
 	{
 		if (*d_inv_comma == 1)
-			return;
+			return ;
 		else if (*inv_comma == 1)
 			(*inv_comma)--;
 		else
@@ -71,5 +71,31 @@ int	check_invalid_pipes(char *s)
 		return (0);
 	if (s[s_back] == '|' || s[s_back] == '<' || s[s_back] == '>')
 		return (0);
+	return (1);
+}
+
+int	check_valid_ampersand(char *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '&')
+		{
+			if (!s[i + 1])         // single '&' at end
+				return (0);
+			else if (s[i + 1] == '&')
+			{
+				if (s[i + 2] == '&') // triple '&&&'
+					return (0);
+				i += 2;               // skip valid '&&'
+				continue;
+			}
+			else                    // single '&' in the middle
+				return (0);
+		}
+		i++;
+	}
 	return (1);
 }

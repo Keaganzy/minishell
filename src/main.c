@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/21 22:39:43 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/25 01:01:49 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ t_shell	*init_shell(char **envp)
 	shell->stdin_backup = -1;
 	shell->stdout_backup = -1;
 	shell->running = 1;
+	shell->tokens = NULL;
+	shell->ast = NULL;
 	set_signals();
 	return (shell);
 }
@@ -65,6 +67,7 @@ int	main(int argc, char **argv, char **envp)
 	t_token	*tokens;
 	char	*line;
 	t_ast	*ast;
+	int		final_exit_status;
 
 	(void)argc;
 	(void)argv;
@@ -86,16 +89,20 @@ int	main(int argc, char **argv, char **envp)
 			free(line);
 			continue ;
 		}
-		print_token_stream_colored(tokens);
+		shell->tokens = tokens;
+		// print_token_stream_colored(tokens);
 		ast = parse(tokens, shell);
-		print_ast(ast);
+		// print_ast(ast);
 		if (ast)
 			execute_ast(ast, shell);
 		free_ast(ast); // call all these in another function (norm)
 		token_free_all(&tokens); // call all these in another function (norm)
+		shell->tokens = NULL;
+		shell->ast = NULL;
 		free(line); // call all these in another function (norm)
 	}
+	final_exit_status = shell->last_exit_status;
 	rl_clear_history();
 	cleanup_shell(shell);
-	return (shell->last_exit_status);
+	return (final_exit_status);
 }

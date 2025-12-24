@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/22 00:08:16 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/25 00:27:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # define PROMPT	"MS$"
 # define BUFFER_SIZE 1024
 
+typedef struct s_token	t_token;
+typedef struct	s_ast 	t_ast;
+
 typedef struct s_shell
 {
 	char	**envp;
@@ -37,6 +40,8 @@ typedef struct s_shell
     int     stdin_backup;        // Backup for stdin
     int     stdout_backup;
 	int		running;
+	t_token	*tokens;
+	t_ast	*ast;
 }	t_shell;
 
 typedef	enum	e_node_type
@@ -145,6 +150,9 @@ char			*extract_word_with_inv_commas(const char *s, size_t *i);
 int				check_has_equals(char *s);
 char			*process_heredoc(char *delimiter, int is_quoted, t_shell *shell);
 char 			*expand_heredoc_line(char *line, t_shell *shell);
+int				is_fd_redir(const char *s, size_t i);
+int				extract_fd_for_lexer(const char *s, size_t *i);
+int				check_valid_ampersand(char *s);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"
@@ -161,9 +169,9 @@ int	execute_builtin(t_ast *ast, t_shell *shell);
 char	**get_paths_from_env(char **envp);
 int execute_pipe(t_ast *node, t_shell *shell);
 int	execute_redir(t_ast *node, t_shell *shell);
-int	setup_redir_in(char *filename, t_shell *shell);
-int	setup_redir_out(char *filename, t_shell *shell);
-int	setup_redir_append(char *filename, t_shell *shell);
+int	setup_redir_in(t_ast *node, t_shell *shell);
+int	setup_redir_out(t_ast *node, t_shell *shell);
+int	setup_redir_append(t_ast *node, t_shell *shell);
 int	setup_heredoc(t_ast *node, t_shell *shell);
 int	execute_logical(t_ast *node, t_shell *shell);
 int	setup_redirections(t_ast *node, t_shell *shell);
@@ -190,6 +198,9 @@ char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free);
 int 	wildcard_match(char *pattern, char *str);
 char	**setup_args_arr(char **new_av, int *i, int *n_flag);
 int 	var_check(char *var);
+int		match_last(char *str, char **chunks, int n, int end_star);
+int		match_middle(char *str, char **chunks, int n, int *pos);
+int		match_first(char *str, char **chunks, int *pos, int start_star);
 
 // void	print_ast(t_ast *node, int level);
 void	print_ast(t_ast *node);

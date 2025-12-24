@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:56:01 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/12 18:20:22 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/23 19:15:01 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	setup_redirections(t_ast *node, t_shell *shell)
 {
 	(void)shell;
 	if (node->type == N_REDIR_IN)
-		return (setup_redir_in(node->filename, shell));
+		return (setup_redir_in(node, shell));
 	if (node->type == N_REDIR_OUT)
-		return (setup_redir_out(node->filename, shell));
+		return (setup_redir_out(node, shell));
 	if (node->type == N_REDIR_APPEND)
-		return (setup_redir_append(node->filename, shell));
+		return (setup_redir_append(node, shell));
 	if (node->type == N_HEREDOC)
 		return (setup_heredoc(node, shell));
 	return (1);

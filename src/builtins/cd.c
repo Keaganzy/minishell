@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/21 21:31:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/23 22:54:06 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ int	builtin_cd(char **av, t_shell *shell)
 	if (chdir(path) != 0)
 	{
 		print_err("cd", path);
+		shell->last_exit_status = chdir(path);
 		return (1);
 	}
 	return (update_pwd_vars(shell, prev_pwd));
