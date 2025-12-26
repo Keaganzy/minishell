@@ -55,7 +55,6 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] == '\0')
 		return (0);
 	*word = ft_strjoin_and_free(word, extract_word(s, i), 0);
-	printf("word is %s\n", *word);
 	if (s[*i] == ' ' || s[*i] == '\0' || s[*i] == '<' || s[*i] == '>'
 		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&' || s[*i] == '|')
 	{
@@ -68,37 +67,39 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	return (1);
 }
 
-static void	lex_step(const char *s, size_t *i, t_token **tokens, char **word)
-{
-	int				fd;
-	t_token_type	type;
+// static void	lex_step(const char *s, size_t *i, t_token **tokens, char **word)
+// {
+// 	int				fd;
+// 	t_token_type	type;
 
-	if (is_space((unsigned char)s[*i]))
-		add_token_back(tokens, token_new(get_op_type(s, i), NULL, -1));
-	else if (parse_quotes(word, (char *)s, tokens, i))
-		return ;
-	else if (is_fd_redir(s, *i))
-	{
-		fd = extract_fd_for_lexer(s, i);
-		type = get_op_type(s, i);
-		add_token_back(tokens, token_new(type, NULL, fd));
-		*word = NULL;
-	}
-	else if (s[*i] == '|' || s[*i] == '<' || s[*i] == '>'
-		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&')
-	{
-		add_token_back(tokens, token_new(get_op_type(s, i), NULL, -1));
-		*word = NULL;
-	}
-	else if (parse_word(word, (char *)s, tokens, i))
-		return ;
-}
+// 	if (is_space((unsigned char)s[*i]))
+// 		add_token_back(tokens, token_new(get_op_type(s, i), NULL, -1));
+// 	else if (parse_quotes(word, (char *)s, tokens, i))
+// 		return ;
+// 	else if (is_fd_redir(s, *i))
+// 	{
+// 		fd = extract_fd_for_lexer(s, i);
+// 		type = get_op_type(s, i);
+// 		add_token_back(tokens, token_new(type, NULL, fd));
+// 		*word = NULL;
+// 	}
+// 	else if (s[*i] == '|' || s[*i] == '<' || s[*i] == '>'
+// 		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&')
+// 	{
+// 		add_token_back(tokens, token_new(get_op_type(s, i), NULL, -1));
+// 		*word = NULL;
+// 	}
+// 	else if (parse_word(word, (char *)s, tokens, i))
+// 		return ;
+// }
 
 t_token	*lex_input(const char *s)
 {
-	size_t	i;
-	t_token	*tokens;
-	char	*word;
+	size_t			i;
+	t_token			*tokens;
+	char			*word;
+	int				fd;
+	t_token_type	type;
 
 	i = 0;
 	tokens = NULL;
