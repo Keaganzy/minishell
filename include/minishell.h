@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 15:29:57 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:53:48 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef struct s_quote_state
 {
 	int	in_single;
 	int	in_double;
+	int	in_curly_brackets;
 	int flag;
 }	t_quote_state;
 
@@ -153,6 +154,7 @@ char 			*expand_heredoc_line(char *line, t_shell *shell);
 int				is_fd_redir(const char *s, size_t i);
 int				extract_fd_for_lexer(const char *s, size_t *i);
 int				check_valid_ampersand(char *s);
+int				check_valid_brackets(char *s);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"

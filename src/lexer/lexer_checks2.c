@@ -77,26 +77,54 @@ int	check_invalid_pipes(char *s)
 int	check_valid_ampersand(char *s)
 {
 	int	i;
+	int	is_in_quotes;
 
 	i = 0;
+	is_in_quotes = 0;
 	while (s[i])
 	{
-		if (s[i] == '&')
+		if (s[i] == '\'' || s[i] == '"')
+			is_in_quotes = !is_in_quotes;
+		if (!is_in_quotes)
 		{
-			if (!s[i + 1])         // single '&' at end
-				return (0);
-			else if (s[i + 1] == '&')
+			if (s[i] == '&')
 			{
-				if (s[i + 2] == '&') // triple '&&&'
+				if (!s[i + 1])
 					return (0);
-				i += 2;               // skip valid '&&'
-				continue;
+				else if (s[i + 1] == '&')
+				{
+					if (s[i + 2] == '&')
+						return (0);
+					i += 1;
+				}
+				else
+					return (0);
 			}
-			else                    // single '&' in the middle
-				return (0);
 		}
 		i++;
 	}
 	return (1);
 }
 
+int	check_valid_brackets(char *s)
+{
+	int	i;
+	int	is_in_quotes;
+	int	is_in_curly_bs;
+
+	i = 0;
+	is_in_quotes = 0;
+	is_in_curly_bs = 0;
+	while(s[i])
+	{
+		if (s[i] == '\'' || s[i] == '"')
+			is_in_quotes = !is_in_quotes;
+		if (!is_in_quotes)
+		{
+			if (s[i] == '{' || s[i] == '}')
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 15:32:37 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:01:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	ft_unset(char **av, t_shell *shell)
 int	ft_exit(char **av, t_shell *shell)
 {
 	int	i;
+	int	exit_code;
 
 	(void)shell;
 	i = 0;
@@ -100,9 +101,10 @@ int	ft_exit(char **av, t_shell *shell)
 	printf("exit\n");
 	cleanup_shell(shell);
 	if (av[1])
-		exit(ft_atoi(av[1]));
+		exit_code = ft_atoi(av[1]);
 	else
-		exit(0);
+		exit_code = 0;
+	exit(exit_code);
 }
 
 int	ft_pwd(char **av, t_shell *shell)

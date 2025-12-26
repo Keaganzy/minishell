@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 15:33:01 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:38:33 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static void	init_quote_state(t_quote_state *state)
 {
 	state->in_single = 0;
 	state->in_double = 0;
+	state->in_curly_brackets = 0;
 	state->flag = 0;
 }
 

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 15:36:30 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 15:36:32 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 18:55:00 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int	check_syntax(char *s)
 		return (printf("Syntax error near unexpected token 'newline'\n"), 0);
 	if (check_valid_ampersand(s) == 0)
 		return (printf("Syntax error near unexpected token '&'\n"),0);
+	if (check_valid_brackets(s) == 0)
+		return (printf("Curly brackets not supported in this MS.\n"), 0);
 	return (1);
 }
 
