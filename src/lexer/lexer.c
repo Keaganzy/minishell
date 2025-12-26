@@ -39,14 +39,14 @@ static int	parse_quotes(char **wrd, char *s, t_token **tokens, size_t *i)
 {
 	if (s[*i] != '"' && s[*i] != '\'')
 		return (0);
-	if (*word)
-		*word = ft_strjoin_and_free(word, extract_word_with_inv_commas(s, i), 0);
+	if (*wrd)
+		*wrd = ft_strjoin_and_free(wrd, extract_word_with_inv_commas(s, i), 0);
 	else
 		*wrd = extract_word_with_inv_commas(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 		return (1);
-	add_token_back(tokens, token_new(T_WORD, *word, -1));
-	*word = NULL;
+	add_token_back(tokens, token_new(T_WORD, *wrd, -1));
+	*wrd = NULL;
 	return (1);
 }
 
