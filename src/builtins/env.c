@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 20:34:44 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:32:37 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,16 +70,13 @@ int	ft_unset(char **av, t_shell *shell)
 			printf("Invalid identifier\n");
 			return (1);
 		}
-		printf("i in validate : %d\n", i);
 		i++;
-		
 	}
 	i = 1;
 	while (av[i])
 	{
 		if (getenv_value(shell->envp, av[i]) != NULL)
 			unsetenv_value(&shell->envp, av[i]);
-		printf("i in unset : %d\n", i);
 		i++;
 		
 	}

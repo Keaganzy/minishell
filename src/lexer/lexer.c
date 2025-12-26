@@ -39,14 +39,14 @@ static int	parse_quotes(char **wrd, char *s, t_token **tokens, size_t *i)
 {
 	if (s[*i] != '"' && s[*i] != '\'')
 		return (0);
-	if (*wrd)
-		*wrd = ft_strjoin_and_free(wrd, extract_word_with_inv_commas(s, i), 0);
+	if (*word)
+		*word = ft_strjoin_and_free(word, extract_word_with_inv_commas(s, i), 0);
 	else
 		*wrd = extract_word_with_inv_commas(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 		return (1);
-	add_token_back(tokens, token_new(T_WORD, *wrd, -1));
-	*wrd = NULL;
+	add_token_back(tokens, token_new(T_WORD, *word, -1));
+	*word = NULL;
 	return (1);
 }
 
@@ -55,13 +55,16 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	if (s[*i] == '\0')
 		return (0);
 	*word = ft_strjoin_and_free(word, extract_word(s, i), 0);
-	//printf("word is %s\n", *word);
+	printf("word is %s\n", *word);
 	if (s[*i] == ' ' || s[*i] == '\0' || s[*i] == '<' || s[*i] == '>'
 		|| s[*i] == '(' || s[*i] == ')' || s[*i] == '&' || s[*i] == '|')
 	{
 		add_token_back(tokens, token_new(T_WORD, *word, -1));
+		free(*word);
 		*word = NULL;
 	}
+	// free(*word); // these were previously in the above bracket, just below add_token_back
+	// *word = NULL;
 	return (1);
 }
 
@@ -103,6 +106,26 @@ t_token	*lex_input(const char *s)
 	if (check_syntax((char *)s) == 0)
 		return (NULL);
 	while (s[i])
-		lex_step(s, &i, &tokens, &word);
+	{
+		if (is_space((unsigned char)s[i]))
+			add_token_back(&tokens, token_new(get_op_type(s, &i), NULL, -1));
+		else if (parse_quotes(&word, (char *)s, &tokens, &i))
+			continue ;
+		else if (is_fd_redir(s, i))
+		{
+			fd = extract_fd_for_lexer(s, &i);
+			type = get_op_type(s, &i);
+			add_token_back(&tokens, token_new(type, NULL, fd));
+			word = NULL;
+		}
+		else if (s[i] == '|' || s[i] == '<' || s[i] == '>' || s[i] == '('
+			|| s[i] == ')' || s[i] == '&')
+		{
+			add_token_back (&tokens, token_new(get_op_type(s, &i), NULL, -1));
+			word = NULL;
+		}
+		else if (parse_word(&word, (char *)s, &tokens, &i))
+			continue ;
+	}
 	return (tokens);
 }

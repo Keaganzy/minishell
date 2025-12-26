@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 19:39:58 by ksng             ###   ########.fr       */
+/*   Updated: 2025/12/26 15:29:57 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@
 # define PROMPT	"MS$"
 # define BUFFER_SIZE 1024
 
+typedef struct s_token	t_token;
+typedef struct	s_ast 	t_ast;
+
 typedef struct s_shell
 {
 	char	**envp;
@@ -37,6 +40,8 @@ typedef struct s_shell
     int     stdin_backup;        // Backup for stdin
     int     stdout_backup;
 	int		running;
+	t_token	*tokens;
+	t_ast	*ast;
 }	t_shell;
 
 typedef	enum	e_node_type

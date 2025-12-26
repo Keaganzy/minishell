@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:39:15 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/09 19:16:11 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/25 00:32:41 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,25 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 
 static int	execute_pipe_child(t_ast *node, int *pipefd, t_shell *shell, int is_left)
 {
+	int	status;
+
 	if (is_left)
 	{
 		close(pipefd[0]);
 		dup2(pipefd[1], STDOUT_FILENO);
 		close(pipefd[1]);
-		exit(execute_node(node->left, shell));
+		status = execute_node(node->left, shell);
+		cleanup_shell(shell);
+		exit(status);
 	}
 	else
 	{
 		close(pipefd[1]);
 		dup2(pipefd[0], STDIN_FILENO);
 		close(pipefd[0]);
-		exit(execute_node(node->right, shell));
+		status = execute_node(node->right, shell);
+		cleanup_shell(shell);
+		exit(status);
 	}
 }
 

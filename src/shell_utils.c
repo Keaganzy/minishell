@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 17:39:11 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:32:30 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,20 @@ void cleanup_shell(t_shell *shell)
             i++;
         }
         free(shell->envp);
+		shell->envp = NULL;
     }
+	if (shell->tokens)
+	{
+		token_free_all(&shell->tokens);
+		shell->tokens = NULL;
+	}
+	if (shell->ast)
+	{
+		free_ast(shell->ast);
+		shell->ast = NULL;
+	}
+	if (shell)
+		free(shell);
 }
 
 char	*getenv_value(char **env, const char *key)

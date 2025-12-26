@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 22:55:12 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/26 15:33:01 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,6 @@ static char	**get_matches_in_dir(char *dname, char *pattern)
 	char			**matches;
 	int				count;
 
-	printf("found some directory\n");
 	dir = opendir(dname);
 	if (!dir)
 		return (NULL);
@@ -660,6 +659,7 @@ char	*expand_and_replace(char **s, t_shell *shell)
 	free(map);
 	if (!step3)
 		return (NULL);
+	free(*s);
 	*s = step3;
 	return (step3);
 }

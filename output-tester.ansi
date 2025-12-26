@@ -2832,7 +2832,7 @@ include/                            testdir/
 --More--[C[C[C[Cexit
 [1;33mExpected stderr (bash):[0m
 [1;33mActual stderr (minishell):[0m
-[1;33mExpected exit code (bash):[0m 0
+[1;33mExpected exit code (bash):[0m 0
 [1;33mActual exit code (minishell):[0m 0
 [0;31m⚠ Memory leak detected![0m
 ==2871043== LEAK SUMMARY:
