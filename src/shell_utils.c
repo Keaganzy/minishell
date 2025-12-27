@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/04 00:15:14 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 15:32:30 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/27 16:55:00 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 	{
 		if (ft_strncmp((*envp)[i], key, key_len) == 0 && (*envp)[i][key_len] == '=')
 		{
+			free((*envp)[i]);
 			(*envp)[i] = new_var;
 			return (0);
 		}
@@ -96,6 +97,7 @@ int	setenv_value(char ***envp, const char *key, const char *value)
 		new_env[j] = (*envp)[j];
 	new_env[i] = new_var;
 	new_env[i + 1] = NULL;
+	free(*envp);
 	*envp = new_env;
 	return (0);
 }
@@ -136,4 +138,3 @@ int unsetenv_value(char ***envp, const char *key)
     
     return (0);
 }
-
