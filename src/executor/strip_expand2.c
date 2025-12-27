@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/27 15:50:35 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/27 16:34:08 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -259,7 +259,7 @@ static size_t	calc_var_len_helper(char *s, t_shell *shell, int *need_free)
 	if (!name)
 		return (0);
 	value = get_env_value(name, shell);
-	if (len == 1 && name[0] == '?')
+	if (len == 1 && (name[0] == '?' || name[0] == '0'))
 		*need_free = 1;
 	else
 		*need_free = 0;
@@ -354,8 +354,6 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 	if (!name)
 		return (0);
 	value = get_env_value(name, shell);
-	// need_free = (len == 1 && name[0] == '?');
-	// free(name);
 	j = 0;
 	if (value && *value)
 	{
@@ -364,11 +362,9 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 			e->out[e->i] = value[j++];
 			e->map[e->i++] = e->state.in_double;
 		}
-		// if (need_free)
-		// 	free(value);
 	}
 	
-	if (len == 1 && *name == '?')
+	if (len == 1 && (*name == '?' || *name == '0'))
 		free(value);
 	free(name);
 	*s += len;
