@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_expand2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 18:38:33 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/27 15:50:35 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ static size_t	get_var_len(char *s)
 	size_t	len;
 
 	len = 0;
-	if (s[len] == '?')
+	if (s[len] == '?' || (s[len] >= '0' && s[len] <= '9'))
 		return (1);
+	// else if (s[len] == '0')
+	// 	return (10);
 	while (s[len] && (ft_isalnum(s[len]) || s[len] == '_'))
 		len++;
 	return (len);
@@ -48,6 +50,8 @@ static char	*get_env_value(char *var_name, t_shell *shell)
 	len = ft_strlen(var_name);
 	if (len == 1 && *var_name == '?')
 		return (ft_itoa(shell->last_exit_status));
+	if (len == 1 && *var_name == '0')
+		return (ft_strdup("minishell"));
 	i = 0;
 	while (shell->envp[i])
 	{
@@ -339,7 +343,7 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 	char	*value;
 	size_t	len;
 	size_t	j;
-	int		need_free;
+	// int		need_free;
 
 	(*s)++;
 	len = get_var_len(*s);
@@ -350,19 +354,23 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 	if (!name)
 		return (0);
 	value = get_env_value(name, shell);
-	need_free = (len == 1 && name[0] == '?');
-	free(name);
+	// need_free = (len == 1 && name[0] == '?');
+	// free(name);
 	j = 0;
-	if (value)
+	if (value && *value)
 	{
 		while (value[j])
 		{
 			e->out[e->i] = value[j++];
 			e->map[e->i++] = e->state.in_double;
 		}
-		if (need_free)
-			free(value);
+		// if (need_free)
+		// 	free(value);
 	}
+	
+	if (len == 1 && *name == '?')
+		free(value);
+	free(name);
 	*s += len;
 	return (1);
 }
