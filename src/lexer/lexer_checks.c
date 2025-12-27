@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_checks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 15:36:30 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 18:55:00 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/27 12:31:51 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ int	check_syntax(char *s)
 		return (printf("Syntax error near unexpected token '&'\n"),0);
 	if (check_valid_brackets(s) == 0)
 		return (printf("Curly brackets not supported in this MS.\n"), 0);
+	if (check_has_semicolon(s) == 0)
+		return (printf("Semicolons not supported in this MS.\n"), 0);
 	return (1);
 }
 

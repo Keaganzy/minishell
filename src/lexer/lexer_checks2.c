@@ -110,11 +110,9 @@ int	check_valid_brackets(char *s)
 {
 	int	i;
 	int	is_in_quotes;
-	int	is_in_curly_bs;
 
 	i = 0;
 	is_in_quotes = 0;
-	is_in_curly_bs = 0;
 	while(s[i])
 	{
 		if (s[i] == '\'' || s[i] == '"')
@@ -122,6 +120,27 @@ int	check_valid_brackets(char *s)
 		if (!is_in_quotes)
 		{
 			if (s[i] == '{' || s[i] == '}')
+				return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
+int	check_has_semicolon(char *s)
+{
+	int	i;
+	int	is_in_quotes;
+
+	i = 0;
+	is_in_quotes = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'' || s[i] == '"')
+			is_in_quotes = !is_in_quotes;
+		if (!is_in_quotes)
+		{
+			if (s[i] == ';')
 				return (0);
 		}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 18:53:48 by jotong           ###   ########.fr       */
+/*   Updated: 2025/12/27 12:32:08 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ int				is_fd_redir(const char *s, size_t i);
 int				extract_fd_for_lexer(const char *s, size_t *i);
 int				check_valid_ampersand(char *s);
 int				check_valid_brackets(char *s);
+int				check_has_semicolon(char *s);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"
