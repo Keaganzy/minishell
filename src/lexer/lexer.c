@@ -72,7 +72,8 @@ static int	parse_word(char **word, char *s, t_token **tokens, size_t *i)
 	return (1);
 }
 
-t_token	*lex_input(const char *s)
+
+t_token	*lex_input(const char *s, t_shell *shell)
 {
 	size_t			i;
 	t_token			*tokens;
@@ -84,7 +85,10 @@ t_token	*lex_input(const char *s)
 	tokens = NULL;
 	word = NULL;
 	if (check_syntax((char *)s) == 0)
+	{
+		shell->last_exit_status = 2;
 		return (NULL);
+	}
 	while (s[i])
 	{
 		if (is_space((unsigned char)s[i]))
