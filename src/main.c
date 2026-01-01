@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 17:50:46 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 14:06:29 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		}
 		history_add(line);
-		tokens = lex_input(line);
+		tokens = lex_input(line, shell);
 		if (!tokens)
 		{
 			free(line);
