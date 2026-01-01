@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:39:15 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/01 14:58:18 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/01 17:59:31 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,10 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 	waitpid(pid2, &status2, 0);
 	if (WIFEXITED(status2))
 		final_status = WEXITSTATUS(status2);
+	else if (WIFSIGNALED(status2))
+		final_status = 128 + WTERMSIG(status2);
+	else if (WIFSIGNALED(status1))
+		final_status = 128 + WTERMSIG(status1);
 	else
 		final_status = 1;
 	return (final_status);
@@ -30,26 +34,28 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 
 static int	execute_pipe_child(t_ast *node, int *pipefd, t_shell *shell, int is_left)
 {
-	int	status;
+    int status;
 
-	if (is_left)
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-		status = execute_node(node->left, shell);
-		cleanup_shell(shell);
-		exit(status);
-	}
-	else
-	{
-		close(pipefd[1]);
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
-		status = execute_node(node->right, shell);
-		cleanup_shell(shell);
-		exit(status);
-	}
+    signal(SIGINT, SIG_DFL);
+    signal(SIGQUIT, SIG_DFL);
+
+    if (is_left)
+    {
+        close(pipefd[0]);
+        dup2(pipefd[1], STDOUT_FILENO);
+        close(pipefd[1]);
+        status = execute_node(node->left, shell);
+    }
+    else
+    {
+        close(pipefd[1]);
+        dup2(pipefd[0], STDIN_FILENO);
+        close(pipefd[0]);
+        status = execute_node(node->right, shell);
+    }
+
+    cleanup_shell(shell);
+    exit(status);
 }
 
 int execute_pipe(t_ast *node, t_shell *shell)
@@ -74,6 +80,6 @@ int execute_pipe(t_ast *node, t_shell *shell)
 	close(pipefd[0]);
 	close(pipefd[1]);
 	final_status = wait_for_children(pid1, pid2);
-	shell->last_exit_status = final_status;  // CRITICAL: Set exit status
+	shell->last_exit_status = final_status;
 	return (final_status);
 }
