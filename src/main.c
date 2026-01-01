@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 18:41:22 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/01 21:42:55 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,26 @@ int	main(int argc, char **argv, char **envp)
 	char	*line;
 	// t_ast	*ast;
 	int		final_exit_status;
+	// struct sigaction sa;
 
 	(void)argc;
 	(void)argv;
+	g_sigint_received = 0;
 	shell = init_shell(envp);
 	if (!shell)
 		return (1);
 	while(!shell->exit_code)
 	{
 		line = readline("MS$ ");
+		if (g_sigint_received == 130 || g_sigint_received == 131)
+		{
+			shell->last_exit_status = g_sigint_received;
+			// printf("exitt: %d", shell->last_exit_status);
+			g_sigint_received = 0;
+			// line = readline("");
+		}
+		// else
+		// 	line = readline("MS$ ");
 		if (!line)					// ctrl-D (EOF)
 		{
 			printf("exit\n");		// remove this to save lines? yes
@@ -100,6 +111,13 @@ int	main(int argc, char **argv, char **envp)
 		token_free_all(&tokens); // call all these in another function (norm)
 		shell->tokens = NULL;
 		shell->ast = NULL;
+		// if (g_sigint_received == 130 || g_sigint_received == 131)
+		// {
+		// 	shell->last_exit_status = g_sigint_received;
+		// 	// printf("exitt: %d", shell->last_exit_status);
+		// 	g_sigint_received = 0;
+		// 	// line = readline("");
+		// }
 		free(line); // call all these in another function (norm)
 	}
 	final_exit_status = shell->last_exit_status;

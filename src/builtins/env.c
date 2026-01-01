@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 17:00:21 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 20:48:52 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,12 +98,13 @@ int	ft_exit(char **av, t_shell *shell)
 		return (1);
 	}
 	printf("exit\n");
-	cleanup_shell(shell);
 	if (av[1])
 		exit_code = ft_atoi(av[1]);
 	else
 		exit_code = 0;
 	shell->exit_code = exit_code;
+	printf("exit code in ft_Exit :%d\n", exit_code);
+	cleanup_shell(shell);
 	exit(exit_code);
 }
 

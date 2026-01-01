@@ -6,12 +6,14 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 14:06:18 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 21:42:40 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+# define _POSIX_C_SOURCE 200809L 
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -31,6 +33,8 @@
 
 typedef struct s_token	t_token;
 typedef struct	s_ast 	t_ast;
+
+extern volatile sig_atomic_t	g_sigint_received;
 
 typedef struct s_shell
 {
@@ -90,6 +94,13 @@ typedef struct	s_ast // abstract syntax tree
 	int fd;
 }	t_ast;
 
+// struct sigaction {
+//     void     (*sa_handler)(int);
+//     sigset_t sa_mask;
+//     int      sa_flags;
+//     void     (*sa_sigaction)(int, siginfo_t *, void *);
+// }	t_sa;
+
 typedef struct s_parser
 {
 	t_token	*current;
@@ -122,7 +133,7 @@ typedef struct s_exp
 
 // void	start_shell(t_shell *shell);
 void	set_signals(void);
-void	sigint_handler(int sig);
+// void	sigint_handler(int sig);
 char	*getenv_value(char **env, const char *key);
 int		setenv_value(char ***envp, const char *key, const char *value);
 

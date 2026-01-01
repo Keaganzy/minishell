@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/01 18:10:24 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/01 21:16:48 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,14 @@ static int execute_external(t_ast *ast, t_shell *shell)
 	int		status;
 	char	*cmd_path;
 
+	status = 0;
 	pid = fork();
 	if (pid == -1)
 		return (1);
 	if (pid == 0)  // CHILD PROCESS
 	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		cmd_path = find_command_path(ast->argv[0], shell->envp);
 		if (!cmd_path)
 		{
@@ -152,6 +155,6 @@ int execute_cmd(t_ast *node, t_shell *shell)
 		status = execute_builtin(node, shell);
 	else
 		status = execute_external(node, shell);
-	shell->last_exit_status = status;
+	// shell->last_exit_status = status;
 	return (status);
 }
