@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_exec.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/26 15:32:42 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 14:56:49 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,12 +95,11 @@ static int execute_external(t_ast *ast, t_shell *shell)
 	pid_t	pid;
 	int		status;
 	char	*cmd_path;
-	int		exec_status;
 
 	pid = fork();
 	if (pid == -1)
 		return (1);
-	if (pid == 0)
+	if (pid == 0)  // CHILD PROCESS
 	{
 		cmd_path = find_command_path(ast->argv[0], shell->envp);
 		if (!cmd_path)
@@ -110,14 +109,18 @@ static int execute_external(t_ast *ast, t_shell *shell)
 			cleanup_shell(shell);
 			exit(127);
 		}
-		
-		exec_status = execve(cmd_path, ast->argv, shell->envp);
-		shell->last_exit_status = exec_status;
-		perror(cmd_path);
+
+		// execve() replaces the process - it doesn't return on success
+		execve(cmd_path, ast->argv, shell->envp);
+
+		// If we get here, execve failed
+		perror(ast->argv[0]);
 		free(cmd_path);
 		cleanup_shell(shell);
 		exit(126);
 	}
+
+	// PARENT PROCESS - wait for child and get exit status
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
@@ -130,21 +133,19 @@ int execute_cmd(t_ast *node, t_shell *shell)
 	int 	i;
 
 	i = 0;
-	
+
 	fflush(stdout);
 	if (!node->argv || !node->argv[0])
 		return (0);
-	//send arguements to function $ EXPANDER
-	if (is_builtin(node))
+
+	// CRITICAL: Expand ALL arguments for ALL commands (builtin AND external)
+	i = 0;
+	while (node->argv[i])
 	{
-		while (node->argv[i])
-		{
-			//jtfunction(node->argv[i]);
-			expand_and_replace(&(node->argv[i]), shell);
-			// printf("---->%s\n",node->argv[i]);
-			i++;
-		}
+		expand_and_replace(&(node->argv[i]), shell);
+		i++;
 	}
+
 	if (is_builtin(node))
 		status = execute_builtin(node, shell);
 	else

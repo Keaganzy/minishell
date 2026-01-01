@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/26 18:01:09 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 15:06:36 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_unset(char **av, t_shell *shell)
 		if (getenv_value(shell->envp, av[i]) != NULL)
 			unsetenv_value(&shell->envp, av[i]);
 		i++;
-		
+
 	}
 	return (0);
 }
@@ -88,9 +88,9 @@ int	ft_exit(char **av, t_shell *shell)
 	int	i;
 	int	exit_code;
 
-	(void)shell;
+	exit_code = shell->last_exit_status;
 	i = 0;
-	while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9') || 
+	while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9') ||
             (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
 		i++;
 	if (av[1] && av[1][i] != '\0')
@@ -104,6 +104,7 @@ int	ft_exit(char **av, t_shell *shell)
 		exit_code = ft_atoi(av[1]);
 	else
 		exit_code = 0;
+	shell->exit_code = exit_code;
 	exit(exit_code);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:39:15 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/25 00:32:41 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 14:58:18 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int execute_pipe(t_ast *node, t_shell *shell)
 	int		pipefd[2];
 	pid_t	pid1;
 	pid_t	pid2;
+	int		final_status;
 
 	if (pipe(pipefd) == -1)
 		return (1);
@@ -72,5 +73,7 @@ int execute_pipe(t_ast *node, t_shell *shell)
 		execute_pipe_child(node, pipefd, shell, 0);
 	close(pipefd[0]);
 	close(pipefd[1]);
-	return (wait_for_children(pid1, pid2));
+	final_status = wait_for_children(pid1, pid2);
+	shell->last_exit_status = final_status;  // CRITICAL: Set exit status
+	return (final_status);
 }

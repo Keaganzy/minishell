@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   strip_expand2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/07 16:38:28 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/27 16:34:08 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 15:13:38 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ static int	add_dir_match(char **matches, int *count, char *dname, char *name)
 {
 	char	*full_fname;
 	char	*tmp;
-	
+
 	if (*count >= 1023)
 		return (0);
 	tmp = ft_strjoin(dname, "/");
@@ -343,13 +343,30 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 	char	*value;
 	size_t	len;
 	size_t	j;
-	// int		need_free;
 
 	(*s)++;
 	len = get_var_len(*s);
 	if (len == 0)
 		return (e->out[e->i] = '$', e->map[e->i++] = (e->state.in_single
 				|| e->state.in_double), 1);
+
+	// CRITICAL: Don't expand if in single quotes
+	if (e->state.in_single)
+	{
+		// Just copy the $varname literally
+		e->out[e->i] = '$';
+		e->map[e->i++] = 1;  // Mark as quoted
+		j = 0;
+		while (j < len)
+		{
+			e->out[e->i] = (*s)[j];
+			e->map[e->i++] = 1;
+			j++;
+		}
+		*s += len;
+		return (1);
+	}
+
 	name = ft_substr(*s, 0, len);
 	if (!name)
 		return (0);
@@ -363,7 +380,7 @@ static int	exp_var(char **s, t_exp *e, t_shell *shell)
 			e->map[e->i++] = e->state.in_double;
 		}
 	}
-	
+
 	if (len == 1 && (*name == '?' || *name == '0'))
 		free(value);
 	free(name);
@@ -422,6 +439,7 @@ static size_t	calc_split_len(char *s, char *map)
 	i = 0;
 	while (s[i])
 	{
+		// Only treat as separator if UNQUOTED space (map[i] == 0)
 		if (is_space(s[i]) && map[i] == 0)
 		{
 			if (!prev_was_space)
@@ -439,7 +457,6 @@ static size_t	calc_split_len(char *s, char *map)
 	}
 	if (prev_was_space && len > 0)
 		len--;
-
 	return (len);
 }
 
@@ -460,7 +477,7 @@ static char	*split_words(char *s, char *map)
 	prev_was_sep = 1;
 	while (s[i])
 	{
-		
+		// Only treat as separator if UNQUOTED space (map[i] == 0)
 		if (is_space(s[i]) && map[i] == 0)
 		{
 			if (!prev_was_sep && j > 0)
@@ -476,8 +493,6 @@ static char	*split_words(char *s, char *map)
 		}
 		i++;
 	}
-	// if (j > 0 && result[j - 1] == ' ')
-	// 	j--;
 	result[j] = '\0';
 	return (result);
 }
@@ -535,7 +550,7 @@ static char	*expand_pattern(char *pattern)
 	if (!ft_strnstr(pattern, "/", ft_strlen(pattern)))
 	{
 		matches = get_matches(trimmed);
-		
+
 	}
 	else
 	{

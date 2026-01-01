@@ -6,7 +6,7 @@
 /*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:56:01 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/23 19:15:01 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/01 14:57:41 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	execute_redir(t_ast *node, t_shell *shell)
 		cmd = cmd->left;
 	}
 	status = execute_node(cmd, shell);
+	shell->last_exit_status = status;
 	restore_fds(shell);
 	return (status);
 }
