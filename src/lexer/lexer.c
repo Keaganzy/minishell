@@ -45,8 +45,6 @@ static int	parse_quotes(char **wrd, char *s, t_token **tokens, size_t *i)
 		*wrd = extract_word_with_inv_commas(s, i);
 	if (!(s[*i] == '\0' || s[*i] == ' '))
 	{
-		// free(*wrd);
-		// *wrd = NULL;
 		return (1);
 	}
 	add_token_back(tokens, token_new(T_WORD, *wrd, -1));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/27 15:49:17 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/01 16:43:43 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,31 +25,27 @@ static int	is_flag_n(char *arg)
 	return (arg[i] == '\0');
 }
 
-static char	*manipulate_echo_arg(char **av, int i, char *output, t_shell *shell)
+static char	*manipulate_echo_arg(char **av, int i, char *output)
 {
-	char	*expanded;
 	char	*tmp;
 
 	while (av[i])
 	{
-		// Expand the argument first
-		expanded = expand_and_replace(&av[i], shell);
-		if (!expanded)
-			expanded = ft_strdup("");  // Handle NULL
-		
-		if (*expanded)  // Check if string is not empty
+		if (!output)
 		{
-			if (output)
-			{
-				tmp = output;
-				output = ft_strjoin(output, " ");
-				free(tmp);
-				tmp = output;
-				output = ft_strjoin(output, expanded);
-				free(tmp);
-			}
+			if (!av[i])
+				output = ft_strdup("");
 			else
-				output = ft_strdup(expanded);
+				output = ft_strdup(av[i]);
+		}
+		else
+		{
+			tmp = output;
+			output = ft_strjoin(output, " ");
+			free(tmp);
+			tmp = output;
+			output = ft_strjoin(output, av[i]);
+			free(tmp);
 		}
 		i++;
 	}
@@ -96,7 +92,8 @@ int	ft_echo(char **av, t_shell *shell)
 		n_flag = 1;
 		i++;
 	}
-	output = manipulate_echo_arg(av, i, output, shell);
+	output = manipulate_echo_arg(av, i, output);
+	// printf("av[0] = '%s'\n", av[0]);
 	if (!output)
 		output = ft_strdup("");
 	if (!n_flag)

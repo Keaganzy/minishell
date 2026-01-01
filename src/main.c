@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/15 14:53:35 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 15:29:01 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/01 16:59:58 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ int	main(int argc, char **argv, char **envp)
 		shell->tokens = tokens;
 		// print_token_stream_colored(tokens);
 		shell->ast = parse(tokens, shell);
-		// print_ast(ast);
+		// print_ast(shell->ast);
 		if (shell->ast)
 			execute_ast(shell->ast, shell);
 		if (shell->ast)

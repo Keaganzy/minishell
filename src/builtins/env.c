@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 15:06:36 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/01 17:00:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ int	ft_unset(char **av, t_shell *shell)
 		if (getenv_value(shell->envp, av[i]) != NULL)
 			unsetenv_value(&shell->envp, av[i]);
 		i++;
-
 	}
 	return (0);
 }
