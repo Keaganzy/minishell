@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/26 15:36:30 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/27 12:31:51 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 15:28:16 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static int	check_valid_redirs(char *s)
 
 	s_len = ft_strlen(s);
 	i = s_len - 1;
-	while(i > 0)
+	while (i > 0)
 	{
 		if (s[i] == ' ')
 			i--;
@@ -32,6 +32,7 @@ static int	check_valid_redirs(char *s)
 	}
 	return (1);
 }
+
 int	check_syntax(char *s)
 {
 	if (!s || !*s || (ft_strlen(s) == 1 && *s == ' '))
@@ -41,11 +42,11 @@ int	check_syntax(char *s)
 	if (check_commas_closed(s) == 0)
 		return (printf("Unclosed inv commas.\n"), 0);
 	if (check_valid_ampersand(s) == 0)
-		return (printf("Syntax error near unexpected token '&'\n"),0);
+		return (printf("Syntax error near unexpected token '&'\n"), 0);
 	if (check_valid_redirs(s) == 0)
 		return (printf("Syntax error near unexpected token 'newline'\n"), 0);
 	if (check_valid_ampersand(s) == 0)
-		return (printf("Syntax error near unexpected token '&'\n"),0);
+		return (printf("Syntax error near unexpected token '&'\n"), 0);
 	if (check_valid_brackets(s) == 0)
 		return (printf("Curly brackets not supported in this MS.\n"), 0);
 	if (check_has_semicolon(s) == 0)

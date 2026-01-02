@@ -74,37 +74,37 @@ int	check_invalid_pipes(char *s)
 	return (1);
 }
 
-int	check_valid_ampersand(char *s)
-{
-	int	i;
-	int	is_in_quotes;
+// int	check_valid_ampersand(char *s)
+// {
+// 	int	i;
+// 	int	is_in_quotes;
 
-	i = 0;
-	is_in_quotes = 0;
-	while (s[i])
-	{
-		if (s[i] == '\'' || s[i] == '"')
-			is_in_quotes = !is_in_quotes;
-		if (!is_in_quotes)
-		{
-			if (s[i] == '&')
-			{
-				if (!s[i + 1])
-					return (0);
-				else if (s[i + 1] == '&')
-				{
-					if (s[i + 2] == '&')
-						return (0);
-					i += 1;
-				}
-				else
-					return (0);
-			}
-		}
-		i++;
-	}
-	return (1);
-}
+// 	i = 0;
+// 	is_in_quotes = 0;
+// 	while (s[i])
+// 	{
+// 		if (s[i] == '\'' || s[i] == '"')
+// 			is_in_quotes = !is_in_quotes;
+// 		if (!is_in_quotes)
+// 		{
+// 			if (s[i] == '&')
+// 			{
+// 				if (!s[i + 1])
+// 					return (0);
+// 				else if (s[i + 1] == '&')
+// 				{
+// 					if (s[i + 2] == '&')
+// 						return (0);
+// 					i += 1;
+// 				}
+// 				else
+// 					return (0);
+// 			}
+// 		}
+// 		i++;
+// 	}
+// 	return (1);
+// }
 
 int	check_valid_brackets(char *s)
 {
@@ -113,7 +113,7 @@ int	check_valid_brackets(char *s)
 
 	i = 0;
 	is_in_quotes = 0;
-	while(s[i])
+	while (s[i])
 	{
 		if (s[i] == '\'' || s[i] == '"')
 			is_in_quotes = !is_in_quotes;

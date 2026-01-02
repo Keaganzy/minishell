@@ -6,7 +6,7 @@
 #    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2026/01/02 15:04:00 by jotong           ###   ########.fr        #
+#    Updated: 2026/01/02 15:58:01 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,8 +34,10 @@ PARSER_FILES	= $(SRC_DIR)/$(PARSER_DIR)/parser_new.c \
 LEXER_FILES		= $(SRC_DIR)/$(LEXER_DIR)/lexer.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_checks.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_checks2.c \
+					$(SRC_DIR)/$(LEXER_DIR)/lexer_checks3.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_utils.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_utils2.c \
+					$(SRC_DIR)/$(LEXER_DIR)/lexer_utils3.c \
 					$(SRC_DIR)/$(LEXER_DIR)/lexer_for_heredoc.c \
 					$(SRC_DIR)/$(LEXER_DIR)/tokenizer.c
 BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
@@ -45,7 +47,8 @@ BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils2.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils3.c \
-					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils4.c
+					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils4.c \
+					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils5.c
 HISTORY_FILES	= $(SRC_DIR)/$(HISTORY_DIR)/history.c
 EXECUTOR_FILES	= $(SRC_DIR)/$(EXECUTOR_DIR)/executor.c \
 					$(SRC_DIR)/$(EXECUTOR_DIR)/executor_utils.c \

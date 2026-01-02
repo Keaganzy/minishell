@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 20:48:52 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 15:49:27 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ int	ft_exit(char **av, t_shell *shell)
 
 	exit_code = shell->last_exit_status;
 	i = 0;
-	while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9') ||
-            (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
+	while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9')
+		|| (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
 		i++;
 	if (av[1] && av[1][i] != '\0')
 	{
@@ -103,7 +103,6 @@ int	ft_exit(char **av, t_shell *shell)
 	else
 		exit_code = 0;
 	shell->exit_code = exit_code;
-	// printf("exit code in ft_Exit :%d\n", exit_code);
 	cleanup_shell(shell);
 	exit(exit_code);
 }
@@ -116,7 +115,7 @@ int	ft_pwd(char **av, t_shell *shell)
 	(void)shell;
 	if (getcwd(c, sizeof(c)) != 0)
 	{
-		printf("%s\n", c); // dont remove this, this is intended
+		printf("%s\n", c);
 		return (0);
 	}
 	else

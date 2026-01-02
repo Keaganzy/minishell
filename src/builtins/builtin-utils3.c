@@ -3,83 +3,91 @@
 /*                                                        :::      ::::::::   */
 /*   builtin-utils3.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 16:34:29 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 16:29:51 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 16:07:14 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-static void	free_tab(char **tab)
+static char	*create_single_char_string(char c)
 {
-	int	i;
+	char	*new_s;
 
-	if (!tab)
-		return ;
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-}
-
-static char	**split_chunks(char *str, int *count)
-{
-	char	**res;
-	int		i;
-	int		j;
-	int		c;
-
-	res = malloc(sizeof(char *) * (ft_strlen(str) + 1));
-	if (!res)
+	new_s = malloc(2 * sizeof(char));
+	if (!new_s)
 		return (NULL);
-	i = 0;
-	c = 0;
-	while (str[i])
-	{
-		while (str[i] == '*')
-			i++;
-		if (!str[i])
-			break ;
-		j = i;
-		while (str[j] && str[j] != '*')
-			j++;
-		res[c] = ft_strndup(str + i, j - i);
-		if (!res[c])
-			return (free_tab(res), NULL);
-		c++;
-		i = j;
-	}
-	res[c] = NULL;
-	*count = c;
-	return (res);
+	ft_memcpy(new_s, &c, 1);
+	new_s[1] = '\0';
+	return (new_s);
 }
 
-int	wildcard_match(char *pattern, char *str)
+static char	*append_char_to_string(char *old_s, char c, int to_free)
 {
-	char	**chunks;
-	int		n;
-	int		pos;
-	int		start_star;
-	int		end_star;
+	char	*new_s;
+	size_t	s_len;
 
-	start_star = (pattern[0] == '*');
-	end_star = (pattern[ft_strlen(pattern) - 1] == '*');
-	chunks = split_chunks(pattern, &n);
-	if (!chunks)
-		return (0);
-	pos = 0;
-	if (match_first(str, chunks, &pos, start_star))
-		return (free_tab(chunks), 0);
-	if (match_middle(str, chunks, n, &pos))
-		return (free_tab(chunks), 0);
-	if (match_last(str, chunks, n, end_star))
-		return (free_tab(chunks), 0);
-	free_tab(chunks);
-	return (1);
+	s_len = ft_strlen(old_s);
+	new_s = malloc((s_len + 2) * sizeof(char));
+	if (!new_s)
+		return (NULL);
+	ft_memcpy(new_s, old_s, ft_strlen(old_s));
+	new_s[s_len] = c;
+	new_s[s_len + 1] = '\0';
+	if (to_free == 1 && old_s)
+		free(old_s);
+	return (new_s);
+}
+
+char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free)
+{
+	char	*result;
+
+	if (!(*new_s) && !c)
+		return (NULL);
+	if (!c)
+		return (*new_s);
+	if (!(*new_s))
+	{
+		*new_s = create_single_char_string(c);
+		return (*new_s);
+	}
+	result = append_char_to_string(*new_s, c, to_free);
+	if (!result)
+		return (NULL);
+	*new_s = result;
+	return (*new_s);
+}
+
+int	add_update_env_vars(t_shell *shell, const char *av)
+{
+	char	*key;
+	int		eq_pos;
+	int		status;
+
+	eq_pos = find_equals_pos(av);
+	key = ft_strndup(av, eq_pos);
+	status = validate_key(key);
+	if (status == 0)
+		status = set_env_variable(shell, av, eq_pos, key);
+	free(key);
+	return (status);
+}
+
+void	free_substr(char **substr)
+{
+	int	j;
+
+	j = 0;
+	while (substr[j])
+	{
+		free(substr[j]);
+		substr[j] = NULL;
+		j++;
+	}
+	free(substr);
+	substr = NULL;
 }

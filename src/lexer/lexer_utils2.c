@@ -57,3 +57,25 @@ int	extract_fd_for_lexer(const char *s, size_t *i)
 	fd = ft_atoi(s + start);
 	return (fd);
 }
+
+char	*ft_strjoin_and_free(char **new_s, char *substr, int to_free)
+{
+	char	*tmp;
+
+	if (!(*new_s) && !substr)
+		return (NULL);
+	if (!substr)
+		return (*new_s);
+	if (!(*new_s))
+	{
+		*new_s = substr;
+		return (*new_s);
+	}
+	tmp = *new_s;
+	*new_s = ft_strjoin(*new_s, substr);
+	if ((to_free == 1 || to_free == 3) && tmp)
+		free(tmp);
+	if ((to_free == 2 || to_free == 3) && substr)
+		free(substr);
+	return (*new_s);
+}

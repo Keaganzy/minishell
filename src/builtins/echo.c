@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 16:43:43 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 15:50:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,21 +62,6 @@ static char	*add_newline(char *output)
 	return (output);
 }
 
-// static int	check_invalid_chars(char **av)
-// {
-// 	int	i;
-	
-// 	i = 0;
-// 	while (av[i])
-// 	{
-// 		printf("(check_invalid_chars) comparing %s\n", av[i]);
-// 		if (ft_strcmp(av[i], "&&&") == 0)
-// 			return (1);
-// 		i++;
-// 	}
-// 	return (0);
-// }
-
 int	ft_echo(char **av, t_shell *shell)
 {
 	int		i;
@@ -93,7 +78,6 @@ int	ft_echo(char **av, t_shell *shell)
 		i++;
 	}
 	output = manipulate_echo_arg(av, i, output);
-	// printf("av[0] = '%s'\n", av[0]);
 	if (!output)
 		output = ft_strdup("");
 	if (!n_flag)

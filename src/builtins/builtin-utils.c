@@ -14,57 +14,63 @@
 #include "minishell.h"
 #include "libft.h"
 
-static void	append_match(char **result, char *name, int *count)
+static int	has_outer_quotes(char *str, size_t len)
 {
-	char	*tmp;
-
-	if (*count > 0)
-	{
-		tmp = *result;
-		*result = ft_strjoin(*result, " ");
-		free(tmp);
-	}
-	if (ft_strcmp(name, ".") == 0 || ft_strcmp(name, "..") == 0
-		|| name[0] == '.')
-		return ;
-	tmp = *result;
-	*result = ft_strjoin(*result, name);
-	free(tmp);
-	(*count)++;
+	if (len >= 2 && ((str[0] == '"' && str[len - 1] == '"')
+			|| (str[0] == '\'' && str[len - 1] == '\'')))
+		return (1);
+	return (0);
 }
 
-static char	*scan_directory(char *substr)
+static char	*strip_outer_quotes(char *str)
 {
-	DIR				*dir;
-	struct dirent	*entry;
-	char			*result;
-	int				count;
-
-	result = NULL;
-	count = 0;
-	dir = opendir(".");
-	if (!dir)
-		return (ft_strdup(substr));
-	entry = readdir(dir);
-	while (entry)
-	{
-		if (wildcard_match(substr, entry->d_name))
-			append_match(&result, entry->d_name, &count);
-		entry = readdir(dir);
-	}
-	closedir(dir);
-	return (result);
-}
-
-char	*handle_asterisk(char *substr)
-{
+	size_t	len;
 	char	*result;
 
-	if (!ft_strnstr(substr, "*", ft_strlen(substr)))
-		return (ft_strdup(substr));
-	result = scan_directory(substr);
-	if (!result)
-		return (substr);
-	return (result);
+	if (!str)
+		return (NULL);
+	len = ft_strlen(str);
+	if (has_outer_quotes(str, len))
+	{
+		result = ft_substr(str, 1, len - 2);
+		return (result);
+	}
+	return (ft_strdup(str));
 }
 
+int	find_equals_pos(const char *av)
+{
+	int	i;
+
+	i = 0;
+	while (av[i] && av[i] != '=')
+		i++;
+	return (i);
+}
+
+int	validate_key(char *key)
+{
+	if (var_check(key) != 0)
+	{
+		printf("export: `%s': not a valid identifier\n", key);
+		return (1);
+	}
+	return (0);
+}
+
+int	set_env_variable(t_shell *shell, const char *av,
+		int eq_pos, char *key)
+{
+	char	*val;
+	char	*val_stripped;
+	int		status;
+
+	val = ft_strdup(&av[eq_pos + 1]);
+	val_stripped = strip_outer_quotes(val);
+	free(val);
+	status = 0;
+	if (setenv_value(&shell->envp, key, val_stripped) != 0)
+		status = 1;
+	free(val_stripped);
+	return (status);
+}

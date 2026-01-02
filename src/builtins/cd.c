@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2025/12/23 22:54:06 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 15:43:40 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,53 +69,3 @@ int	builtin_cd(char **av, t_shell *shell)
 	}
 	return (update_pwd_vars(shell, prev_pwd));
 }
-
-// int	builtin_cd(char **av, t_shell *shell)
-// {
-// 	char	*path;
-// 	char	*old_pwd;
-// 	char	cwd[4096];
-
-// 	// Get the path to change to
-// 	handle_path(&av[1], shell, &path);
-// 	if (!path)
-// 	{
-// 		ft_putendl_fd("cd: path not set", 2);
-// 		return (1);
-// 	}
-
-// 	// Save current PWD before changing (for OLDPWD)
-// 	old_pwd = getenv_value(shell->envp, "PWD");
-	
-// 	// Attempt to change directory
-// 	if (chdir(path) != 0)
-// 	{
-// 		print_err("cd", path);
-// 		free(path);
-// 		free(old_pwd);  // Don't forget to free!
-// 		return (1);
-// 	}
-	
-// 	// Get new current working directory
-// 	if (getcwd(cwd, sizeof(cwd)))
-// 	{
-// 		// Update OLDPWD to previous PWD
-// 		if (old_pwd)
-// 			setenv_value(&(shell->envp), "OLDPWD", old_pwd);
-		
-// 		// Update PWD to new directory
-// 		setenv_value(&(shell->envp), "PWD", cwd);
-// 	}
-// 	else
-// 	{
-// 		// getcwd failed (directory was deleted?)
-// 		// Still update OLDPWD, but PWD keeps previous value or use path
-// 		if (old_pwd)
-// 			setenv_value(&(shell->envp), "OLDPWD", old_pwd);
-// 		setenv_value(&(shell->envp), "PWD", path);
-// 	}
-	
-// 	// free(path);
-// 	// free(old_pwd);
-// 	return (0);
-// }

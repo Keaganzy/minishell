@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/02 15:20:21 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 16:07:46 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,6 +167,8 @@ int				extract_fd_for_lexer(const char *s, size_t *i);
 int				check_valid_ampersand(char *s);
 int				check_valid_brackets(char *s);
 int				check_has_semicolon(char *s);
+int				parse_quotes(char **wrd, char *s, t_token **tokens, size_t *i);
+int				parse_word(char **word, char *s, t_token **tokens, size_t *i);
 
 // history module
 # define HISTORY_FILE "~/.minishell_history"
@@ -194,7 +196,7 @@ char	*expand_and_replace(char **s, t_shell *shell);
 
 // builtins module
 void	free_substr (char **substr);
-char 	*handle_asterisk(char *substr);
+// char 	*handle_asterisk(char *substr);
 int 	add_update_env_vars(t_shell *shell, const char *av);
 // int 	handle_dollars_tilde(char *substr, t_shell *shell, size_t *k, char **s_final);
 char	*handle_dollars_tilde(char *chunk, t_shell *shell);
@@ -209,12 +211,19 @@ int		ft_unset(char **av, t_shell *shell);
 int		ft_export(char **av, t_shell *shell);
 int		unsetenv_value(char ***envp, const char *key);
 char	*ft_strjoin_char_and_free(char **new_s, char c, int to_free);
-int 	wildcard_match(char *pattern, char *str);
+// int 	wildcard_match(char *pattern, char *str);
 char	**setup_args_arr(char **new_av, int *i, int *n_flag);
 int 	var_check(char *var);
 int		match_last(char *str, char **chunks, int n, int end_star);
 int		match_middle(char *str, char **chunks, int n, int *pos);
 int		match_first(char *str, char **chunks, int *pos, int start_star);
+int		set_env_variable(t_shell *shell, const char *av,
+		int eq_pos, char *key);
+size_t	expand_variable(char *chunk, size_t k,
+		char **s_final, t_shell *shell);
+int		find_equals_pos(const char *av);
+int		validate_key(char *key);
+
 
 // void	print_ast(t_ast *node, int level);
 void	print_ast(t_ast *node);
