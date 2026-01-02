@@ -14,65 +14,12 @@
 #include "minishell.h"
 #include "libft.h"
 
-volatile sig_atomic_t g_sigint_received;
-
-// static void	sigint_handler(int sig, siginfo_t *action)
-// {
-// 	pid_t	pid;
-	
-// 	(void)sig;
-// 	pid = getpid();
-// 	// printf("pid is %d\n", pid);
-// 	// printf("ctrlc is called\n");
-// 	g_sigint_received = 130;
-// 	if (sig == SIGINT && action->si_pid != 0)
-// 	{
-// 		write(1, "\n", 1);
-// 		// rl_replace_line("", 0);
-// 		rl_on_new_line();
-// 		rl_replace_line("", 0);
-// 		rl_redisplay();
-// 	}
-// 	else
-// 		exit(130);
-	
-	
-// }
-
-// void	set_signals(void)
-// {
-// 	struct sigaction sa;
-// 	// struct sigaction sa_child;
-	
-// 	ft_bzero(&sa, sizeof(sa));  // Pass the size of the struct
-// 	sa.sa_handler = sigint_handler;
-// 	sigemptyset(&sa.sa_mask);
-// 	sa.sa_flags = 0;
-
-//     // sa_child.sa_handler = sigint_handler_child;
-//     // sigemptyset(&sa_child.sa_mask);
-//     // sa_child.sa_flags = 0;
-//     // sigaction(SIGINT, &sa_child, NULL);
-	
-// 	signal(SIGQUIT, SIG_IGN); // ctrl-"\"
-	
-// 	if (sigaction(SIGINT, &sa, NULL) == -1)
-// 	{
-// 		perror("sigaction failed");
-// 		exit(EXIT_FAILURE);
-// 	}
-// }
-volatile sig_atomic_t g_sigint_received;
+volatile sig_atomic_t	g_sigint_received;
 
 static void	sigint_handler(int sig, siginfo_t *info, void *context)
 {
 	(void)context;
-	// (void)sig;
 	g_sigint_received = 130;
-	// write(1, "\n", 1);
-	// rl_on_new_line();
-	// rl_replace_line("", 0);
-	// rl_redisplay();
 	if (sig == SIGINT && info->si_pid != 0)
 	{
 		write(1, "\n", 1);
@@ -80,14 +27,12 @@ static void	sigint_handler(int sig, siginfo_t *info, void *context)
 		rl_replace_line("", 0);
 		rl_redisplay();
 	}
-	// else
-	// 	exit(130);
 }
 
 void	set_signals(void)
 {
-	struct sigaction sa;
-	
+	struct sigaction	sa;
+
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_sigaction = sigint_handler;
 	sigemptyset(&sa.sa_mask);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 21:42:40 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/02 15:20:21 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,5 +245,22 @@ char **cleanup_dup_envp(t_shell *shell, int index);
 void	print_err(const char *s, char *av);
 void cleanup_shell(t_shell *shell);
 void	free_array(char **arr);
+void	print_indent(int depth, int is_last[], int is_right);
+void	print_node_info(t_ast *node, int depth);
+void	print_ast_simple(t_ast *node, int depth);
+void	print_node_argv(t_ast *node, int depth);
+const char	*node_type_to_string(t_node_type type);
+void	print_args_detailed(char **args, int depth);
+void	print_ast_tree(t_ast *root);
+void	print_tree_recursive(t_ast *node, int depth, int is_last[], int is_right);
+void	print_node_compact(t_ast *node);
+void	print_node_detailed(t_ast *node, int depth, char *position);
+void	print_ast_detailed(t_ast *node, int depth, char *position);
+void	print_node_detailed_body(t_ast *node, int depth);
+void	print_ast(t_ast *root);
+const char	*token_type_to_string(t_token_type type);
+
+// main
+char	**dup_envp(t_shell *shell, char **envp);
 
 #endif

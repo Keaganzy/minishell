@@ -13,30 +13,6 @@
 #include "minishell.h"
 #include "libft.h"
 
-static char **dup_envp(t_shell *shell, char **envp)
-{
-	char	**duped;
-	int		i;
-	int		count;
-
-	i = 0;
-	count = 0;
-	while (envp[count])
-		count++;
-	duped = malloc(sizeof(char *) * (count + 1));
-	if (!duped)
-		return (NULL);
-	while (i < count)
-	{
-		duped[i] = ft_strdup(envp[i]);
-		if (!duped[i])
-			return (cleanup_dup_envp(shell, i));
-		i++;
-	}
-	duped[i] = NULL;
-	return (duped);
-}
-
 t_shell	*init_shell(char **envp)
 {
 	t_shell	*shell;
@@ -61,14 +37,63 @@ t_shell	*init_shell(char **envp)
 	return (shell);
 }
 
+static void	handle_sigint(t_shell *shell)
+{
+	if (g_sigint_received == 130 || g_sigint_received == 131)
+	{
+		shell->last_exit_status = g_sigint_received;
+		g_sigint_received = 0;
+	}
+}
+
+static int	process_line(char *line, t_shell *shell)
+{
+	t_token	*tokens;
+
+	history_add(line);
+	tokens = lex_input(line, shell);
+	if (!tokens)
+	{
+		free(line);
+		return (0);
+	}
+	shell->tokens = tokens;
+	// print_token_stream_colored(tokens);
+	shell->ast = parse(tokens, shell);
+	// print_ast(shell->ast);
+	if (shell->ast)
+		execute_ast(shell->ast, shell);
+	if (shell->ast)
+		free_ast(shell->ast);
+	token_free_all(&tokens);
+	shell->tokens = NULL;
+	shell->ast = NULL;
+	free(line);
+	return (1);
+}
+
+static int	shell_loop(t_shell *shell)
+{
+	char	*line;
+
+	while (!shell->exit_code)
+	{
+		line = readline("MS$ ");
+		handle_sigint(shell);
+		if (!line)
+		{
+			printf("exit\n");
+			break ;
+		}
+		process_line(line, shell);
+	}
+	return (shell->last_exit_status);
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	*shell;
-	t_token	*tokens;
-	char	*line;
-	// t_ast	*ast;
 	int		final_exit_status;
-	// struct sigaction sa;
 
 	(void)argc;
 	(void)argv;
@@ -76,51 +101,7 @@ int	main(int argc, char **argv, char **envp)
 	shell = init_shell(envp);
 	if (!shell)
 		return (1);
-	while(!shell->exit_code)
-	{
-		line = readline("MS$ ");
-		if (g_sigint_received == 130 || g_sigint_received == 131)
-		{
-			shell->last_exit_status = g_sigint_received;
-			// printf("exitt: %d", shell->last_exit_status);
-			g_sigint_received = 0;
-			// line = readline("");
-		}
-		// else
-		// 	line = readline("MS$ ");
-		if (!line)					// ctrl-D (EOF)
-		{
-			printf("exit\n");		// remove this to save lines? yes
-			break ;
-		}
-		history_add(line);
-		tokens = lex_input(line, shell);
-		if (!tokens)
-		{
-			free(line);
-			continue ;
-		}
-		shell->tokens = tokens;
-		// print_token_stream_colored(tokens);
-		shell->ast = parse(tokens, shell);
-		// print_ast(shell->ast);
-		if (shell->ast)
-			execute_ast(shell->ast, shell);
-		if (shell->ast)
-			free_ast(shell->ast); // call all these in another function (norm)
-		token_free_all(&tokens); // call all these in another function (norm)
-		shell->tokens = NULL;
-		shell->ast = NULL;
-		// if (g_sigint_received == 130 || g_sigint_received == 131)
-		// {
-		// 	shell->last_exit_status = g_sigint_received;
-		// 	// printf("exitt: %d", shell->last_exit_status);
-		// 	g_sigint_received = 0;
-		// 	// line = readline("");
-		// }
-		free(line); // call all these in another function (norm)
-	}
-	final_exit_status = shell->last_exit_status;
+	final_exit_status = shell_loop(shell);
 	rl_clear_history();
 	cleanup_shell(shell);
 	return (final_exit_status);

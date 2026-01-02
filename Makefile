@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+         #
+#    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2025/12/23 16:28:08 by jotong           ###   ########.fr        #
+#    Updated: 2026/01/02 15:04:00 by jotong           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,6 +58,10 @@ REQ_SRC			:= $(SRC_DIR)/main.c $(SRC_DIR)/signals.c \
 					$(SRC_DIR)/shell_utils.c $(SRC_DIR)/shell_utils_2.c \
 					$(SRC_DIR)/cleanup_utils.c \
 					$(SRC_DIR)/print_utils.c \
+					$(SRC_DIR)/print_utils1.c \
+					$(SRC_DIR)/print_utils2.c \
+					$(SRC_DIR)/print_utils3.c \
+					$(SRC_DIR)/print_utils4.c \
 					$(PARSER_FILES) $(LEXER_FILES) \
 					$(HISTORY_FILES) $(EXECUTOR_FILES) \
 					$(BUILTINS_FILES)
