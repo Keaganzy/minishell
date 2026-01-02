@@ -95,6 +95,7 @@ static int execute_external(t_ast *ast, t_shell *shell)
 	pid_t	pid;
 	int		status;
 	char	*cmd_path;
+	int		sig;
 
 	status = 0;
 	pid = fork();
@@ -128,7 +129,12 @@ static int execute_external(t_ast *ast, t_shell *shell)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
+	{
+		sig = WTERMSIG(status);
+		if (sig == SIGINT)
+			return (write(1, "\n", 1), 130);
 		return(128 + WTERMSIG(status));
+	}
 	return (1);
 }
 

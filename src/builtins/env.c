@@ -103,7 +103,7 @@ int	ft_exit(char **av, t_shell *shell)
 	else
 		exit_code = 0;
 	shell->exit_code = exit_code;
-	printf("exit code in ft_Exit :%d\n", exit_code);
+	// printf("exit code in ft_Exit :%d\n", exit_code);
 	cleanup_shell(shell);
 	exit(exit_code);
 }

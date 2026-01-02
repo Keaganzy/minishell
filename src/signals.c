@@ -67,8 +67,12 @@ volatile sig_atomic_t g_sigint_received;
 static void	sigint_handler(int sig, siginfo_t *info, void *context)
 {
 	(void)context;
+	// (void)sig;
 	g_sigint_received = 130;
-	
+	// write(1, "\n", 1);
+	// rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_redisplay();
 	if (sig == SIGINT && info->si_pid != 0)
 	{
 		write(1, "\n", 1);
@@ -85,12 +89,10 @@ void	set_signals(void)
 	struct sigaction sa;
 	
 	ft_bzero(&sa, sizeof(sa));
-	sa.sa_sigaction = sigint_handler;  // Use sa_sigaction, not sa_handler
+	sa.sa_sigaction = sigint_handler;
 	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_SIGINFO;  // Add this flag!
-	
+	sa.sa_flags = SA_SIGINFO;
 	signal(SIGQUIT, SIG_IGN);
-	
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("sigaction failed");
