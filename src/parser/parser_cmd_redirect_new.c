@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_cmd_redirect_new.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/01 15:29:08 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/05 14:48:44 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 	t_ast		*node;
 	int flag;
 	int fd;
+	char	*old_value;
 
 	flag = 0;
 	redir_token = advance(p);
@@ -121,7 +122,9 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
 	}
 	if (redir_type == N_HEREDOC)
 	{
+		old_value = file_token->value;
 		file_token->value = strip_quotes(file_token->value, &flag);
+		free(old_value);
 		node = create_redir_node(redir_type, file_token->value, cmd, fd);
 		if (node)
 		{
