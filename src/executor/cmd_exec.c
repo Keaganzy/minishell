@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:18:50 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/07 17:10:21 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 17:12:25 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,8 @@ static int execute_external(t_ast *ast, t_shell *shell)
             // g_sigint_received = 130;
             return (130);
         }
-		write(1, "(Core Dumped)\n", 15);
+		if (sig == 3)
+			write(1, "(Core Dumped)\n", 15);
         return (128 + sig);
     }
     return (1);
