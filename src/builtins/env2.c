@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 21:44:16 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/07 19:03:04 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 20:08:04 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,4 +93,22 @@ int	validate_identifiers(char **av)
 		i++;
 	}
 	return (1);
+}
+
+int	ft_pwd(char **av, t_shell *shell)
+{
+	char	c[PATH_MAX];
+
+	(void)av;
+	(void)shell;
+	if (getcwd(c, sizeof(c)) != 0)
+	{
+		printf("%s\n", c);
+		return (0);
+	}
+	else
+	{
+		perror("pwd");
+		return (1);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/07 19:38:25 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 20:14:07 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,37 +49,37 @@ static int	count_args(char **av)
 	i = 1;
 	while (av[i] && av[i][0] != '\0')
 		i++;
-	return (i);	
+	return (i);
 }
 
-// static int	has_some_invalid_args(int num_args, char **av)
-// {
-// 	int	i;
-// 	int	x;
-	
-// 	i = 1;
-// 	x = 0;
-// 	while (i < num_args)
-// 	{
-// 		x = 0;
-// 		while (av[i][x])
-// 		{
-// 			if (is_digit(av[i][x]))
-// 				x++;
-// 			else
-// 				return (0);
-// 		}
-// 	}
-// 	return (1);
-// }
+static int	has_no_invalid_digits(char **av)
+{
+	int	x;
+
+	x = 0;
+	while (av[1][x])
+	{
+		if (ft_isdigit(av[1][x]))
+			x++;
+		else
+			return (0);
+	}
+	return (1);
+}
 
 static void	handle_exit_and_cleanup(int exit_code, char **av, t_shell *shell)
 {
-	printf("exit\n");
+	if (exit_code == 0)
+		printf("exit\n");
 	if (av[1])
 	{
-		exit_code = ft_atoi(av[1]);
-		exit_code = exit_code & 255;
+		if (has_no_invalid_digits(av))
+		{
+			exit_code = ft_atoi(av[1]);
+			exit_code = exit_code & 255;
+		}
+		else
+			exit_code = 2;
 	}
 	else
 		exit_code = 0;
@@ -103,11 +103,9 @@ int	ft_exit(char **av, t_shell *shell)
 		while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9')
 			|| (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
 			i++;
-		if (av[1] && av[1][i] != '\0')
-		{
+		if (av[1][i] != '\0')
 			printf("exit: numeric argument required.\n");
-			return (1);
-		}
+		exit_code = 2;
 	}
 	else if (num_args > 2)
 	{
@@ -115,22 +113,4 @@ int	ft_exit(char **av, t_shell *shell)
 		return (1);
 	}
 	return (handle_exit_and_cleanup(exit_code, av, shell), 0);
-}
-
-int	ft_pwd(char **av, t_shell *shell)
-{
-	char	c[PATH_MAX];
-
-	(void)av;
-	(void)shell;
-	if (getcwd(c, sizeof(c)) != 0)
-	{
-		printf("%s\n", c);
-		return (0);
-	}
-	else
-	{
-		perror("pwd");
-		return (1);
-	}
 }
