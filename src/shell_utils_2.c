@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell_utils_2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 17:44:57 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/02 15:18:35 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 14:00:14 by ksng             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,9 @@ void	cleanup_shell(t_shell *shell)
 {
 	int	i;
 
+	close(0);
+	close(1);
+	close(2);
 	if (shell->envp)
 	{
 		i = 0;
