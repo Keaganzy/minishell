@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/02 15:49:27 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 19:38:25 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,46 +15,6 @@
 #ifdef __linux__
 # include <limits.h>
 #endif
-
-static void	extract_and_update_vars(char **av, t_shell *shell, int *status)
-{
-	int	i;
-
-	i = 1;
-	if (ft_strchr(av[1], '=') != NULL)
-	{
-		while (av[i])
-		{
-			if (add_update_env_vars(shell, av[i]) != 0)
-				*status = 1;
-			i++;
-		}
-	}
-	return ;
-}
-
-int	ft_export(char **av, t_shell *shell)
-{
-	int	i;
-	int	status;
-
-	status = 0;
-	i = 1;
-	if (!shell || !shell->envp)
-		return (1);
-	if (av[1])
-	{
-		extract_and_update_vars(av, shell, &status);
-		return (status);
-	}
-	i = 0;
-	while (shell->envp[i])
-	{
-		printf("%s\n", shell->envp[i]);
-		i++;
-	}
-	return (status);
-}
 
 int	ft_unset(char **av, t_shell *shell)
 {
@@ -82,29 +42,79 @@ int	ft_unset(char **av, t_shell *shell)
 	return (0);
 }
 
-int	ft_exit(char **av, t_shell *shell)
+static int	count_args(char **av)
 {
 	int	i;
-	int	exit_code;
 
-	exit_code = shell->last_exit_status;
-	i = 0;
-	while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9')
-		|| (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
+	i = 1;
+	while (av[i] && av[i][0] != '\0')
 		i++;
-	if (av[1] && av[1][i] != '\0')
-	{
-		printf("exit: numeric argument required.\n");
-		return (1);
-	}
+	return (i);	
+}
+
+// static int	has_some_invalid_args(int num_args, char **av)
+// {
+// 	int	i;
+// 	int	x;
+	
+// 	i = 1;
+// 	x = 0;
+// 	while (i < num_args)
+// 	{
+// 		x = 0;
+// 		while (av[i][x])
+// 		{
+// 			if (is_digit(av[i][x]))
+// 				x++;
+// 			else
+// 				return (0);
+// 		}
+// 	}
+// 	return (1);
+// }
+
+static void	handle_exit_and_cleanup(int exit_code, char **av, t_shell *shell)
+{
 	printf("exit\n");
 	if (av[1])
+	{
 		exit_code = ft_atoi(av[1]);
+		exit_code = exit_code & 255;
+	}
 	else
 		exit_code = 0;
 	shell->exit_code = exit_code;
 	cleanup_shell(shell);
 	exit(exit_code);
+	return ;
+}
+
+int	ft_exit(char **av, t_shell *shell)
+{
+	int	i;
+	int	num_args;
+	int	exit_code;
+
+	exit_code = shell->last_exit_status;
+	num_args = count_args(av);
+	i = 0;
+	if (num_args == 2)
+	{
+		while (av[1] && av[1][i] && ((av[1][i] >= '0' && av[1][i] <= '9')
+			|| (i == 0 && (av[1][i] == '+' || av[1][i] == '-'))))
+			i++;
+		if (av[1] && av[1][i] != '\0')
+		{
+			printf("exit: numeric argument required.\n");
+			return (1);
+		}
+	}
+	else if (num_args > 2)
+	{
+		printf("exit: too many arguments\n");
+		return (1);
+	}
+	return (handle_exit_and_cleanup(exit_code, av, shell), 0);
 }
 
 int	ft_pwd(char **av, t_shell *shell)
