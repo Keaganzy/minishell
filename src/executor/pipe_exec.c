@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:39:15 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/01 17:59:31 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/07 16:33:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
-	if (WIFEXITED(status2))
-		final_status = WEXITSTATUS(status2);
-	else if (WIFSIGNALED(status2))
-		final_status = 128 + WTERMSIG(status2);
-	else if (WIFSIGNALED(status1))
-		final_status = 128 + WTERMSIG(status1);
-	else
-		final_status = 1;
-	return (final_status);
+	if (WIFSIGNALED(status2))
+        final_status = 128 + WTERMSIG(status2);
+    else if (WIFSIGNALED(status1))
+        final_status = 128 + WTERMSIG(status1);
+    else if (WIFEXITED(status2))
+        final_status = WEXITSTATUS(status2);
+    else
+        final_status = 1;
+    return (final_status);
 }
 
 static int	execute_pipe_child(t_ast *node, int *pipefd, t_shell *shell, int is_left)

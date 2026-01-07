@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 22:52:55 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/01 21:46:47 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 16:08:53 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@ static void	sigint_handler(int sig, siginfo_t *info, void *context)
 {
 	(void)context;
 	g_sigint_received = 130;
+	write(1, "\n", 1);
 	if (sig == SIGINT && info->si_pid != 0)
 	{
-		write(1, "\n", 1);
+		// write(1, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
