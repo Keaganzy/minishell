@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_exec.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:56:01 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/01 14:57:41 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/07 22:51:35 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ static void restore_fds(t_shell *shell)
 		close(shell->stdout_backup);
 		shell->stdout_backup = -1;
 	}
+	// TODO: STANDARD ERROR
+	// if (shell->stdout_backup != -1)
+	// {
+	// 	dup2(shell->stdout_backup, STDOUT_FILENO);
+	// 	close(shell->stdout_backup);
+	// 	shell->stdout_backup = -1;
+	// }
 }
 
 int	setup_redirections(t_ast *node, t_shell *shell)

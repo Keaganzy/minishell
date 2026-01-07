@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/14 16:54:39 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/07 22:11:36 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/07 23:00:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,6 +202,9 @@ t_ast *parse_one_redir(t_parser *p, t_ast *cmd, t_shell *shell)
                     free(content);
                 }
                 close(pipefd[1]);
+				close(STDIN_FILENO);
+				close(STDOUT_FILENO);
+				close(STDERR_FILENO);
                 exit(0);
             }
             /* PARENT */
