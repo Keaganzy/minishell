@@ -207,7 +207,7 @@ run_test "empty quotes" "echo '' \"\""
 run_test "nested quote style" "echo \"it's working\""
 run_test "dollar in single quotes" "echo '\$HOME \$USER \$?'"
 run_test "dollar in double quotes" "echo \"\$HOME \$TESTVAR\""
-run_test "multiple dollar signs" "echo \$TESTVAR\$TESTVAR"
+run_test "multiple dollar signs (not implemented)" "echo \$TESTVAR\$TESTVAR"
 
 # -------------------------
 # VARIABLE EXPANSION
@@ -473,8 +473,8 @@ echo -e "${CYAN}═════════════════════�
 run_test "empty command" ""
 run_test "only spaces" "   "
 run_test "only tabs" "		"
-run_test "semicolon not implemented" "; echo test" || true
-run_test "backslash not implemented" "echo test\\ ing" || true
+run_test "semicolon (not implemented)" "; echo test" || true
+run_test "backslash (not implemented)" "echo test\\ ing" || true
 run_test "multiple pipes empty" "| | |" || true
 run_test "pipe at start" "| echo test" || true
 run_test "pipe at end" "echo test |" || true
@@ -482,7 +482,7 @@ run_test "redirect without file" "echo test >" || true
 run_test "double redirect" "echo test >> > out.txt" || true
 run_test "many spaces between" "echo     hello     world"
 run_test "dollar at end" "echo test\$"
-run_test "question mark alone" "echo \?"
+run_test "question mark alone (out of scope of minishell)" "echo \?"
 run_test "multiple dollar signs" "echo \$\$\$"
 
 # -------------------------

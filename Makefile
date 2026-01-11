@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jotong <jotong@student.42.fr>              +#+  +:+       +#+         #
+#    By: codespace <codespace@student.42.fr>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/15 14:54:57 by jotong            #+#    #+#              #
-#    Updated: 2026/01/02 15:58:01 by jotong           ###   ########.fr        #
+#    Updated: 2026/01/11 06:39:57 by codespace        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,6 +44,7 @@ BUILTINS_FILES	= $(SRC_DIR)/$(BUILTINS_DIR)/cd.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/echo.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/env2.c \
+					$(SRC_DIR)/$(BUILTINS_DIR)/env3.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils2.c \
 					$(SRC_DIR)/$(BUILTINS_DIR)/builtin-utils3.c \

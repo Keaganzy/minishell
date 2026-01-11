@@ -139,6 +139,9 @@ run_test "cd /tmp/permission"   # No search permission (chmod 000 a dir to test)
 # 2. EXIT Errors (The 1 vs 2 distinction)
 run_test "exit 9223372036854775808" # Out of range (Long Long Max + 1): Expected 2
 run_test "exit --"                  # No arg: Expected 0
+run_test "exit -- 123"              # Valid numeric with --: Expected 123
+run_test "exit -- 123 456"          # Too many args with --: Expected 1
+run_test "exit -- abc"              # Non-numeric with --: Expected 2
 run_test "exit +5"                  # Valid numeric: Expected 5
 run_test "exit 1 2 3"               # Too many args: Expected 1
 

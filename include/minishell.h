@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: codespace <codespace@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/07 16:08:56 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 07:31:57 by codespace        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,14 +218,13 @@ int		match_last(char *str, char **chunks, int n, int end_star);
 int		match_middle(char *str, char **chunks, int n, int *pos);
 int		match_first(char *str, char **chunks, int *pos, int start_star);
 int		set_env_variable(t_shell *shell, const char *av,
-		int eq_pos, char *key);
+			int eq_pos, char *key);
 size_t	expand_variable(char *chunk, size_t k,
-		char **s_final, t_shell *shell);
+			char **s_final, t_shell *shell);
 int		find_equals_pos(const char *av);
 int		validate_key(char *key);
-
-
-// void	print_ast(t_ast *node, int level);
+int		check_numeric_arg(char *str);
+int		has_overflow(char *str);
 void	print_ast(t_ast *node);
 
 // parser module
