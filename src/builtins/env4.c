@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/11 09:09:46 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/11 09:39:11 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 10:08:57 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 void sort_envp_vars(char **env_var)
 {
 	int		i;
-    int     j;
+	int		j;
 	int		count;
-	char    *temp;
-	
+	char	*temp;
+
 	i = 0;
 	count = 0;
 	while (env_var[count])
@@ -36,6 +36,28 @@ void sort_envp_vars(char **env_var)
 				env_var[j + 1] = temp;
 			}
 			j++;
+		}
+		i++;
+	}
+}
+
+void print_env_vars (char **duped_env)
+{
+	int		i;
+	int		eq_pos;
+	char	*key;
+
+	i = 0;
+	while (duped_env[i])
+	{
+		if (ft_strchr(duped_env[i], '=') == NULL)
+			printf("declare -x %s\n", duped_env[i]);
+		else
+		{
+			eq_pos = find_equals_pos(duped_env[i]);
+			key = ft_strndup(duped_env[i], eq_pos);
+			printf("declare -x %s=\"%s\"\n", key, duped_env[i] + eq_pos + 1);
+			free(key);
 		}
 		i++;
 	}

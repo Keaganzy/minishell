@@ -460,7 +460,7 @@ run_test "absolute path" "/bin/echo hello"
 run_test "relative path" "./file.txt 2>/dev/null || echo not executable"
 run_test "command not found" "nonexistentcommand 2>&1 | head -1"
 run_test "ls basic" "ls file.txt"
-run_test "cat existing file" "cat file.txt"
+run_test "cat non-existing file" "cat file.txt"
 run_test "grep basic" "grep Hello file.txt"
 
 # -------------------------

@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/11 23:17:56 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/11 09:37:41 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 10:07:31 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,6 +227,7 @@ int		check_numeric_arg(char *str);
 int		has_overflow(char *str);
 void	print_ast(t_ast *node);
 void 	sort_envp_vars(char **env_var);
+void 	print_env_vars (char **duped_env);
 
 // parser module
 t_ast *parse(t_token *tokens, t_shell *shell);
