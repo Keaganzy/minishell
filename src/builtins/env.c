@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/11 09:10:04 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 09:20:11 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static void	print_numeric_error(char *arg, t_shell *shell)
 	handle_exit_and_cleanup(2, shell);
 }
 
-static int	handle_exit_dashes(char **av, int num_args, t_shell *shell, int *exit_code)
+static int	handle_exit_dashes(char **av, int num_args, t_shell *shell,
+	int *exit_code)
 {
 	if (ft_strcmp(av[1], "--") == 0)
 	{

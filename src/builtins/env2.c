@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 21:44:16 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/11 09:10:09 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 09:38:35 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,31 @@ int	ft_export(char **av, t_shell *shell)
 
 int	ft_env(char **av, t_shell *shell)
 {
-	int	i;
+	int		i;
+	char	**duped_env;
+	// char	*key;
+	// int		eq_pos;
 
 	(void)av;
 	if (!shell || !shell->envp)
 		return (1);
 	i = 0;
-	while (shell->envp[i])
+	duped_env = dup_envp(shell, shell->envp);
+	if (!duped_env)
+		return (1);
+	sort_envp_vars(duped_env);
+	while (duped_env[i])
 	{
-		printf("%s\n", shell->envp[i]);
+		printf("declare -x %s\n", duped_env[i]);
+		// if (ft_strchr(duped_env[i], '=') != NULL)
+		// 	printf("declare -x %s\n", duped_env[i]);
+		// else
+		// {
+		// 	eq_pos = find_equals_pos(duped_env[i]);
+		// 	key = ft_strndup(duped_env[i], eq_pos);
+		// 	printf("declare -x %s=\"%s\"\n", key, duped_env[i] + eq_pos + 1);
+		// 	free(key);
+		// }
 		i++;
 	}
 	return (0);

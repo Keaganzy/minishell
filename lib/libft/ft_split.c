@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksng <ksng@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/09 19:56:53 by ksng              #+#    #+#             */
-/*   Updated: 2025/11/18 17:16:44 by ksng             ###   ########.fr       */
+/*   Updated: 2026/01/11 09:55:05 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ char	**ft_split(char const *s, char c)
 	size_t	wordcount;
 
 	wordcount = ft_countsplit(s, c);
+	if (wordcount == 0)
+		return (NULL);
 	str = malloc(sizeof(char *) * (wordcount + 1));
 	if (!str || !s)
 		return (NULL);
