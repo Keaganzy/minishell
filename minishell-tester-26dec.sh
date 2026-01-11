@@ -531,5 +531,6 @@ rm -f file.txt in.txt out.txt err.txt test1.txt test2.txt test3.txt a.txt b.txt
 rm -f out1.txt out2.txt out3.txt temp1.txt temp2.txt temp3.txt multi_line.txt
 rm -f f1.txt f2.txt f3.txt result.txt outt.txt
 rm -f "$BASH_OUT" "$MINI_OUT" "$BASH_ERR" "$MINI_ERR" "$BASH_EXIT" "$MINI_EXIT" "$VALGRIND_LOG"
+rm -rf "$VALGRIND_DIR"
 
 echo -e "\n${CYAN}Testing complete.${NC}"
