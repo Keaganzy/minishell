@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/21 22:22:11 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/02 15:50:11 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 13:26:25 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,15 @@ static int	is_flag_n(char *arg)
 	return (arg[i] == '\0');
 }
 
+static void	handle_empty_output(char **av, int i, char **output)
+{
+	if (!av[i])
+		*output = ft_strdup("");
+	else
+		*output = ft_strdup(av[i]);
+	return ;
+}
+
 static char	*manipulate_echo_arg(char **av, int i, char *output)
 {
 	char	*tmp;
@@ -32,17 +41,15 @@ static char	*manipulate_echo_arg(char **av, int i, char *output)
 	while (av[i])
 	{
 		if (!output)
-		{
-			if (!av[i])
-				output = ft_strdup("");
-			else
-				output = ft_strdup(av[i]);
-		}
+			handle_empty_output(av, i, &output);
 		else
 		{
-			tmp = output;
-			output = ft_strjoin(output, " ");
-			free(tmp);
+			if (av[i][0])
+			{
+				tmp = output;
+				output = ft_strjoin(output, " ");
+				free(tmp);
+			}
 			tmp = output;
 			output = ft_strjoin(output, av[i]);
 			free(tmp);

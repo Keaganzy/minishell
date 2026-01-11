@@ -1,0 +1,418 @@
+==71964== Memcheck, a memory error detector
+==71964== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==71964== Using Valgrind-3.22.0-bd4db67b1d-20231031 and LibVEX; rerun with -h for copyright info
+==71964== Command: ./minishell
+==71964== Parent PID: 70558
+==71964== 
+--71964-- 
+--71964-- Valgrind options:
+--71964--    --leak-check=full
+--71964--    --show-leak-kinds=all
+--71964--    --track-origins=yes
+--71964--    --track-fds=yes
+--71964--    --errors-for-leak-kinds=all
+--71964--    --num-callers=25
+--71964--    --error-exitcode=42
+--71964--    --verbose
+--71964--    --suppressions=readline.supp
+--71964--    --log-file=./valgrind_logs/valgrind_test_59.log
+--71964-- Contents of /proc/version:
+--71964--   Linux version 6.8.0-1030-azure (buildd@lcy02-amd64-118) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #35~22.04.1-Ubuntu SMP Mon May 26 18:08:30 UTC 2025
+--71964-- 
+--71964-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--71964-- Page sizes: currently 4096, max supported 4096
+--71964-- Valgrind library directory: /usr/libexec/valgrind
+--71964-- Reading syms from /workspaces/minishell/minishell
+--71964-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--71964--   Considering /usr/lib/debug/.build-id/52/0e05878220fb2fc6d28ff46b63b3fd5d48e763.debug ..
+--71964--   .. build-id is valid
+--71964-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--71964--    object doesn't have a dynamic symbol table
+--71964-- Scheduler: using generic scheduler lock implementation.
+--71964-- Reading suppressions file: readline.supp
+--71964-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==71964== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-71964-by-codespace-on-codespaces-0cccf2
+==71964== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-71964-by-codespace-on-codespaces-0cccf2
+==71964== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-71964-by-codespace-on-codespaces-0cccf2
+==71964== 
+==71964== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==71964== don't want to do, unless you know exactly what you're doing,
+==71964== or are doing some strange experiment):
+==71964==   /usr/bin/vgdb --pid=71964 ...command...
+==71964== 
+==71964== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==71964==   /path/to/gdb ./minishell
+==71964== and then give GDB the following command
+==71964==   target remote | /usr/bin/vgdb --pid=71964
+==71964== --pid is optional if only one valgrind process is running
+==71964== 
+--71964-- REDIR: 0x4028b00 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c2e1a (???)
+--71964-- REDIR: 0x40272b0 (ld-linux-x86-64.so.2:index) redirected to 0x580c2e34 (???)
+--71964-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--71964-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==71964== WARNING: new redirection conflicts with existing -- ignoring it
+--71964--     old: 0x04028b00 (strlen              ) R-> (0000.0) 0x580c2e1a ???
+--71964--     new: 0x04028b00 (strlen              ) R-> (2007.0) 0x0484f340 strlen
+--71964-- REDIR: 0x40274e0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4850460 (strcmp)
+--71964-- REDIR: 0x4026910 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853cd0 (mempcpy)
+--71964-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+--71964-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--71964--   Considering /usr/lib/debug/.build-id/27/4eec488d230825a136fa9c4d85370fed7a0a5e.debug ..
+--71964--   .. build-id is valid
+--71964-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+--71964-- REDIR: 0x4028ca0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x484fc90 (strncmp)
+--71964-- REDIR: 0x496b050 (libc.so.6:strnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496b0e0 (libc.so.6:strpbrk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49691a0 (libc.so.6:strcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49823b0 (libc.so.6:wcsnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4968290 (libc.so.6:memset) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4981b20 (libc.so.6:wcslen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49ed3f0 (libc.so.6:__memcpy_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4968200 (libc.so.6:memrchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4982350 (libc.so.6:wcsncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4967720 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49808e0 (libc.so.6:wcschr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4969090 (libc.so.6:index) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496b110 (libc.so.6:rindex) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4980990 (libc.so.6:wcscmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49684b0 (libc.so.6:stpncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x498eeb0 (libc.so.6:wmemchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496aef0 (libc.so.6:strncmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4968510 (libc.so.6:strcasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496a310 (libc.so.6:strcspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49818f0 (libc.so.6:wcscpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4969020 (libc.so.6:strcat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496adf0 (libc.so.6:strncasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4969110 (libc.so.6:strchrnul) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4967630 (libc.so.6:bcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496a2a0 (libc.so.6:strcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49685b0 (libc.so.6:strcasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496acc0 (libc.so.6:strlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496af90 (libc.so.6:strncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x498ef30 (libc.so.6:wmemcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49ed510 (libc.so.6:__memmove_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==71964== WARNING: new redirection conflicts with existing -- ignoring it
+--71964--     old: 0x04a3ea10 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--71964--     new: 0x04a3ea10 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--71964-- REDIR: 0x4968440 (libc.so.6:stpcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4967fc0 (libc.so.6:memmove) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==71964== Preferring higher priority redirection:
+--71964--     old: 0x04a3ea40 (__memcpy_avx_unalign) R-> (2018.0) 0x04851580 __memcpy_avx_unaligned_erms
+--71964--     new: 0x04a3ea40 (__memcpy_avx_unalign) R-> (2018.1) 0x04852d60 memmove
+--71964-- REDIR: 0x49675b0 (libc.so.6:memchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496b2e0 (libc.so.6:strspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x49680e0 (libc.so.6:mempcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496ad50 (libc.so.6:strncasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496ae90 (libc.so.6:strncat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x496bba0 (libc.so.6:strstr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--71964-- REDIR: 0x4a43630 (libc.so.6:__strrchr_avx2) redirected to 0x484ed20 (rindex)
+--71964-- REDIR: 0x4963650 (libc.so.6:malloc) redirected to 0x48467b0 (malloc)
+--71964-- REDIR: 0x4a41780 (libc.so.6:__strlen_avx2) redirected to 0x484f220 (strlen)
+--71964-- REDIR: 0x4a3ea40 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852d60 (memmove)
+--71964-- REDIR: 0x4a42860 (libc.so.6:__strncmp_avx2) redirected to 0x484fab0 (strncmp)
+--71964-- REDIR: 0x4a40de0 (libc.so.6:__strchrnul_avx2) redirected to 0x48537b0 (strchrnul)
+--71964-- REDIR: 0x4900d30 (libc.so.6:setenv) redirected to 0x48547d0 (setenv)
+--71964-- REDIR: 0x4a40ba0 (libc.so.6:__strchr_avx2) redirected to 0x484ef00 (index)
+--71964-- REDIR: 0x49640a0 (libc.so.6:realloc) redirected to 0x484db00 (realloc)
+--71964-- REDIR: 0x4a3ea10 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4853dd0 (__memcpy_chk)
+--71964-- REDIR: 0x4a3ea00 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x48538d0 (mempcpy)
+--71964-- REDIR: 0x4a40fd0 (libc.so.6:__strcmp_avx2) redirected to 0x4850360 (strcmp)
+--71964-- REDIR: 0x49647a0 (libc.so.6:calloc) redirected to 0x484d8a0 (calloc)
+--71964-- REDIR: 0x4a43360 (libc.so.6:__strnlen_avx2) redirected to 0x484f1c0 (strnlen)
+--71964-- REDIR: 0x4963d30 (libc.so.6:free) redirected to 0x4849820 (free)
+--71964-- REDIR: 0x4a41530 (libc.so.6:__strcpy_avx2) redirected to 0x484f370 (strcpy)
+--71964-- REDIR: 0x4a3f440 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852c50 (memset)
+--71964-- REDIR: 0x4a42ec0 (libc.so.6:__strncpy_avx2) redirected to 0x484f4f0 (strncpy)
+--71964-- REDIR: 0x4a3e040 (libc.so.6:__memchr_avx2) redirected to 0x48504e0 (memchr)
+--71964-- REDIR: 0x4a3fe90 (libc.so.6:__strcasecmp_l_avx2) redirected to 0x484ff70 (strcasecmp_l)
+--71964-- REDIR: 0x4a3f6f0 (libc.so.6:__stpcpy_avx2) redirected to 0x48525a0 (stpcpy)
+--71964-- REDIR: 0x4a3fe80 (libc.so.6:__strcasecmp_avx2) redirected to 0x484fcf0 (strcasecmp)
+--71964-- REDIR: 0x4a41900 (libc.so.6:__strncasecmp_avx2) redirected to 0x484fdd0 (strncasecmp)
+--71964-- REDIR: 0x4a3e2e0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852480 (bcmp)
+==71976== 
+==71976== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71976== Open file descriptor 25: /dev/pts/ptmx
+==71976==    <inherited from parent>
+==71976== 
+==71976== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71976==    <inherited from parent>
+==71976== 
+==71976== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71976==    <inherited from parent>
+==71976== 
+==71976== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71976==    <inherited from parent>
+==71976== 
+==71976== Open file descriptor 6: /dev/null
+==71976==    <inherited from parent>
+==71976== 
+==71976== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71976==    <inherited from parent>
+==71976== 
+==71976== 
+==71976== HEAP SUMMARY:
+==71976==     in use at exit: 232,898 bytes in 238 blocks
+==71976==   total heap usage: 635 allocs, 397 frees, 273,482 bytes allocated
+==71976== 
+==71976== Searching for pointers to 238 not-freed blocks
+==71976== Checked 267,088 bytes
+==71976== 
+==71976== LEAK SUMMARY:
+==71976==    definitely lost: 0 bytes in 0 blocks
+==71976==    indirectly lost: 0 bytes in 0 blocks
+==71976==      possibly lost: 0 bytes in 0 blocks
+==71976==    still reachable: 0 bytes in 0 blocks
+==71976==         suppressed: 232,898 bytes in 238 blocks
+==71976== 
+==71976== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--71976-- 
+--71976-- used_suppression:     74 readline readline.supp:2 suppressed: 228,817 bytes in 234 blocks
+--71976-- used_suppression:      4 history readline.supp:9 suppressed: 4,081 bytes in 4 blocks
+==71976== 
+==71976== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==71978== 
+==71978== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71978== Open file descriptor 25: /dev/pts/ptmx
+==71978==    <inherited from parent>
+==71978== 
+==71978== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71978==    <inherited from parent>
+==71978== 
+==71978== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71978==    <inherited from parent>
+==71978== 
+==71978== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71978==    <inherited from parent>
+==71978== 
+==71978== Open file descriptor 6: /dev/null
+==71978==    <inherited from parent>
+==71978== 
+==71978== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71978==    <inherited from parent>
+==71978== 
+==71978== 
+==71978== HEAP SUMMARY:
+==71978==     in use at exit: 232,898 bytes in 238 blocks
+==71978==   total heap usage: 629 allocs, 391 frees, 273,441 bytes allocated
+==71978== 
+==71978== Searching for pointers to 238 not-freed blocks
+==71978== Checked 267,088 bytes
+==71978== 
+==71978== LEAK SUMMARY:
+==71978==    definitely lost: 0 bytes in 0 blocks
+==71978==    indirectly lost: 0 bytes in 0 blocks
+==71978==      possibly lost: 0 bytes in 0 blocks
+==71978==    still reachable: 0 bytes in 0 blocks
+==71978==         suppressed: 232,898 bytes in 238 blocks
+==71978== 
+==71978== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--71978-- 
+--71978-- used_suppression:     74 readline readline.supp:2 suppressed: 228,817 bytes in 234 blocks
+--71978-- used_suppression:      4 history readline.supp:9 suppressed: 4,081 bytes in 4 blocks
+==71978== 
+==71978== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==71974== 
+==71974== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71974== Open file descriptor 25: /dev/pts/ptmx
+==71974==    <inherited from parent>
+==71974== 
+==71974== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71974==    <inherited from parent>
+==71974== 
+==71974== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71974==    <inherited from parent>
+==71974== 
+==71974== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71974==    <inherited from parent>
+==71974== 
+==71974== Open file descriptor 6: /dev/null
+==71974==    <inherited from parent>
+==71974== 
+==71974== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71974==    <inherited from parent>
+==71974== 
+==71974== 
+==71974== HEAP SUMMARY:
+==71974==     in use at exit: 232,898 bytes in 238 blocks
+==71974==   total heap usage: 625 allocs, 387 frees, 273,425 bytes allocated
+==71974== 
+==71974== Searching for pointers to 238 not-freed blocks
+==71975== 
+==71975== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71975== Open file descriptor 25: /dev/pts/ptmx
+==71975==    <inherited from parent>
+==71975== 
+==71975== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71975==    <inherited from parent>
+==71975== 
+==71975== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71975==    <inherited from parent>
+==71975== 
+==71975== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71975==    <inherited from parent>
+==71975== 
+==71975== Open file descriptor 6: /dev/null
+==71975==    <inherited from parent>
+==71975== 
+==71975== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71975==    <inherited from parent>
+==71975== 
+==71975== 
+==71975== HEAP SUMMARY:
+==71975==     in use at exit: 232,898 bytes in 238 blocks
+==71975==   total heap usage: 629 allocs, 391 frees, 273,441 bytes allocated
+==71975== 
+==71975== Searching for pointers to 238 not-freed blocks
+==71974== Checked 266,968 bytes
+==71974== 
+==71975== Checked 266,968 bytes
+==71975== 
+==71974== LEAK SUMMARY:
+==71974==    definitely lost: 0 bytes in 0 blocks
+==71974==    indirectly lost: 0 bytes in 0 blocks
+==71974==      possibly lost: 0 bytes in 0 blocks
+==71974==    still reachable: 0 bytes in 0 blocks
+==71974==         suppressed: 232,898 bytes in 238 blocks
+==71974== 
+==71974== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--71974-- 
+--71974-- used_suppression:     74 readline readline.supp:2 suppressed: 228,817 bytes in 234 blocks
+--71974-- used_suppression:      4 history readline.supp:9 suppressed: 4,081 bytes in 4 blocks
+==71974== 
+==71974== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==71975== LEAK SUMMARY:
+==71975==    definitely lost: 0 bytes in 0 blocks
+==71975==    indirectly lost: 0 bytes in 0 blocks
+==71975==      possibly lost: 0 bytes in 0 blocks
+==71975==    still reachable: 0 bytes in 0 blocks
+==71975==         suppressed: 232,898 bytes in 238 blocks
+==71975== 
+==71975== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--71975-- 
+--71975-- used_suppression:     74 readline readline.supp:2 suppressed: 228,817 bytes in 234 blocks
+--71975-- used_suppression:      4 history readline.supp:9 suppressed: 4,081 bytes in 4 blocks
+==71975== 
+==71975== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==71973== 
+==71973== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71973== Open file descriptor 25: /dev/pts/ptmx
+==71973==    <inherited from parent>
+==71973== 
+==71973== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71973==    <inherited from parent>
+==71973== 
+==71973== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71973==    <inherited from parent>
+==71973== 
+==71973== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71973==    <inherited from parent>
+==71973== 
+==71973== Open file descriptor 6: /dev/null
+==71973==    <inherited from parent>
+==71973== 
+==71973== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71973==    <inherited from parent>
+==71973== 
+==71973== 
+==71973== HEAP SUMMARY:
+==71973==     in use at exit: 232,898 bytes in 238 blocks
+==71973==   total heap usage: 629 allocs, 391 frees, 273,441 bytes allocated
+==71973== 
+==71973== Searching for pointers to 238 not-freed blocks
+==71973== Checked 266,848 bytes
+==71973== 
+==71973== LEAK SUMMARY:
+==71973==    definitely lost: 0 bytes in 0 blocks
+==71973==    indirectly lost: 0 bytes in 0 blocks
+==71973==      possibly lost: 0 bytes in 0 blocks
+==71973==    still reachable: 0 bytes in 0 blocks
+==71973==         suppressed: 232,898 bytes in 238 blocks
+==71973== 
+==71973== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--71973-- 
+--71973-- used_suppression:     74 readline readline.supp:2 suppressed: 228,817 bytes in 234 blocks
+--71973-- used_suppression:      4 history readline.supp:9 suppressed: 4,081 bytes in 4 blocks
+==71973== 
+==71973== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==71972== 
+==71972== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71972== Open file descriptor 25: /dev/pts/ptmx
+==71972==    <inherited from parent>
+==71972== 
+==71972== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71972==    <inherited from parent>
+==71972== 
+==71972== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71972==    <inherited from parent>
+==71972== 
+==71972== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71972==    <inherited from parent>
+==71972== 
+==71972== Open file descriptor 6: /dev/null
+==71972==    <inherited from parent>
+==71972== 
+==71972== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71972==    <inherited from parent>
+==71972== 
+==71972== 
+==71972== HEAP SUMMARY:
+==71972==     in use at exit: 232,898 bytes in 238 blocks
+==71972==   total heap usage: 625 allocs, 387 frees, 273,425 bytes allocated
+==71972== 
+==71972== Searching for pointers to 238 not-freed blocks
+==71972== Checked 266,848 bytes
+==71972== 
+==71972== LEAK SUMMARY:
+==71972==    definitely lost: 0 bytes in 0 blocks
+==71972==    indirectly lost: 0 bytes in 0 blocks
+==71972==      possibly lost: 0 bytes in 0 blocks
+==71972==    still reachable: 0 bytes in 0 blocks
+==71972==         suppressed: 232,898 bytes in 238 blocks
+==71972== 
+==71972== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--71972-- 
+--71972-- used_suppression:     74 readline readline.supp:2 suppressed: 228,817 bytes in 234 blocks
+--71972-- used_suppression:      4 history readline.supp:9 suppressed: 4,081 bytes in 4 blocks
+==71972== 
+==71972== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==71964== 
+==71964== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==71964== Open file descriptor 25: /dev/pts/ptmx
+==71964==    <inherited from parent>
+==71964== 
+==71964== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==71964==    <inherited from parent>
+==71964== 
+==71964== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==71964==    <inherited from parent>
+==71964== 
+==71964== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==71964==    <inherited from parent>
+==71964== 
+==71964== Open file descriptor 6: /dev/null
+==71964==    <inherited from parent>
+==71964== 
+==71964== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_59.log
+==71964==    <inherited from parent>
+==71964== 
+==71964== 
+==71964== HEAP SUMMARY:
+==71964==     in use at exit: 232,804 bytes in 234 blocks
+==71964==   total heap usage: 629 allocs, 395 frees, 273,451 bytes allocated
+==71964== 
+==71964== Searching for pointers to 234 not-freed blocks
+==71964== Checked 266,432 bytes
+==71964== 
+==71964== LEAK SUMMARY:
+==71964==    definitely lost: 0 bytes in 0 blocks
+==71964==    indirectly lost: 0 bytes in 0 blocks
+==71964==      possibly lost: 0 bytes in 0 blocks
+==71964==    still reachable: 0 bytes in 0 blocks
+==71964==         suppressed: 232,804 bytes in 234 blocks
+==71964== 
+==71964== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 74 from 74)
+--71964-- 
+--71964-- used_suppression:     73 readline readline.supp:2 suppressed: 228,788 bytes in 233 blocks
+--71964-- used_suppression:      1 history readline.supp:9 suppressed: 4,016 bytes in 1 blocks
+==71964== 
+==71964== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 74 from 74)

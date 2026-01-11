@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 19:03:59 by ksng              #+#    #+#             */
-/*   Updated: 2025/12/23 22:57:47 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 13:50:54 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 
-int execute_node(t_ast *node, t_shell *shell)
+int	execute_node(t_ast *node, t_shell *shell)
 {
 	if (!node)
 		return (0);

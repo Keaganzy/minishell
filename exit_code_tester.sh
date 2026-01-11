@@ -159,11 +159,219 @@ run_test "unset PWD && pwd"         # Expected: 0
 run_test "echo -nnnnnnnn"           # Bash treats multiple 'n's as -n: 0
 run_test "echo -n -n -n hello"      # Multiple flags: 0
 
+echo -e "${YELLOW}--- Starting Pipe Tests ---${RESET}"
+
+# Basic pipe success and failure
+run_test "echo hello | cat"                      # Success: 0
+run_test "ls | grep test"                        # Exit code from grep: 1 if not found
+run_test "echo test | grep test"                 # Success: 0
+run_test "cat /nonexistent | wc -l"              # First fails, but pipe continues: 0
+run_test "echo hello | cat | cat | cat"          # Multiple pipes: 0
+run_test "false | true"                          # Last command succeeds: 0
+run_test "true | false"                          # Last command fails: 1
+run_test "exit 42 | echo test"                   # Exit in pipe: 0 (echo succeeds)
+run_test "echo test | exit 42"                   # Exit as last: 42
+run_test "ls | not_a_command"                    # Command not found in pipe: 127
+run_test "not_a_command | ls"                    # First fails, second succeeds: 0
+run_test "echo hello | cat | grep bye"           # Chain ending in failure: 1
+run_test "ls /nonexistent 2>&1 | grep 'No such'" # Piping stderr: 0 if found
+run_test "pwd | cd .."                           # Builtin in pipe: 0 (cd succeeds)
+run_test "cd /nonexistent | pwd"                 # Failed builtin then success: 0
+
+echo -e "${YELLOW}--- Starting Redirect Tests ---${RESET}"
+
+# Output redirects
+run_test "echo hello > /tmp/test_out"            # Success: 0
+run_test "echo hello > /root/noperm"             # Permission denied: 1
+run_test "ls > /tmp/test_out"                    # Success: 0
+run_test "cat < /nonexistent"                    # Input redirect fail: 1
+run_test "echo test >> /tmp/test_append"         # Append success: 0
+run_test "echo test >> /root/noperm"             # Append permission denied: 1
+
+# Input redirects
+run_test "cat < /etc/passwd"                     # Success: 0
+run_test "cat < /nonexistent_file"               # File not found: 1
+run_test "wc -l < /etc/passwd"                   # Success: 0
+
+# Multiple redirects
+run_test "echo hello > /tmp/out1 > /tmp/out2"    # Multiple outputs: 0
+run_test "cat < /etc/passwd > /tmp/passwd_copy"  # Input and output: 0
+run_test "< /etc/passwd cat > /tmp/out"          # Redirects before command: 0
+run_test "> /tmp/out echo hello"                 # Output before command: 0
+
+# Redirect with pipes
+run_test "echo hello | cat > /tmp/pipe_out"      # Pipe with output redirect: 0
+run_test "cat < /etc/passwd | grep root > /tmp/grep_out" # Full chain: 0
+
+# Failed redirects should prevent command execution
+run_test "echo test > /root/noperm && echo success" # First fails: 1
+run_test "cat < /nonexistent > /tmp/out"         # Input fail: 1
+
+# stderr redirects (2>)
+run_test "ls /nonexistent 2> /tmp/err"           # Redirect stderr: 0 (ls fails but redirect works)
+run_test "cat /nonexistent 2> /tmp/err"          # Command fails: 1
+run_test "ls /nonexistent 2> /root/noperm"       # stderr redirect fails: 1
+
+echo -e "${YELLOW}--- Starting Heredoc Tests ---${RESET}"
+
+# Basic heredoc (Note: These are tricky to test in this format)
+# We'll use a different approach for heredocs
+run_heredoc_test() {
+    local label="$1"
+    local expected="$2"
+    
+    # For bash
+    bash << 'TESTEOF' > /dev/null 2>&1
+cat << EOF
+test
+EOF
+TESTEOF
+    local bash_exit=$?
+    
+    # For minishell
+    $MINISHELL << 'TESTEOF' > /dev/null 2>&1
+cat << EOF
+test
+EOF
+TESTEOF
+    local mini_exit=$?
+    
+    if [ "$bash_exit" -eq "$mini_exit" ]; then
+        echo -e "${GREEN}[PASS]${RESET} Heredoc: $label (Exit: $mini_exit)"
+        ((PASS++))
+    else
+        echo -e "${RED}[FAIL]${RESET} Heredoc: $label"
+        echo -e "       Expected: $bash_exit | Got: $mini_exit"
+        ((FAIL++))
+    fi
+}
+
+run_heredoc_test "Basic heredoc" 0
+
+# Simpler heredoc tests using run_test
+run_test "cat << EOF
+hello
+EOF"
+
+run_test "grep test << EOF
+test
+nothing
+EOF"
+
+run_test "grep missing << EOF
+test
+nothing
+EOF"
+
+echo -e "${YELLOW}--- Starting Logical Operator Tests (&&) ---${RESET}"
+
+# Basic && (AND) tests
+run_test "true && true"                          # Both succeed: 0
+run_test "true && false"                         # Second fails: 1
+run_test "false && true"                         # First fails, second not executed: 1
+run_test "false && false"                        # First fails: 1
+run_test "echo hello && echo world"              # Both succeed: 0
+run_test "ls && pwd"                             # Both succeed: 0
+run_test "ls /nonexistent && echo test"          # First fails: 1 (echo not executed)
+run_test "echo test && ls /nonexistent"          # First succeeds, second fails: 1
+run_test "not_a_command && echo test"            # Command not found: 127
+
+# Chain of && operators
+run_test "true && true && true"                  # All succeed: 0
+run_test "true && false && true"                 # Second fails, third not executed: 1
+run_test "echo a && echo b && echo c"            # All succeed: 0
+run_test "exit 0 && echo test"                   # Exit then echo: depends on implementation
+
+# && with builtins
+run_test "cd / && pwd"                           # Both succeed: 0
+run_test "cd /nonexistent && pwd"                # cd fails, pwd not executed: 1
+run_test "export VAR=test && echo \$VAR"         # Both succeed: 0
+
+# && with redirects
+run_test "echo test > /tmp/out && cat /tmp/out"  # Both succeed: 0
+run_test "echo test > /root/noperm && echo fail" # First fails: 1
+
+echo -e "${YELLOW}--- Starting Logical Operator Tests (||) ---${RESET}"
+
+# Basic || (OR) tests
+run_test "true || true"                          # First succeeds, second not executed: 0
+run_test "true || false"                         # First succeeds: 0
+run_test "false || true"                         # First fails, second succeeds: 0
+run_test "false || false"                        # Both fail: 1
+run_test "ls || echo fallback"                   # First succeeds: 0
+run_test "ls /nonexistent || echo fallback"      # First fails, second succeeds: 0
+run_test "not_a_command || echo fallback"        # First fails (127), second succeeds: 0
+run_test "false || not_a_command"                # First fails, second fails: 127
+
+# Chain of || operators
+run_test "false || false || true"                # Last succeeds: 0
+run_test "false || false || false"               # All fail: 1
+run_test "true || echo not_executed || echo no"  # First succeeds: 0
+
+# || with builtins
+run_test "cd /nonexistent || cd /"               # First fails, second succeeds: 0
+run_test "cd /nonexistent || cd /alsonotexist"   # Both fail: 1
+
+# || with redirects
+run_test "cat /nonexistent || echo error"        # First fails, second succeeds: 0
+
+echo -e "${YELLOW}--- Starting Mixed Logical Operator Tests ---${RESET}"
+
+# Combining && and || (left-to-right evaluation)
+run_test "true && true || false"                 # (true && true) succeeds, || not evaluated: 0
+run_test "true && false || true"                 # (true && false) fails, || true succeeds: 0
+run_test "false && true || true"                 # (false && true) not fully evaluated, || true: 0
+run_test "false || true && false"                # (false || true) succeeds, && false fails: 1
+run_test "true || false && false"                # true succeeds, rest not evaluated: 0
+run_test "false && false || false && true"       # Complex: (false && false) || (false && true): 1
+
+# Real-world patterns
+run_test "ls && echo found || echo notfound"     # ls succeeds: 0
+run_test "ls /nonexistent && echo found || echo notfound" # ls fails, echo notfound: 0
+run_test "cd /tmp && ls || echo failed"          # cd succeeds, ls succeeds: 0
+run_test "cat /nonexist 2>/dev/null || echo File not found" # Fallback message: 0
+
+# With pipes
+run_test "echo test | grep test && echo match"   # Pipe succeeds, then echo: 0
+run_test "echo test | grep fail && echo match"   # grep fails, echo not executed: 1
+run_test "echo test | grep fail || echo nomatch" # grep fails, echo executes: 0
+
+echo -e "${YELLOW}--- Starting Combined Complex Tests ---${RESET}"
+
+# Pipes with logical operators
+run_test "ls | grep test && echo found"          # Depends on if test is found
+run_test "ls | grep test || echo notfound"       # Depends on if test is found
+run_test "false | true && echo yes"              # Pipe succeeds (true), echo: 0
+run_test "true | false || echo no"               # Pipe fails (false), echo: 0
+
+# Redirects with logical operators
+run_test "echo test > /tmp/out && cat /tmp/out"  # Both succeed: 0
+run_test "cat /nonexist 2>/dev/null || echo error" # cat fails, echo: 0
+run_test "echo a > /tmp/a && echo b > /tmp/b && cat /tmp/a /tmp/b" # Chain: 0
+
+# Pipes with redirects
+run_test "cat /etc/passwd | grep root > /tmp/root_lines" # Success: 0
+run_test "echo hello | cat > /tmp/hello.txt"     # Success: 0
+run_test "ls | cat > /tmp/ls_out 2> /tmp/ls_err" # Success: 0
+
+# All together: pipes, redirects, and logical operators
+run_test "echo test | grep test > /tmp/out && cat /tmp/out" # Full chain: 0
+run_test "cat /nonexist 2>/dev/null | wc -l || echo zero"   # Complex: 0
+run_test "ls /tmp | grep test > /tmp/result || echo not_found" # Depends on content
+
+# Edge cases
+run_test "| cat"                                 # Syntax error (if your parser catches it)
+run_test "&&"                                    # Syntax error
+run_test "||"                                    # Syntax error
+run_test "echo test |"                           # Incomplete pipe
+run_test "echo test &&"                          # Incomplete logical operator
+run_test "< > cat"                               # Invalid redirects
+
 echo -e "${YELLOW}--- Summary ---${RESET}"
 echo -e "Total Passed: ${GREEN}$PASS${RESET}"
 echo -e "Total Failed: ${RED}$FAIL${RESET}"
 
- make fclean
+make fclean
 
 if [ $FAIL -ne 0 ]; then
     exit 1

@@ -1,0 +1,254 @@
+==72881== Memcheck, a memory error detector
+==72881== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==72881== Using Valgrind-3.22.0-bd4db67b1d-20231031 and LibVEX; rerun with -h for copyright info
+==72881== Command: ./minishell
+==72881== Parent PID: 70558
+==72881== 
+--72881-- 
+--72881-- Valgrind options:
+--72881--    --leak-check=full
+--72881--    --show-leak-kinds=all
+--72881--    --track-origins=yes
+--72881--    --track-fds=yes
+--72881--    --errors-for-leak-kinds=all
+--72881--    --num-callers=25
+--72881--    --error-exitcode=42
+--72881--    --verbose
+--72881--    --suppressions=readline.supp
+--72881--    --log-file=./valgrind_logs/valgrind_test_99.log
+--72881-- Contents of /proc/version:
+--72881--   Linux version 6.8.0-1030-azure (buildd@lcy02-amd64-118) (x86_64-linux-gnu-gcc-11 (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0, GNU ld (GNU Binutils for Ubuntu) 2.38) #35~22.04.1-Ubuntu SMP Mon May 26 18:08:30 UTC 2025
+--72881-- 
+--72881-- Arch and hwcaps: AMD64, LittleEndian, amd64-cx16-lzcnt-rdtscp-sse3-ssse3-avx-avx2-bmi-f16c-rdrand-rdseed
+--72881-- Page sizes: currently 4096, max supported 4096
+--72881-- Valgrind library directory: /usr/libexec/valgrind
+--72881-- Reading syms from /workspaces/minishell/minishell
+--72881-- Reading syms from /usr/lib/x86_64-linux-gnu/ld-linux-x86-64.so.2
+--72881--   Considering /usr/lib/debug/.build-id/52/0e05878220fb2fc6d28ff46b63b3fd5d48e763.debug ..
+--72881--   .. build-id is valid
+--72881-- Reading syms from /usr/libexec/valgrind/memcheck-amd64-linux
+--72881--    object doesn't have a dynamic symbol table
+--72881-- Scheduler: using generic scheduler lock implementation.
+--72881-- Reading suppressions file: readline.supp
+--72881-- Reading suppressions file: /usr/libexec/valgrind/default.supp
+==72881== embedded gdbserver: reading from /tmp/vgdb-pipe-from-vgdb-to-72881-by-codespace-on-codespaces-0cccf2
+==72881== embedded gdbserver: writing to   /tmp/vgdb-pipe-to-vgdb-from-72881-by-codespace-on-codespaces-0cccf2
+==72881== embedded gdbserver: shared mem   /tmp/vgdb-pipe-shared-mem-vgdb-72881-by-codespace-on-codespaces-0cccf2
+==72881== 
+==72881== TO CONTROL THIS PROCESS USING vgdb (which you probably
+==72881== don't want to do, unless you know exactly what you're doing,
+==72881== or are doing some strange experiment):
+==72881==   /usr/bin/vgdb --pid=72881 ...command...
+==72881== 
+==72881== TO DEBUG THIS PROCESS USING GDB: start GDB like this
+==72881==   /path/to/gdb ./minishell
+==72881== and then give GDB the following command
+==72881==   target remote | /usr/bin/vgdb --pid=72881
+==72881== --pid is optional if only one valgrind process is running
+==72881== 
+--72881-- REDIR: 0x4028b00 (ld-linux-x86-64.so.2:strlen) redirected to 0x580c2e1a (???)
+--72881-- REDIR: 0x40272b0 (ld-linux-x86-64.so.2:index) redirected to 0x580c2e34 (???)
+--72881-- Reading syms from /usr/libexec/valgrind/vgpreload_core-amd64-linux.so
+--72881-- Reading syms from /usr/libexec/valgrind/vgpreload_memcheck-amd64-linux.so
+==72881== WARNING: new redirection conflicts with existing -- ignoring it
+--72881--     old: 0x04028b00 (strlen              ) R-> (0000.0) 0x580c2e1a ???
+--72881--     new: 0x04028b00 (strlen              ) R-> (2007.0) 0x0484f340 strlen
+--72881-- REDIR: 0x40274e0 (ld-linux-x86-64.so.2:strcmp) redirected to 0x4850460 (strcmp)
+--72881-- REDIR: 0x4026910 (ld-linux-x86-64.so.2:mempcpy) redirected to 0x4853cd0 (mempcpy)
+--72881-- Reading syms from /usr/lib/x86_64-linux-gnu/libreadline.so.8.2
+--72881-- Reading syms from /usr/lib/x86_64-linux-gnu/libc.so.6
+--72881--   Considering /usr/lib/debug/.build-id/27/4eec488d230825a136fa9c4d85370fed7a0a5e.debug ..
+--72881--   .. build-id is valid
+--72881-- Reading syms from /usr/lib/x86_64-linux-gnu/libtinfo.so.6.4
+--72881-- REDIR: 0x4028ca0 (ld-linux-x86-64.so.2:strncmp) redirected to 0x484fc90 (strncmp)
+--72881-- REDIR: 0x496b050 (libc.so.6:strnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496b0e0 (libc.so.6:strpbrk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49691a0 (libc.so.6:strcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49823b0 (libc.so.6:wcsnlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4968290 (libc.so.6:memset) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4981b20 (libc.so.6:wcslen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49ed3f0 (libc.so.6:__memcpy_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4968200 (libc.so.6:memrchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4982350 (libc.so.6:wcsncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4967720 (libc.so.6:memcpy@@GLIBC_2.14) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49808e0 (libc.so.6:wcschr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4969090 (libc.so.6:index) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496b110 (libc.so.6:rindex) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4980990 (libc.so.6:wcscmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49684b0 (libc.so.6:stpncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x498eeb0 (libc.so.6:wmemchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496aef0 (libc.so.6:strncmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4968510 (libc.so.6:strcasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496a310 (libc.so.6:strcspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49818f0 (libc.so.6:wcscpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4969020 (libc.so.6:strcat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496adf0 (libc.so.6:strncasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4969110 (libc.so.6:strchrnul) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4967630 (libc.so.6:bcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496a2a0 (libc.so.6:strcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49685b0 (libc.so.6:strcasecmp_l) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496acc0 (libc.so.6:strlen) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496af90 (libc.so.6:strncpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x498ef30 (libc.so.6:wmemcmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49ed510 (libc.so.6:__memmove_chk) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==72881== WARNING: new redirection conflicts with existing -- ignoring it
+--72881--     old: 0x04a3ea10 (__memcpy_chk_avx_una) R-> (2030.0) 0x04853dd0 __memcpy_chk
+--72881--     new: 0x04a3ea10 (__memcpy_chk_avx_una) R-> (2024.0) 0x04853740 __memmove_chk
+--72881-- REDIR: 0x4968440 (libc.so.6:stpcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4967fc0 (libc.so.6:memmove) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+==72881== Preferring higher priority redirection:
+--72881--     old: 0x04a3ea40 (__memcpy_avx_unalign) R-> (2018.0) 0x04851580 __memcpy_avx_unaligned_erms
+--72881--     new: 0x04a3ea40 (__memcpy_avx_unalign) R-> (2018.1) 0x04852d60 memmove
+--72881-- REDIR: 0x49675b0 (libc.so.6:memchr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496b2e0 (libc.so.6:strspn) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x49680e0 (libc.so.6:mempcpy) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496ad50 (libc.so.6:strncasecmp) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496ae90 (libc.so.6:strncat) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x496bba0 (libc.so.6:strstr) redirected to 0x483d1c0 (_vgnU_ifunc_wrapper)
+--72881-- REDIR: 0x4a43630 (libc.so.6:__strrchr_avx2) redirected to 0x484ed20 (rindex)
+--72881-- REDIR: 0x4963650 (libc.so.6:malloc) redirected to 0x48467b0 (malloc)
+--72881-- REDIR: 0x4a41780 (libc.so.6:__strlen_avx2) redirected to 0x484f220 (strlen)
+--72881-- REDIR: 0x4a3ea40 (libc.so.6:__memcpy_avx_unaligned_erms) redirected to 0x4852d60 (memmove)
+--72881-- REDIR: 0x4a42860 (libc.so.6:__strncmp_avx2) redirected to 0x484fab0 (strncmp)
+--72881-- REDIR: 0x4a40de0 (libc.so.6:__strchrnul_avx2) redirected to 0x48537b0 (strchrnul)
+--72881-- REDIR: 0x4900d30 (libc.so.6:setenv) redirected to 0x48547d0 (setenv)
+--72881-- REDIR: 0x4a40ba0 (libc.so.6:__strchr_avx2) redirected to 0x484ef00 (index)
+--72881-- REDIR: 0x49640a0 (libc.so.6:realloc) redirected to 0x484db00 (realloc)
+--72881-- REDIR: 0x4a3ea10 (libc.so.6:__memcpy_chk_avx_unaligned_erms) redirected to 0x4853dd0 (__memcpy_chk)
+--72881-- REDIR: 0x4a3ea00 (libc.so.6:__mempcpy_avx_unaligned_erms) redirected to 0x48538d0 (mempcpy)
+--72881-- REDIR: 0x4a40fd0 (libc.so.6:__strcmp_avx2) redirected to 0x4850360 (strcmp)
+--72881-- REDIR: 0x49647a0 (libc.so.6:calloc) redirected to 0x484d8a0 (calloc)
+--72881-- REDIR: 0x4a43360 (libc.so.6:__strnlen_avx2) redirected to 0x484f1c0 (strnlen)
+--72881-- REDIR: 0x4963d30 (libc.so.6:free) redirected to 0x4849820 (free)
+--72881-- REDIR: 0x4a41530 (libc.so.6:__strcpy_avx2) redirected to 0x484f370 (strcpy)
+--72881-- REDIR: 0x4a3f440 (libc.so.6:__memset_avx2_unaligned_erms) redirected to 0x4852c50 (memset)
+--72881-- REDIR: 0x4a42ec0 (libc.so.6:__strncpy_avx2) redirected to 0x484f4f0 (strncpy)
+--72881-- REDIR: 0x4a3e040 (libc.so.6:__memchr_avx2) redirected to 0x48504e0 (memchr)
+--72881-- REDIR: 0x4a3fe90 (libc.so.6:__strcasecmp_l_avx2) redirected to 0x484ff70 (strcasecmp_l)
+--72881-- REDIR: 0x4a3f6f0 (libc.so.6:__stpcpy_avx2) redirected to 0x48525a0 (stpcpy)
+--72881-- REDIR: 0x4a3fe80 (libc.so.6:__strcasecmp_avx2) redirected to 0x484fcf0 (strcasecmp)
+--72881-- REDIR: 0x4a41900 (libc.so.6:__strncasecmp_avx2) redirected to 0x484fdd0 (strncasecmp)
+--72881-- REDIR: 0x4a3e2e0 (libc.so.6:__memcmp_avx2_movbe) redirected to 0x4852480 (bcmp)
+==72883== 
+==72883== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==72883== Open file descriptor 25: /dev/pts/ptmx
+==72883==    <inherited from parent>
+==72883== 
+==72883== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==72883==    <inherited from parent>
+==72883== 
+==72883== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==72883==    <inherited from parent>
+==72883== 
+==72883== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==72883==    <inherited from parent>
+==72883== 
+==72883== Open file descriptor 6: /dev/null
+==72883==    <inherited from parent>
+==72883== 
+==72883== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_99.log
+==72883==    <inherited from parent>
+==72883== 
+==72883== 
+==72883== HEAP SUMMARY:
+==72883==     in use at exit: 232,926 bytes in 238 blocks
+==72883==   total heap usage: 753 allocs, 515 frees, 282,659 bytes allocated
+==72883== 
+==72883== Searching for pointers to 238 not-freed blocks
+==72883== Checked 266,960 bytes
+==72883== 
+==72883== LEAK SUMMARY:
+==72883==    definitely lost: 0 bytes in 0 blocks
+==72883==    indirectly lost: 0 bytes in 0 blocks
+==72883==      possibly lost: 0 bytes in 0 blocks
+==72883==    still reachable: 0 bytes in 0 blocks
+==72883==         suppressed: 232,926 bytes in 238 blocks
+==72883== 
+==72883== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--72883-- 
+--72883-- used_suppression:     74 readline readline.supp:2 suppressed: 228,831 bytes in 234 blocks
+--72883-- used_suppression:      4 history readline.supp:9 suppressed: 4,095 bytes in 4 blocks
+==72883== 
+==72883== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==72884== 
+==72884== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==72884== Open file descriptor 25: /dev/pts/ptmx
+==72884==    <inherited from parent>
+==72884== 
+==72884== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==72884==    <inherited from parent>
+==72884== 
+==72884== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==72884==    <inherited from parent>
+==72884== 
+==72884== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==72884==    <inherited from parent>
+==72884== 
+==72884== Open file descriptor 6: /dev/null
+==72884==    <inherited from parent>
+==72884== 
+==72884== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_99.log
+==72884==    <inherited from parent>
+==72884== 
+==72884== 
+==72884== HEAP SUMMARY:
+==72884==     in use at exit: 232,926 bytes in 238 blocks
+==72884==   total heap usage: 641 allocs, 403 frees, 274,451 bytes allocated
+==72884== 
+==72884== Searching for pointers to 238 not-freed blocks
+==72884== Checked 266,960 bytes
+==72884== 
+==72884== LEAK SUMMARY:
+==72884==    definitely lost: 0 bytes in 0 blocks
+==72884==    indirectly lost: 0 bytes in 0 blocks
+==72884==      possibly lost: 0 bytes in 0 blocks
+==72884==    still reachable: 0 bytes in 0 blocks
+==72884==         suppressed: 232,926 bytes in 238 blocks
+==72884== 
+==72884== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+--72884-- 
+--72884-- used_suppression:     74 readline readline.supp:2 suppressed: 228,831 bytes in 234 blocks
+--72884-- used_suppression:      4 history readline.supp:9 suppressed: 4,095 bytes in 4 blocks
+==72884== 
+==72884== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 78 from 78)
+==72881== 
+==72881== FILE DESCRIPTORS: 6 open (0 std) at exit.
+==72881== Open file descriptor 25: /dev/pts/ptmx
+==72881==    <inherited from parent>
+==72881== 
+==72881== Open file descriptor 24: /home/codespace/.vscode-remote/data/logs/20260111T110419/ptyhost.log
+==72881==    <inherited from parent>
+==72881== 
+==72881== Open file descriptor 23: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteTelemetry.log
+==72881==    <inherited from parent>
+==72881== 
+==72881== Open file descriptor 22: /home/codespace/.vscode-remote/data/logs/20260111T110419/remoteagent.log
+==72881==    <inherited from parent>
+==72881== 
+==72881== Open file descriptor 6: /dev/null
+==72881==    <inherited from parent>
+==72881== 
+==72881== Open file descriptor 3: /workspaces/minishell/valgrind_logs/valgrind_test_99.log
+==72881==    <inherited from parent>
+==72881== 
+==72881== 
+==72881== HEAP SUMMARY:
+==72881==     in use at exit: 232,804 bytes in 234 blocks
+==72881==   total heap usage: 637 allocs, 403 frees, 274,425 bytes allocated
+==72881== 
+==72881== Searching for pointers to 234 not-freed blocks
+==72881== Checked 266,448 bytes
+==72881== 
+==72881== LEAK SUMMARY:
+==72881==    definitely lost: 0 bytes in 0 blocks
+==72881==    indirectly lost: 0 bytes in 0 blocks
+==72881==      possibly lost: 0 bytes in 0 blocks
+==72881==    still reachable: 0 bytes in 0 blocks
+==72881==         suppressed: 232,804 bytes in 234 blocks
+==72881== 
+==72881== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 74 from 74)
+--72881-- 
+--72881-- used_suppression:     73 readline readline.supp:2 suppressed: 228,788 bytes in 233 blocks
+--72881-- used_suppression:      1 history readline.supp:9 suppressed: 4,016 bytes in 1 blocks
+==72881== 
+==72881== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 74 from 74)

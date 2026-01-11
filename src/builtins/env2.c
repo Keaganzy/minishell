@@ -6,7 +6,7 @@
 /*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/19 21:44:16 by jotong            #+#    #+#             */
-/*   Updated: 2026/01/11 10:07:13 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 12:31:09 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static void	extract_and_update_vars(char **av, t_shell *shell, int *status)
 
 int	ft_export(char **av, t_shell *shell)
 {
-	int	status;
+	int		status;
+	char	**duped_env;
 
 	status = 0;
 	if (!shell || !shell->envp)
@@ -52,6 +53,15 @@ int	ft_export(char **av, t_shell *shell)
 	{
 		extract_and_update_vars(av, shell, &status);
 		return (status);
+	}
+	else
+	{
+		duped_env = dup_envp(shell, shell->envp);
+		if (!duped_env)
+			return (1);
+		sort_envp_vars(duped_env);
+		print_env_vars_export(duped_env);
+		free_array(duped_env);
 	}
 	return (status);
 }
@@ -71,7 +81,8 @@ int	ft_env(char **av, t_shell *shell)
 	if (!duped_env)
 		return (1);
 	sort_envp_vars(duped_env);
-	print_env_vars(duped_env);
+	print_env_vars_env(duped_env);
+	free_array(duped_env);
 	return (0);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jotong <jotong@student.42singapore.sg>     +#+  +:+       +#+        */
+/*   By: jotong <jotong@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/18 20:39:15 by ksng              #+#    #+#             */
-/*   Updated: 2026/01/07 16:33:09 by jotong           ###   ########.fr       */
+/*   Updated: 2026/01/11 13:57:51 by jotong           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,43 +22,43 @@ static int	wait_for_children(pid_t pid1, pid_t pid2)
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
 	if (WIFSIGNALED(status2))
-        final_status = 128 + WTERMSIG(status2);
-    else if (WIFSIGNALED(status1))
-        final_status = 128 + WTERMSIG(status1);
-    else if (WIFEXITED(status2))
-        final_status = WEXITSTATUS(status2);
-    else
-        final_status = 1;
-    return (final_status);
+		final_status = 128 + WTERMSIG(status2);
+	else if (WIFSIGNALED(status1))
+		final_status = 128 + WTERMSIG(status1);
+	else if (WIFEXITED(status2))
+		final_status = WEXITSTATUS(status2);
+	else
+		final_status = 1;
+	return (final_status);
 }
 
-static int	execute_pipe_child(t_ast *node, int *pipefd, t_shell *shell, int is_left)
+static int	execute_pipe_child(t_ast *node, int *pipefd, t_shell *shell,
+	int is_left)
 {
-    int status;
+	int	status;
 
-    signal(SIGINT, SIG_DFL);
-    signal(SIGQUIT, SIG_DFL);
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 
-    if (is_left)
-    {
-        close(pipefd[0]);
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-        status = execute_node(node->left, shell);
-    }
-    else
-    {
-        close(pipefd[1]);
-        dup2(pipefd[0], STDIN_FILENO);
-        close(pipefd[0]);
-        status = execute_node(node->right, shell);
-    }
-
-    cleanup_shell(shell);
-    exit(status);
+	if (is_left)
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+		status = execute_node(node->left, shell);
+	}
+	else
+	{
+		close(pipefd[1]);
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+		status = execute_node(node->right, shell);
+	}
+	cleanup_shell(shell);
+	exit(status);
 }
 
-int execute_pipe(t_ast *node, t_shell *shell)
+int	execute_pipe(t_ast *node, t_shell *shell)
 {
 	int		pipefd[2];
 	pid_t	pid1;
